@@ -1,0 +1,124 @@
+<%- include('../includes/header') %>
+    <%- include('../includes/navbar') %>
+        <%- include('../includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Fidelidade</div>
+                        <h1 class="page-title">Histórico de movimentações</h1>
+                        <div class="page-subtitle">Acompanhe todas as movimentações de pontos</div>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <span class="badge-tipo acumulo"><i class="bi bi-plus me-1"></i><%= (typeof totalCompras !== 'undefined') ? totalCompras : 0 %> compras</span>
+                        <span class="badge-tipo resgate"><i class="bi bi-arrow-down me-1"></i><%= (typeof totalResgates !== 'undefined') ? totalResgates : 0 %> resgates</span>
+                        <span class="badge-level gold"><%= (typeof totalPontos !== 'undefined') ? totalPontos.toLocaleString('pt-BR') : 0 %> pts</span>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-xl-3 col-6">
+                        <div class="card stat-mini">
+                            <div class="label">Acúmulos</div>
+                            <div class="value text-success">
+                                <%= movimentacoes.filter(m => m.tipo === 'acumulo').reduce((s, m) => s + m.pontos, 0).toLocaleString('pt-BR') %>
+                            </div>
+                            <i class="bi bi-arrow-up-circle text-success"></i>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-6">
+                        <div class="card stat-mini">
+                            <div class="label">Resgates</div>
+                            <div class="value text-danger">
+                                <%= movimentacoes.filter(m => m.tipo === 'resgate').reduce((s, m) => s + Math.abs(m.pontos), 0).toLocaleString('pt-BR') %>
+                            </div>
+                            <i class="bi bi-arrow-down-circle text-danger"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card section-card">
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-3"><select class="form-select" id="filtro-tipo">
+                                <option value="">Todos os tipos</option>
+                                <option value="acumulo">Acúmulo</option>
+                                <option value="resgate">Resgate</option>
+                            </select></div>
+                        <div class="col-md-3"><input type="date" class="form-control" id="filtro-inicio"></div>
+                        <div class="col-md-3"><input type="date" class="form-control" id="filtro-fim"></div>
+                        <div class="col-md-3"><button class="btn btn-outline-primary w-100" id="btn-limpar">Limpar
+                                filtros</button></div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table" id="tab-movimentacoes">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Tipo</th>
+                                    <th>Pontos</th>
+                                    <th>Cliente</th>
+                                    <th>Referência</th>
+                                    <th>Expiração</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% movimentacoes.forEach(function (mov) { %>
+                                    <tr data-tipo="<%= mov.tipo %>" data-data="<%= mov.data %>">
+                                        <td class="text-nowrap"><%= mov.data %></td>
+                                        <td>
+                                            <span class="badge-tipo <%= mov.tipo %>">
+                                                <%= mov.tipo.toUpperCase() %>
+                                            </span>
+                                        </td>
+                                        <td class="fw-bold <%= mov.pontos > 0 ? 'text-success' : 'text-danger' %>"><%= mov.pontos > 0 ? '+' : '' %><%= mov.pontos.toLocaleString('pt-BR') %></td>
+                                        <td><%= mov.cliente %></td>
+                                        <td><%= mov.referencia %></td>
+                                        <td class="text-nowrap"><%= mov.expiracao %></td>
+                                    </tr>
+                                    <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <script>
+                const inpInicio = document.getElementById('filtro-inicio');
+                const inpFim = document.getElementById('filtro-fim');
+                const selTipo = document.getElementById('filtro-tipo');
+                const linhas = Array.prototype.slice.call(document.querySelectorAll('#tab-movimentacoes tbody tr'));
+
+                function pad(n) { return String(n).padStart(2, '0'); }
+
+                function paraIso(ddmm) {
+                    const p = ddmm.split('/');
+                    if (p.length !== 3) return '';
+                    return p[2] + '-' + pad(p[1]) + '-' + pad(p[0]);
+                }
+
+                function filtrar() {
+                    const t = selTipo.value;
+                    const a = paraIso(inpInicio.value ? inpInicio.value.split('-').reverse().join('/') : '');
+                    const b = paraIso(inpFim.value ? inpFim.value.split('-').reverse().join('/') : '');
+                    linhas.forEach(function (linha) {
+                        const data = paraIso(linha.dataset.data);
+                        const okTipo = !t || linha.dataset.tipo === t;
+                        const okInicio = !a || data >= a;
+                        const okFim = !b || data <= b;
+                        linha.style.display = okTipo && okInicio && okFim ? '' : 'none';
+                    });
+                }
+
+                selTipo.addEventListener('change', filtrar);
+                inpInicio.addEventListener('change', filtrar);
+                inpFim.addEventListener('change', filtrar);
+                document.getElementById('btn-limpar').addEventListener('click', function () {
+                    selTipo.value = '';
+                    inpInicio.value = '';
+                    inpFim.value = '';
+                    filtrar();
+                });
+            </script>
+
+            <%- include('../includes/footer') %>

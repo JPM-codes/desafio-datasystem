@@ -1,0 +1,69 @@
+<%- include('../includes/header') %>
+    <%- include('../includes/navbar') %>
+        <%- include('../includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Fidelidade</div>
+                        <h1 class="page-title">Ranking de clientes</h1>
+                        <div class="page-subtitle">Clientes que mais acumularam pontos</div>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <% var titulo = ['1º', '2º', '3º']; var ordem = ['first', 'second', 'third']; %>
+                        <% podio.forEach(function (cliente, index) { %>
+                            <div class="col-md-4">
+                                <div class="card section-card podium-card <%= ordem[index] %>">
+                                    <span class="podium-medal"><i class="bi bi-<%= index === 0 ? 'trophy-fill' : 'star-fill' %>"></i></span>
+                                    <span class="text-muted small"> <strong><%= titulo[index] %></strong> lugar</span>
+                                    <span class="avatar avatar-lg mx-auto my-3 bg-gradient"><%= cliente.iniciais %></span>
+                                    <div class="fw-bold"><%= cliente.nome %></div>
+                                    <span class="badge-level <%= cliente.nivel.classe %> mt-2 d-inline-block"><%= cliente.nivel.nome %></span>
+                                    <div class="fs-2xl fw-800 mt-3"><%= cliente.pontos.toLocaleString('pt-BR') %></div>
+                                    <small class="text-muted d-block">pontos acumulados</small>
+                                </div>
+                            </div>
+                            <% }); %>
+                </div>
+
+                <div class="card section-card">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Posição</th>
+                                    <th>Cliente</th>
+                                    <th>Documento</th>
+                                    <th>Nível</th>
+                                    <th class="text-end">Pontos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (demais.length) { %>
+                                    <% demais.forEach(function (cliente, index) { %>
+                                        <tr>
+                                            <td><span class="rank-pos <%= index < 3 ? 'top-' + (index + 1) : '' %>"><%= index + 4 %>º</span></td>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2"><span
+                                                        class="avatar"><%= cliente.iniciais %></span><%= cliente.nome %></div>
+                                            </td>
+                                            <td><%= cliente.documento %></td>
+                                            <td><span class="badge-level <%= cliente.nivel.classe %>"><%= cliente.nivel.nome %></span></td>
+                                            <td class="text-end fw-bold"><%= cliente.pontos.toLocaleString('pt-BR') %></td>
+                                        </tr>
+                                        <% }); %>
+                                            <% } else { %>
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-muted py-4">Não há mais clientes
+                                                        para exibir.</td>
+                                                </tr>
+                                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <%- include('../includes/footer') %>

@@ -1,0 +1,88 @@
+<%- include('../includes/header') %>
+    <%- include('../includes/navbar') %>
+        <%- include('../includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Integração</div>
+                        <h1 class="page-title">Documentação da API</h1>
+                        <div class="page-subtitle">Endpoints para integração com PDV e outros sistemas</div>
+                    </div>
+                </div>
+
+                <div class="card section-card mb-3">
+                    <div class="stat-grid">
+                        <div>
+                            <div class="text-muted small mb-1">Base URL</div>
+                            <code>http://localhost:3000/api</code>
+                        </div>
+                        <div>
+                            <div class="text-muted small mb-1">Formato</div>
+                            <span class="badge-tipo acumulo">JSON</span>
+                        </div>
+                        <div>
+                            <div class="text-muted small mb-1">Autenticação</div>
+                            <span class="badge-level bronze">Indisponível</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-lg-8">
+                        <h5 class="fw-bold mb-3">Clientes</h5>
+                        <div class="endpoint"><span class="method get">GET</span> <strong
+                                class="ms-2">/clientes</strong>
+                            <div class="text-muted small mt-2">Lista todos os clientes cadastrados.</div>
+                        </div>
+                        <div class="endpoint"><span class="method get">GET</span> <strong
+                                class="ms-2">/clientes/busca?nome=&amp;cpf=&amp;documento=</strong>
+                            <div class="text-muted small mt-2">Busca clientes por nome, CPF ou tipo de documento.</div>
+                        </div>
+                        <div class="endpoint"><span class="method get">GET</span> <strong
+                                class="ms-2">/clientes/:id</strong>
+                            <div class="text-muted small mt-2">Consulta um cliente específico e seus dados.</div>
+                        </div>
+
+                        <h5 class="fw-bold my-3">Compras</h5>
+                        <div class="endpoint"><span class="method get">GET</span> <strong
+                                class="ms-2">/compras</strong>
+                            <div class="text-muted small mt-2">Lista todas as compras registradas.</div>
+                        </div>
+                        <div class="endpoint"><span class="method get">GET</span> <strong
+                                class="ms-2">/compras/busca?cliente_id=&amp;produto=&amp;data_compra=</strong>
+                            <div class="text-muted small mt-2">Busca compras por cliente, produto ou data.</div>
+                        </div>
+                        <div class="endpoint"><span class="method get">GET</span> <strong
+                                class="ms-2">/compras/:id</strong>
+                            <div class="text-muted small mt-2">Consulta uma compra específica.</div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card section-card h-100">
+                            <h5 class="card-title mb-3"><i class="bi bi-journal-code text-primary"></i>Exemplo de
+                                resposta</h5>
+                            <div class="code-box">
+                                {<br>
+                                &nbsp;&nbsp;<span class="code-key">"id"</span>: <span class="code-num">1</span>,<br>
+                                &nbsp;&nbsp;<span class="code-key">"cliente_id"</span>: <span
+                                    class="code-num">15</span>,<br>
+                                &nbsp;&nbsp;<span class="code-key">"produto"</span>: <span
+                                    class="code-str">"Tênis Esportivo"</span>,<br>
+                                &nbsp;&nbsp;<span class="code-key">"valor_total"</span>: <span
+                                    class="code-num">300.00</span>,<br>
+                                &nbsp;&nbsp;<span class="code-key">"pontos_total"</span>: <span
+                                    class="code-num">600</span><br>
+                                }
+                            </div>
+
+                            <h5 class="card-title mt-4 mb-3"><i class="bi bi-lightning-charge text-primary"></i>Dica</h5>
+                            <div class="alert-card">Todos os endpoints são públicos e retornam dados em formato JSON.
+                                Consulte o código em <code>api/</code> para mais detalhes.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <%- include('../includes/footer') %>

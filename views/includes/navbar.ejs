@@ -1,0 +1,42 @@
+<aside class="sidebar" id="sidebar">
+    <a class="brand" href="/">
+        <span class="brand-mark"><i class="bi bi-award"></i></span>
+        <span class="brand-text">FATECalçados<small>Fidelidade</small></span>
+    </a>
+
+    <nav class="sidebar-nav">
+        <span class="nav-section">Menu principal</span>
+        <a class="nav-link <%= rota === '/' ? 'active' : '' %>" href="/"><i
+                class="bi bi-speedometer2"></i><span>Dashboard</span></a>
+        <a class="nav-link <%= rota === '/clientes' ? 'active' : '' %>" href="/clientes"><i
+                class="bi bi-people"></i><span>Clientes</span></a>
+        <a class="nav-link <%= rota === '/compras' ? 'active' : '' %>" href="/compras"><i
+                class="bi bi-cart3"></i><span>Compras</span></a>
+        <a class="nav-link <%= rota === '/resgates' ? 'active' : '' %>" href="/resgates"><i
+                class="bi bi-gift"></i><span>Resgates</span></a>
+        <a class="nav-link <%= rota === '/ranking' ? 'active' : '' %>" href="/ranking"><i
+                class="bi bi-trophy"></i><span>Ranking</span></a>
+        <a class="nav-link <%= rota === '/historico' ? 'active' : '' %>" href="/historico"><i
+                class="bi bi-arrow-left-right"></i><span>Movimentações</span></a>
+        <a class="nav-link <%= rota === '/api' ? 'active' : '' %>" href="/api"><i class="bi bi-braces"></i><span>API
+                docs</span></a>
+    </nav>
+
+    <nav class="sidebar-nav">
+        <span class="nav-section">Cadastros</span>
+        <a class="nav-link <%= rota === '/clientes/add' ? 'active' : '' %>" href="/clientes/add"><i
+                class="bi bi-person-plus"></i><span>Adicionar cliente</span></a>
+    </nav>
+
+    <div class="sidebar-foot">
+        <div class="sidebar-note">
+            <i class="bi bi-stars"></i>
+            <div>
+                <strong>100 pontos = R$ 5</strong>
+                <small>de desconto em compras</small>
+            </div>
+        </div>
+    </div>
+</aside>
+<div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+<main class="main">

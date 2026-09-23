@@ -1,0 +1,25 @@
+<header class="topbar">
+    <div class="topbar-left">
+        <button class="btn btn-sm btn-light sidebar-toggle d-lg-none" type="button" aria-label="Abrir menu"
+            id="sidebar-toggle"><i class="bi bi-list"></i></button>
+        <strong class="topbar-title"><%= typeof titulo !== 'undefined' ? titulo : '' %></strong>
+    </div>
+    <div class="d-flex align-items-center gap-2 gap-md-3">
+        <button class="btn btn-sm btn-light topbar-btn d-none d-sm-inline-flex" type="button"
+            title="Notificações"><i class="bi bi-bell"></i></button>
+        <div class="dropdown">
+            <a href="#" class="topbar-user dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="avatar avatar-sm bg-gradient">AD</span>
+                <span class="topbar-user-info">
+                    <span class="topbar-user-name">Administrador</span>
+                    <span class="topbar-user-role">Loja Central</span>
+                </span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                <li><span class="dropdown-item-text small text-muted">Conectado como Admin</span></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/api"><i class="bi bi-braces me-2"></i>Documentação da API</a></li>
+            </ul>
+        </div>
+    </div>
+</header>

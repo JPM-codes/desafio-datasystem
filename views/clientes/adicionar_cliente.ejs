@@ -1,0 +1,46 @@
+<%- include('../includes/header') %>
+    <%- include('../includes/navbar') %>
+        <%- include('../includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Cadastros</div>
+                        <h1 class="page-title">Novo cliente</h1>
+                        <div class="page-subtitle">Preencha os dados para cadastrar um novo cliente</div>
+                    </div>
+                    <a href="/clientes" class="btn btn-light"><i class="bi bi-arrow-left me-2"></i>Voltar</a>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-xl-8">
+                        <div class="card section-card">
+                            <h5 class="card-title mb-4"><i class="bi bi-person-plus text-primary"></i>Dados do cliente
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-md-8"><label class="form-label">Nome completo *</label><input
+                                        class="form-control" id="input-nome" placeholder="Ex.: Maria Oliveira"></div>
+                                <div class="col-md-4"><label class="form-label">Tipo de documento</label><select
+                                        class="form-select" id="input-tipo">
+                                        <option value="CPF">CPF</option>
+                                        <option value="CNPJ">CNPJ</option>
+                                    </select></div>
+                                <div class="col-md-8"><label class="form-label">CPF / CNPJ *</label><input
+                                        class="form-control" id="input-doc" placeholder="000.000.000-00"></div>
+                                <div class="col-md-4"><label class="form-label">ID interno</label><input
+                                        class="form-control" id="input-id" value="Automático" disabled></div>
+                            </div>
+
+                            <div class="alert-card my-3"><i class="bi bi-stars me-2"></i>O nível é calculado
+                                automaticamente conforme a pontuação.<br class="d-none d-md-inline">
+                                <strong>Bronze</strong> até 999 pts · <strong>Prata</strong> até 4.999 pts ·
+                                <strong>Ouro</strong> 5.000+ pts.</div>
+
+                            <div class="text-end"><button class="btn btn-primary"><i class="bi bi-check-lg me-2"></i>Salvar
+                                    cliente</button></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <%- include('../includes/footer') %>

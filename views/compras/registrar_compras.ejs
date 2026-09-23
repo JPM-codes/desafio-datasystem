@@ -1,0 +1,119 @@
+<%- include('../includes/header') %>
+    <%- include('../includes/navbar') %>
+        <%- include('../includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Fidelidade</div>
+                        <h1 class="page-title">Registrar compra</h1>
+                        <div class="page-subtitle">Informe os dados da compra para gerar os pontos do cliente</div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-xl-7">
+                        <div class="card section-card">
+                            <h5 class="card-title mb-3"><i class="bi bi-cart3 text-primary"></i>Dados da compra</h5>
+
+                            <div class="mb-3"><label class="form-label">Cliente *</label><select class="form-select"
+                                    id="cliente-select">
+                                    <% if ((typeof clientes !== 'undefined') && clientes.length) { %>
+                                        <% clientes.forEach(function (cliente) { %>
+                                            <option value="<%= cliente.id %>" data-pontos="<%= cliente.pontos %>">
+                                                <%= cliente.nome %> — <%= cliente.pontos.toLocaleString('pt-BR') %> pontos —
+                                                    <%= cliente.nivel.nome %>
+                                            </option>
+                                            <% }); %>
+                                                <% } else { %>
+                                                    <option>Nenhum cliente cadastrado</option>
+                                                    <% } %>
+                            </select></div>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6"><label class="form-label">Valor da compra (R$) *</label><input
+                                        type="number" step="0.01" min="0" class="form-control form-control-lg"
+                                        id="valor-compra" placeholder="0,00"></div>
+                                <div class="col-md-6"><label class="form-label">Data da compra</label><input type="date"
+                                        class="form-control form-control-lg" id="data-compra"
+                                        value="<%= new Date().toISOString().slice(0, 10) %>"></div>
+                            </div>
+
+                            <div class="alert-card mb-3"><i
+                                    class="bi bi-info-circle me-2"></i>Os pontos são calculados automaticamente conforme o
+                                nível de fidelidade do cliente.</div>
+
+                            <div class="text-end"><button class="btn btn-primary btn-lg px-4"><i
+                                        class="bi bi-check-lg me-2"></i>Registrar compra</button></div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-5">
+                        <div class="card section-card h-100">
+                            <h5 class="card-title mb-3"><i class="bi bi-calculator text-primary"></i>Cálculo de pontos
+                            </h5>
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <span class="avatar avatar-lg bg-gradient"><i class="bi bi-person"></i></span>
+                                <div>
+                                    <div class="fw-bold" id="resumo-nome">Selecione um cliente</div>
+                                    <div class="small text-muted" id="resumo-nivel">—</div>
+                                </div>
+                            </div>
+
+                            <div class="stat-grid mb-3">
+                                <div class="stat-mini">
+                                    <div class="label">Pontos base</div>
+                                    <div class="value" id="resumo-base">0</div>
+                                </div>
+                                <div class="stat-mini">
+                                    <div class="label">Bônus</div>
+                                    <div class="value" id="resumo-bonus">0%</div>
+                                </div>
+                                <div class="stat-mini">
+                                    <div class="label">Pontos totais</div>
+                                    <div class="value text-primary" id="resumo-total">0</div>
+                                </div>
+                            </div>
+
+                            <div class="alert-card"><i class="bi bi-stars me-2"></i>Níveis: <strong>Bronze</strong> até
+                                999 pts · <strong>Prata</strong> até 4.999 pts · <strong>Ouro</strong> 5.000+ pts</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <script>
+                const bonusNivel = { 'Bronze': 0, 'Prata': 0.10, 'Ouro': 0.20 };
+                const sel = document.getElementById('cliente-select');
+                const valCompra = document.getElementById('valor-compra');
+                const elNome = document.getElementById('resumo-nome');
+                const elNivel = document.getElementById('resumo-nivel');
+                const elBase = document.getElementById('resumo-base');
+                const elBonus = document.getElementById('resumo-bonus');
+                const elTotal = document.getElementById('resumo-total');
+
+                function atualizar() {
+                    const opt = sel.options[sel.selectedIndex];
+                    if (!opt) return;
+                    const pontos = Number(opt.dataset.pontos || 0);
+                    const nivel = opt.textContent.split(' — ')[2] || 'Bronze';
+                    const nome = opt.textContent.split(' — ')[0];
+
+                    const valor = Math.max(0, Number(valCompra.value.replace(',', '.')) || 0);
+                    const base = Math.round(valor);
+                    const bonus = Math.round(base * (bonusNivel[nivel] || 0));
+                    const total = base + bonus;
+
+                    elNome.textContent = nome;
+                    elNivel.innerHTML = 'Nível: <span class="badge-level ' + (nivel === 'Ouro' ? 'gold' : nivel === 'Prata' ? 'silver' : 'bronze') + '">' + nivel + '</span> · Saldo: ' + pontos.toLocaleString('pt-BR') + ' pts';
+                    elBase.textContent = base.toLocaleString('pt-BR');
+                    elBonus.textContent = (bonusNivel[nivel] * 100) + '%  (+' + bonus + ')';
+                    elTotal.textContent = total.toLocaleString('pt-BR');
+                }
+
+                sel.addEventListener('change', atualizar);
+                valCompra.addEventListener('input', atualizar);
+                atualizar();
+            </script>
+
+            <%- include('../includes/footer') %>

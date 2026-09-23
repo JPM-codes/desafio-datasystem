@@ -1,0 +1,128 @@
+<%- include('../includes/header') %>
+    <%- include('../includes/navbar') %>
+        <%- include('../includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Fidelidade</div>
+                        <h1 class="page-title">Novo resgate</h1>
+                        <div class="page-subtitle">Realize o resgate de pontos do cliente</div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-xl-7">
+                        <div class="card section-card">
+                            <h5 class="card-title mb-3"><i class="bi bi-gift text-primary"></i>Dados do resgate</h5>
+
+                            <div class="mb-3"><label class="form-label">Cliente *</label><select class="form-select"
+                                    id="cliente-select">
+                                    <% if ((typeof clientes !== 'undefined') && clientes.length) { %>
+                                        <% clientes.forEach(function (cliente) { %>
+                                            <option value="<%= cliente.id %>" data-pontos="<%= cliente.pontos %>">
+                                                <%= cliente.nome %> — <%= cliente.pontos.toLocaleString('pt-BR') %> pontos —
+                                                    <%= cliente.nivel.nome %>
+                                            </option>
+                                            <% }); %>
+                                                <% } else { %>
+                                                    <option>Nenhum cliente cadastrado</option>
+                                                    <% } %>
+                            </select></div>
+
+                            <div class="mb-3"><label class="form-label">Pontos para resgate *</label>
+                                <div class="input-group input-group-lg">
+                                    <input type="number" min="0" class="form-control" id="pontos-resgate" value="500">
+                                    <span class="input-group-text">pontos</span>
+                                </div>
+                            </div>
+
+                            <div class="alert-card mb-3"><i class="bi bi-info-circle me-2"></i>100 pontos = R$ 5,00 de
+                                desconto em qualquer compra.</div>
+
+                            <div class="text-end"><button class="btn btn-primary btn-lg px-4" id="btn-resgate"><i
+                                        class="bi bi-gift me-2"></i>Realizar resgate</button></div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-5">
+                        <div class="card section-card h-100">
+                            <h5 class="card-title mb-3"><i class="bi bi-wallet2 text-primary"></i>Resumo do cliente</h5>
+
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <span class="avatar avatar-lg bg-gradient"><i class="bi bi-person"></i></span>
+                                <div>
+                                    <div class="fw-bold" id="resumo-nome">Selecione um cliente</div>
+                                    <div class="small text-muted" id="resumo-nivel">—</div>
+                                </div>
+                            </div>
+
+                            <div class="stat-grid mb-3">
+                                <div class="stat-mini">
+                                    <div class="label">Saldo do cliente</div>
+                                    <div class="value" id="resumo-saldo">0</div>
+                                </div>
+                                <div class="stat-mini">
+                                    <div class="label">Valor disponível</div>
+                                    <div class="value text-success" id="resumo-valor">R$ 0,00</div>
+                                </div>
+                                <div class="stat-mini">
+                                    <div class="label">Desconto estimado</div>
+                                    <div class="value text-primary" id="resumo-desconto">R$ 0,00</div>
+                                </div>
+                            </div>
+
+                            <div class="alert-card" id="alerta-saldo" style="display:none"><i
+                                    class="bi bi-exclamation-triangle me-2"></i><span id="alerta-texto"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <script>
+                const sel = document.getElementById('cliente-select');
+                const inputPontos = document.getElementById('pontos-resgate');
+                const elNome = document.getElementById('resumo-nome');
+                const elNivel = document.getElementById('resumo-nivel');
+                const elSaldo = document.getElementById('resumo-saldo');
+                const elValor = document.getElementById('resumo-valor');
+                const elDesconto = document.getElementById('resumo-desconto');
+                const alerta = document.getElementById('alerta-saldo');
+                const alertaTexto = document.getElementById('alerta-texto');
+
+                function reais(valor) {
+                    return 'R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                }
+
+                function atualizar() {
+                    const opt = sel.options[sel.selectedIndex];
+                    if (!opt) return;
+                    const pontos = Number(opt.dataset.pontos || 0);
+                    const nivel = opt.textContent.split(' — ')[2] || 'Bronze';
+                    const nome = opt.textContent.split(' — ')[0];
+
+                    const resgate = Math.max(0, Number(inputPontos.value || 0));
+
+                    elNome.textContent = nome;
+                    elNivel.innerHTML = 'Nível: <span class="badge-level ' + (nivel === 'Ouro' ? 'gold' : nivel === 'Prata' ? 'silver' : 'bronze') + '">' + nivel + '</span>';
+                    elSaldo.textContent = pontos.toLocaleString('pt-BR') + ' pts';
+                    elValor.textContent = reais(pontos * 0.05);
+                    elDesconto.textContent = reais(resgate * 0.05);
+
+                    if (resgate > pontos) {
+                        alertaTexto.textContent = 'O resgate solicitado excede o saldo do cliente.';
+                        alerta.style.display = 'block';
+                    } else if (resgate <= 0) {
+                        alertaTexto.textContent = 'Informe uma quantidade de pontos válida.';
+                        alerta.style.display = 'block';
+                    } else {
+                        alerta.style.display = 'none';
+                    }
+                }
+
+                sel.addEventListener('change', atualizar);
+                inputPontos.addEventListener('input', atualizar);
+                atualizar();
+            </script>
+
+            <%- include('../includes/footer') %>

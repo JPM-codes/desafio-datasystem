@@ -1,0 +1,28 @@
+</main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        const btnToggle = document.getElementById('sidebar-toggle');
+
+        function closeSidebar() {
+            document.body.classList.remove('sidebar-open');
+        }
+
+        if (btnToggle) {
+            btnToggle.addEventListener('click', () => {
+                const aberto = document.body.classList.toggle('sidebar-open');
+                btnToggle.setAttribute('aria-expanded', aberto);
+            });
+        }
+        if (backdrop) {
+            backdrop.addEventListener('click', closeSidebar);
+        }
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeSidebar();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<%- include('../includes/header') %>
+    <%- include('../includes/navbar') %>
+        <%- include('../includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Cadastros</div>
+                        <h1 class="page-title">Clientes</h1>
+                        <div class="page-subtitle">Gerencie os clientes cadastrados</div>
+                    </div>
+                    <a href="/clientes/add" class="btn btn-primary"><i class="bi bi-person-plus me-2"></i>Novo cliente</a>
+                </div>
+
+                <div class="card section-card">
+                    <div class="row g-2 mb-3">
+                        <div class="col-lg-6"><div class="position-relative">
+                                <i class="bi bi-search position-absolute text-muted" style="left:14px;top:50%;transform:translateY(-50%)"></i>
+                                <input class="form-control ps-5" id="busca-cliente" placeholder="Pesquisar por nome, CPF, CNPJ ou ID...">
+                            </div></div>
+                        <div class="col-lg-3"><select class="form-select" id="ordem-clientes">
+                                <option value="az">Ordem A-Z</option>
+                                <option value="za">Ordem Z-A</option>
+                                <option value="pontos">Maior pontuação</option>
+                            </select></div>
+                        <div class="col-lg-3 d-flex justify-content-end">
+                            <span class="badge-level bronze mb-0 d-flex align-items-center"><i
+                                    class="bi bi-people me-2"></i><%= clientes.length %> cadastrados</span>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table" id="tab-clientes">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Cliente</th>
+                                    <th>Documento</th>
+                                    <th>Pontos</th>
+                                    <th>Nível</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% clientes.forEach(function (cliente) { %>
+                                    <tr>
+                                        <td><span class="badge-level silver"><%= cliente.id %></span></td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2"><span
+                                                    class="avatar"><%= cliente.iniciais %></span>
+                                                <div>
+                                                    <div class="fw-semibold"><%= cliente.nome %></div>
+                                                    <div class="small text-muted"><%= cliente.tipo_documento %></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><%= cliente.documento %></td>
+                                        <td class="fw-bold"><%= cliente.pontos.toLocaleString('pt-BR') %></td>
+                                        <td><span class="badge-level <%= cliente.nivel.classe %>"><%= cliente.nivel.nome %></span></td>
+                                        <td>
+                                            <div class="d-flex gap-1">
+                                                <a href="/clientes/edit/<%= cliente.id %>" class="btn btn-sm btn-light btn-action"
+                                                    title="Editar"><i class="bi bi-pencil"></i></a>
+                                                <button class="btn btn-sm btn-light btn-action text-danger" title="Excluir"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <script>
+                const inputBusca = document.getElementById('busca-cliente');
+                const selOrdem = document.getElementById('ordem-clientes');
+                const tbody = document.querySelector('#tab-clientes tbody');
+
+                function ordenar(alvo, ordem) {
+                    const linhas = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+                    linhas.sort(function (a, b) {
+                        const get = (tr) => tr.cells[1].textContent.trim();
+                        const getPontos = (tr) => Number(tr.cells[3].textContent.replace(/\D/g, ''));
+                        if (ordem === 'az') return get(a).localeCompare(get(b), 'pt-BR');
+                        if (ordem === 'za') return get(b).localeCompare(get(a), 'pt-BR');
+                        return getPontos(b) - getPontos(a);
+                    });
+                    linhas.forEach((tr) => tbody.appendChild(tr));
+                }
+
+                function filtrar() {
+                    const termo = inputBusca.value.trim().toLowerCase();
+                    tbody.querySelectorAll('tr').forEach(function (tr) {
+                        const texto = tr.textContent.toLowerCase();
+                        tr.style.display = texto.includes(termo) ? '' : 'none';
+                    });
+                }
+
+                inputBusca.addEventListener('input', filtrar);
+                selOrdem.addEventListener('change', function () { ordenar(tbody, selOrdem.value); });
+            </script>
+
+            <%- include('../includes/footer') %>

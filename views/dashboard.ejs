@@ -1,0 +1,188 @@
+<%- include('includes/header') %>
+    <%- include('includes/navbar') %>
+        <%- include('includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Visão geral</div>
+                        <h1 class="page-title">Dashboard</h1>
+                        <div class="page-subtitle">Panorama do programa de fidelidade FATECalçados</div>
+                    </div>
+                    <button class="btn btn-primary"><i class="bi bi-download me-2"></i>Exportar relatório</button>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-xl-3">
+                        <div class="card kpi kpi-tone-1">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-people"></i></div>
+                                <span class="kpi-trend up"><i class="bi bi-arrow-up"></i> 100%</span>
+                            </div>
+                            <div class="kpi-value"><%= kpis.clientes %></div>
+                            <div class="kpi-label">Clientes cadastrados</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="card kpi kpi-tone-2">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-stars"></i></div>
+                                <span class="kpi-trend up"><i class="bi bi-arrow-up"></i> +12%</span>
+                            </div>
+                            <div class="kpi-value"><%= kpis.pontosAcumulados.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Pontos acumulados</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="card kpi kpi-tone-3">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-arrow-down-circle"></i></div>
+                                <span class="kpi-trend down"><i class="bi bi-arrow-down"></i> -8%</span>
+                            </div>
+                            <div class="kpi-value"><%= kpis.pontosResgatados.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Pontos resgatados</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="card kpi kpi-tone-4">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-cash-stack"></i></div>
+                                <span class="kpi-trend up"><i class="bi bi-arrow-up"></i> +5%</span>
+                            </div>
+                            <div class="kpi-value">R$ <%= kpis.valorResgates.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) %></div>
+                            <div class="kpi-label">Valor dos resgates</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-lg-5">
+                        <div class="card section-card h-100">
+                            <h5 class="card-title mb-3"><i class="bi bi-pie-chart text-primary"></i>Distribuição por nível
+                            </h5>
+                            <% var bronzePct = distribuicao.total ? Math.round(distribuicao.bronze / distribuicao.total * 100) : 0; %>
+                                <% var prataPct = distribuicao.total ? Math.round(distribuicao.prata / distribuicao.total * 100) : 0; %>
+                                    <% var ouroPct = distribuicao.total ? Math.round(distribuicao.ouro / distribuicao.total * 100) : 0; %>
+                                        <div class="d-flex align-items-center justify-content-center gap-4 my-4 flex-wrap">
+                                            <div class="donut"
+                                                style="background: conic-gradient(#f59e0b 0 <%= bronzePct %>% , #94a3b8 <%= bronzePct %>% <%= bronzePct + prataPct %>% , #fbbf24 <%= bronzePct + prataPct %>% 100%)">
+                                                <div class="donut-hole"><%= distribuicao.total %></div>
+                                            </div>
+                                            <div>
+                                                <div class="mb-2"><span class="badge-level bronze">Bronze</span> <strong
+                                                        class="ms-1"><%= distribuicao.bronze %></strong></div>
+                                                <div class="mb-2"><span class="badge-level silver">Prata</span> <strong
+                                                        class="ms-1"><%= distribuicao.prata %></strong></div>
+                                                <div><span class="badge-level gold">Ouro</span> <strong class="ms-1"><%=
+                                                        distribuicao.ouro %></strong></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-column gap-2 mt-3">
+                                            <div class="d-flex justify-content-between small"><span>Bronze</span><span
+                                                    class="fw-bold"><%= bronzePct %>%</span></div>
+                                            <div class="progress" style="height:8px">
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width:<%= bronzePct %>% ;background:#e8a87c"></div>
+                                            </div>
+                                            <div class="d-flex justify-content-between small"><span>Prata</span><span
+                                                    class="fw-bold"><%= prataPct %>%</span></div>
+                                            <div class="progress" style="height:8px">
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width:<%= prataPct %>% ;background:#94a3b8"></div>
+                                            </div>
+                                            <div class="d-flex justify-content-between small"><span>Ouro</span><span
+                                                    class="fw-bold"><%= ouroPct %>%</span></div>
+                                            <div class="progress" style="height:8px">
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width:<%= ouroPct %>% ;background:#fbbf24"></div>
+                                            </div>
+                                        </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7">
+                        <div class="card section-card h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title"><i class="bi bi-trophy text-primary"></i>Maiores pontuações</h5>
+                                <select class="form-select form-select-sm w-auto">
+                                    <option>Maior pontuação</option>
+                                    <option>Menor pontuação</option>
+                                </select>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Pos.</th>
+                                            <th>Cliente</th>
+                                            <th>Nível</th>
+                                            <th class="text-end">Pontos</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% topos.forEach(function (cliente, index) { %>
+                                            <tr>
+                                                <td><span class="rank-pos <%= 'top-' + (index + 1) %>"><%= index + 1 %>º</span></td>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-2"><span
+                                                            class="avatar"><%= cliente.iniciais %></span><%= cliente.nome %></div>
+                                                </td>
+                                                <td><span class="badge-level <%= cliente.nivel.classe %>"><%= cliente.nivel.nome %></span></td>
+                                                <td class="text-end fw-bold"><%= cliente.pontos.toLocaleString('pt-BR') %></td>
+                                            </tr>
+                                            <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8">
+                        <div class="card section-card">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h5 class="card-title"><i class="bi bi-graph-up-arrow text-primary"></i>Evolução da
+                                    pontuação</h5>
+                                <span class="badge-level silver">2026</span>
+                            </div>
+                            <% var maxPts = Math.max.apply(null, evolucaoMensal.map(function (m) { return m.pontos; })) || 1; %>
+                                <div class="chart">
+                                    <div class="chart-bars">
+                                        <% evolucaoMensal.forEach(function (mes) { %>
+                                            <% var h = Math.max(6, Math.round(mes.pontos / maxPts * 100)); %>
+                                                <div class="col-tipo">
+                                                    <div class="bar-value"><%= mes.pontos.toLocaleString('pt-BR') %></div>
+                                                    <div class="chart-bar" style="height:<%= h %>%"></div>
+                                                    <div class="small text-muted mt-2"><%= mes.label %></div>
+                                                </div>
+                                                <% }); %>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card section-card h-100">
+                            <h5 class="card-title mb-3"><i class="bi bi-tag text-primary"></i>Valor potencial em descontos
+                            </h5>
+                            <div class="display-6 fw-bold mt-4 text-primary">R$ <%= valorPotencial.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) %></div>
+                            <div class="text-muted"><%= pontosDisponiveis.toLocaleString('pt-BR') %> pontos disponíveis</div>
+
+                            <div class="stat-grid my-4">
+                                <div class="stat-mini">
+                                    <div class="label">Taxa de conversão</div>
+                                    <div class="value">R$ 5 / 100 pts</div>
+                                </div>
+                                <div class="stat-mini">
+                                    <div class="label">KPI meta</div>
+                                    <div class="value">R$ 2.500</div>
+                                </div>
+                            </div>
+
+                            <div class="alert-card"><i class="bi bi-stars me-2"></i>100 pontos = R$ 5,00 de desconto.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <%- include('includes/footer') %>
