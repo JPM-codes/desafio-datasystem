@@ -7,6 +7,7 @@ const clientesRoutes = require("./api/clientes");
 const comprasRoutes = require("./api/compras");
 const dashboardRoutes = require("./app/views/index");
 
+
 // Configuração do motor de visualização (EJS) e pasta das views
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");

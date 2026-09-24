@@ -6,6 +6,8 @@ const compras = require("../../public/database/compras.json");
 const pontos = require("../../public/database/pontos.json");
 const resgates = require("../../public/database/resgate.json");
 
+
+
 const NIVEL_BRONZE = 0;
 const NIVEL_PRATA = 1000;
 const NIVEL_OURO = 5000;
