@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const clientes = require("../../public/database/cliente.json");
-const compras = require("../../public/database/compras.json");
-const pontos = require("../../public/database/pontos.json");
-const resgates = require("../../public/database/resgate.json");
+const clientes = require("../public/database/cliente.json");
+const compras = require("../public/database/compras.json");
+const pontos = require("../public/database/pontos.json");
+const resgates = require("../public/database/resgate.json");
 
 
 

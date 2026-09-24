@@ -5,7 +5,7 @@ const app = express();
 // Importação dos módulos de rotas
 const clientesRoutes = require("./api/clientes");
 const comprasRoutes = require("./api/compras");
-const dashboardRoutes = require("./app/views/index");
+const dashboardRoutes = require("./views/index");
 
 
 // Configuração do motor de visualização (EJS) e pasta das views
