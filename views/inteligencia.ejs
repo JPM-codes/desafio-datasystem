@@ -116,6 +116,92 @@
                         </div>
                     </div>
 
+                    <!-- Engajamento Impacto -->
+                    <div class="card section-card mb-4">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                            <h5 class="card-title mb-0"><i class="bi bi-box2-heart text-primary"></i>Engajamento na campanha Impacto</h5>
+                            <span class="small text-muted">calculado separado do RFM — mede logística reversa + ação social</span>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-6 col-xl-2">
+                                <div class="card stat-mini">
+                                    <div class="label">Ações</div>
+                                    <div class="value"><%= dashImpacto.totais.acoesTotal %></div>
+                                    <i class="bi bi-box text-primary"></i>
+                                </div>
+                            </div>
+                            <div class="col-6 col-xl-2">
+                                <div class="card stat-mini">
+                                    <div class="label">Calçados</div>
+                                    <div class="value text-success"><%= dashImpacto.totais.calcados %></div>
+                                    <i class="bi bi-box2-heart text-success"></i>
+                                </div>
+                            </div>
+                            <div class="col-6 col-xl-2">
+                                <div class="card stat-mini">
+                                    <div class="label">Caixas</div>
+                                    <div class="value"><%= dashImpacto.totais.caixas %></div>
+                                    <i class="bi bi-box-seam text-muted"></i>
+                                </div>
+                            </div>
+                            <div class="col-6 col-xl-2">
+                                <div class="card stat-mini">
+                                    <div class="label">Participantes</div>
+                                    <div class="value"><%= dashImpacto.totais.clientesParticipantes %></div>
+                                    <i class="bi bi-people text-primary"></i>
+                                </div>
+                            </div>
+                            <div class="col-6 col-xl-2">
+                                <div class="card stat-mini">
+                                    <div class="label">Pontos impacto</div>
+                                    <div class="value"><%= dashImpacto.totais.pontosBonusConcedidos.toLocaleString('pt-BR') %></div>
+                                    <i class="bi bi-stars text-primary"></i>
+                                </div>
+                            </div>
+                            <div class="col-6 col-xl-2">
+                                <div class="card stat-mini">
+                                    <div class="label">Taxa participação</div>
+                                    <div class="value text-primary"><%= dashImpacto.totais.taxaParticipacao.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) %>%</div>
+                                    <i class="bi bi-graph-up text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Cliente</th>
+                                        <th class="text-end">Calçados</th>
+                                        <th class="text-end">Caixas</th>
+                                        <th class="text-end">Ações</th>
+                                        <th class="text-end">Pontos de impacto</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (participantesImpacto.length) { %>
+                                        <% participantesImpacto.forEach(function (row) { %>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-2"><span class="avatar"><%= row.iniciais %></span><%= row.nome %></div>
+                                                </td>
+                                                <td class="text-end"><%= row.calcados %></td>
+                                                <td class="text-end"><%= row.caixas %></td>
+                                                <td class="text-end"><%= row.acoes %></td>
+                                                <td class="text-end fw-bold"><%= row.pontosBonus.toLocaleString('pt-BR') %></td>
+                                                <td><a href="/clientes/<%= row.cliente_id %>" class="btn btn-sm btn-light btn-action" title="Ver perfil"><i class="bi bi-eye"></i></a></td>
+                                            </tr>
+                                            <% }); %>
+                                                <% } else { %>
+                                                    <tr><td colspan="6" class="text-center text-muted py-4">Nenhuma participação na campanha ainda.</td></tr>
+                                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                     <!-- RFM -->
                     <div class="card section-card">
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">

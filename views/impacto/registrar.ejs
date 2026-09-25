@@ -1,0 +1,166 @@
+<%- include('../includes/header') %>
+    <%- include('../includes/navbar') %>
+        <%- include('../includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Campanha Impacto</div>
+                        <h1 class="page-title">Registrar Ação de Impacto</h1>
+                        <div class="page-subtitle">Doação de calçado ou devolução de caixa — o cliente recebe bônus de pontos após aprovação</div>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="/impacto/acoes" class="btn btn-light"><i class="bi bi-clipboard-check me-2"></i>Acompanhamento</a>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-lg-7">
+                        <!-- Busca por CPF -->
+                        <div class="card section-card mb-4">
+                            <h5 class="card-title mb-3"><i class="bi bi-person-vcard text-primary"></i>1 · Identificar o cliente</h5>
+                            <form method="get" action="/impacto/registrar">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" name="q" class="form-control text-uppercase"
+                                        value="<%= q || '' %>" placeholder="Buscar por CPF…" maxlength="14">
+                                    <button class="btn btn-primary">Buscar</button>
+                                </div>
+                            </form>
+
+                            <% if (busca) { %>
+                                <% if (!clientes.length) { %>
+                                    <div class="alert-card"><i class="bi bi-exclamation-triangle me-2"></i>Nenhum cliente encontrado para o CPF "<strong><%= q %></strong>".</div>
+                                    <% } else { %>
+                                        <% clientes.forEach(function (c) { %>
+                                            <div class="form-check p-3 border rounded mb-2">
+                                                <input class="form-check-input" type="radio" name="clienteScalar"
+                                                    id="cliente-<%= c.id %>"
+                                                    onclick="document.getElementById('selId').value=<%= c.id %>;
+                                                document.getElementById('selCpf').value='<%= c.cpf %>';
+                                                document.getElementById('selNome').innerText='<%= c.nome %> <%= c.sobrenome %>';
+                                                document.getElementById('selCpfTxt').innerText='<%= c.cpf %>';
+                                                document.getElementById('contexto').scrollIntoView({ behavior: 'smooth' });">
+                                                <label class="form-check-label d-flex justify-content-between align-items-center" for="cliente-<%= c.id %>">
+                                                    <span><span class="avatar"><%= c.iniciais %></span>
+                                                        <strong><%= c.nome %> <%= c.sobrenome %></strong>
+                                                        <span class="text-muted small ms-2"><%= c.cpf %></span>
+                                                    </span>
+                                                    <span class="small"><span class="st-badge <%= c.status.classe %>"><%= c.status.nome %></span></span>
+                                                </label>
+                                            </div>
+                                            <% }); %>
+                                                <% } %>
+                                                    <% } %>
+
+                                                            <% if (!busca) { %>
+                                                                <div class="text-muted small">
+                                                                    <div class="d-flex align-items-center gap-2 mb-2"><i class="bi bi-info-circle"></i>Digite o CPF do cliente para identificar na base do programa.</div>
+                                                                    <div class="d-flex align-items-center gap-2"><i class="bi bi-arrow-down"></i>Ao selecionar, preencha a criação da ação abaixo.</div>
+                                                                </div>
+                                                                <% } %>
+                                        </div>
+
+                                        <!-- Formulário da ação -->
+                                        <div id="contexto" class="card section-card">
+                            <h5 class="card-title mb-3"><i class="bi bi-box2-heart text-primary"></i>2 · Dados da ação</h5>
+
+                            <% if (!(clienteSelecionado && !clienteSelecionado.id)) { %>
+                                <form method="post" action="/impacto">
+                                    <input type="hidden" name="idCliente" value="<%= clienteSelecionado ? clienteSelecionado.id : '' %>">
+                                    <input type="hidden" id="selId" name="selId" value="<%= clienteSelecionado ? clienteSelecionado.id : '' %>">
+                                    <input type="hidden" id="selCpf" name="selCpf" value="<%= clienteSelecionado ? clienteSelecionado.cpf : '' %>">
+
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label small text-muted">Cliente identificado</label>
+                                            <div <% if (!clienteSelecionado) { %>style="pointer-events:none;opacity:.55"<% } %>>
+                                                <div class="border rounded p-3">
+                                                    <span id="selNome"><%= clienteSelecionado ? clienteSelecionado.nome + ' ' + clienteSelecionado.sobrenome : 'Nenhum cliente selecionado' %></span>
+                                                    <div class="small text-muted" id="selCpfTxt"><%= clienteSelecionado ? clienteSelecionado.cpf : '—' %></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small text-muted">Tipo de ação</label>
+                                            <select name="tipo_acao" class="form-select" required>
+                                                <option value="DOACAO_CALCADO" selected>Doação de calçado</option>
+                                                <option value="DEVOLUCAO_CAIXA">Devolução de caixa</option>
+                                            </select>
+                                            <div class="form-text"><i class="bi bi-star mx-1"></i>bônus conforme aprovação</div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small text-muted">Quantidade</label>
+                                            <input type="number" name="quantidade" class="form-control" value="1" min="1" max="999" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small text-muted">Ponto de coleta</label>
+                                            <select name="ponto_coleta" class="form-select" required>
+                                                <% pontosColeta.forEach(function (p) { %>
+                                                    <option value="<%= p %>" <%= p === 'Loja Franca - Centro' ? 'selected' : '' %>><%= p %></option>
+                                                    <% }); %>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small text-muted">Data de recebimento</label>
+                                            <input type="date" name="data_recebimento" class="form-control" value="<%= regrasFormatoDataHoje %>">
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label small text-muted">Observação <span class="text-muted">(opcional)</span></label>
+                                            <textarea name="observacao" class="form-control" rows="2"
+                                                placeholder="Condição do calçado, origem da caixa, referência…"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4">
+                                        <button class="btn btn-primary btn-lg">
+                                            <i class="bi bi-check2-circle me-2"></i>Registrar ação
+                                        </button>
+                                        <a href="/impacto" class="btn btn-light ms-2">Cancelar</a>
+                                    </div>
+                                </form>
+                                <% } %>
+                        </div>
+                        </div>
+
+                        <div class="col-lg-5">
+                            <div class="card section-card mb-4">
+                                <h5 class="card-title mb-3"><i class="bi bi-stars text-primary"></i>Bônus por ação</h5>
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <div class="border rounded p-3 text-center">
+                                            <div class="fs-2 fw-bold text-success"><%= impactoCfg.bonusDoacao %></div>
+                                            <div class="small text-muted">calçado aprovado</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="border rounded p-3 text-center">
+                                            <div class="fs-2 fw-bold text-success"><%= impactoCfg.bonusCaixa %></div>
+                                            <div class="small text-muted">caixa aprovada</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% if (impactoCfg.limiteDoacaoMes) { %>
+                                    <div class="alert-card mt-3 mb-0"><i class="bi bi-info-circle me-2"></i>Limite de <%= impactoCfg.limiteDoacaoMes %> doações por cliente/mês.</div>
+                                    <% } %>
+                                    <% if (impactoCfg.limiteCaixaMes) { %>
+                                        <div class="alert-card mt-3 mb-0"><i class="bi bi-info-circle me-2"></i>Limite de <%= impactoCfg.limiteCaixaMes %> caixas por cliente/mês.</div>
+                                        <% } %>
+                            </div>
+
+                            <div class="card section-card">
+                                <h5 class="card-title mb-3"><i class="bi bi-diagram-3 text-primary"></i>Como funciona</h5>
+                                <ol class="small text-muted ps-3 mb-0 lh-lg">
+                                    <li>Cliente entrega calçado ou caixa em um ponto de coleta;</li>
+                                    <li>O registro nasce em <span class="st-badge st-recebido">Recebido</span>;</li>
+                                    <li>Equipe inicia triagem (<span class="st-badge st-emtriagem">Em triagem</span>);</li>
+                                    <li>Ao aprovar, os pontos bônus são creditados (expiram em 12 meses, como compras);</li>
+                                    <li>Caixas aprovadas ganham destinação (reutilização, reciclagem ou outro);</li>
+                                    <li>Itens destinados são marcados como entregues.</li>
+                                </ol>
+                            </div>
+                        </div>
+                        </div>
+            </section>
+
+            <%- include('../includes/footer') %>

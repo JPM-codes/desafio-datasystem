@@ -1,0 +1,239 @@
+<%- include('../includes/header') %>
+    <%- include('../includes/navbar') %>
+        <%- include('../includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Logística reversa + ação social</div>
+                        <h1 class="page-title">Dashboard de Impacto</h1>
+                        <div class="page-subtitle">Doações de calçado e devolução de caixas, com bônus no programa de fidelidade</div>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="/impacto/relatorio" class="btn btn-light"><i class="bi bi-file-earmark-bar-graph me-2"></i>Relatório</a>
+                        <a href="/impacto/registrar" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Registrar ação</a>
+                    </div>
+                </div>
+
+                <% var t = dash.totais; %>
+
+                <!-- LINHA 1: KPIs -->
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-xl-2">
+                        <div class="card kpi kpi-tone-2">
+                            <div class="kpi-top"><div class="kpi-icon"><i class="bi bi-box2-heart"></i></div></div>
+                            <div class="kpi-value"><%= t.calcados.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Calçados arrecadados</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-2">
+                        <div class="card kpi kpi-tone-4">
+                            <div class="kpi-top"><div class="kpi-icon"><i class="bi bi-box-seam"></i></div></div>
+                            <div class="kpi-value"><%= t.caixas.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Caixas devolvidas</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-2">
+                        <div class="card kpi kpi-tone-1">
+                            <div class="kpi-top"><div class="kpi-icon"><i class="bi bi-people"></i></div></div>
+                            <div class="kpi-value"><%= t.clientesParticipantes.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Clientes participantes</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-2">
+                        <div class="card kpi kpi-tone-5">
+                            <div class="kpi-top"><div class="kpi-icon"><i class="bi bi-stars"></i></div></div>
+                            <div class="kpi-value"><%= t.pontosBonusConcedidos.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Pontos bônus concedidos</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-2">
+                        <div class="card kpi kpi-tone-3">
+                            <div class="kpi-top"><div class="kpi-icon"><i class="bi bi-hourglass-split"></i></div></div>
+                            <div class="kpi-value"><%= dash.validacao.aguardandoTriagem.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Aguardando triagem</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-2">
+                        <div class="card kpi kpi-tone-1">
+                            <div class="kpi-top"><span class="kpi-trend up">destinado</span></div>
+                            <div class="kpi-value"><%= t.itens.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Itens destinados</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LINHA 2: Taxa de participação + evolução mensal -->
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-4">
+                        <div class="card section-card h-100">
+                            <h5 class="card-title mb-2"><i class="bi bi-graph-up text-primary"></i>Taxa de participação</h5>
+                            <div class="display-6 fw-bold text-primary"><%= t.taxaParticipacao.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) %>%</div>
+                            <div class="text-muted mb-3"><%= t.clientesParticipantes %> de 30 clientes cadastrados fizeram ao menos 1 ação</div>
+                            <div class="progress mb-3" style="height:10px">
+                                <div class="progress-bar" role="progressbar" style="width:<%= Math.min(100, t.taxaParticipacao) %>%"></div>
+                            </div>
+                            <div class="alert-card"><i class="bi bi-lightbulb me-2"></i>A taxa considera <strong>clientes que participaram</strong> ÷ total de clientes cadastrados.</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card section-card h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                                <h5 class="card-title"><i class="bi bi-bar-chart text-primary"></i>Evolução mensal</h5>
+                                <div class="d-flex gap-3 small">
+                                    <span><span class="legend-dot legend-calcados"></span> calçados</span>
+                                    <span><span class="legend-dot legend-caixas"></span> caixas</span>
+                                    <span><span class="legend-dot legend-participantes"></span> participantes</span>
+                                </div>
+                            </div>
+                            <% var maxCa = Math.max.apply(null, dash.evolucao.map(function (m) { return m.calcados; })) || 1; %>
+                                <% var maxCx = Math.max.apply(null, dash.evolucao.map(function (m) { return m.caixas; })) || 1; %>
+                                    <% var maxP = Math.max.apply(null, dash.evolucao.map(function (m) { return m.participantes; })) || 1; %>
+                                        <% var hca = function (v) { return Math.max(6, Math.round(v / maxCa * 100)); }; %>
+                                            <% var hcx = function (v) { return Math.max(6, Math.round(v / maxCx * 100)); }; %>
+                                                <% var hp = function (v) { return Math.max(6, Math.round(v / maxP * 100)); }; %>
+                                                    <div class="chart" style="height:250px">
+                                                        <div class="chart-bars">
+                                                            <% dash.evolucao.forEach(function (mes) { %>
+                                                                <div class="col-tipo">
+                                                                    <div class="bar-group">
+                                                                        <div class="chart-bar series-calcados" style="height:<%= hca(mes.calcados) %>%"></div>
+                                                                        <div class="chart-bar series-caixas" style="height:<%= hcx(mes.caixas) %>%"></div>
+                                                                        <div class="chart-bar series-participantes" style="height:<%= hp(mes.participantes) %>%"></div>
+                                                                    </div>
+                                                                    <div class="small text-muted mt-2"><%= mes.label %></div>
+                                                                </div>
+                                                                <% }); %>
+                                                        </div>
+                                                    </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LINHA 3: Status de validação e destinação -->
+                <div class="row g-3 mb-4">
+                    <div class="col-xl-6">
+                        <div class="card section-card h-100">
+                            <h5 class="card-title mb-3"><i class="bi bi-clipboard-check text-primary"></i>Situação da validação</h5>
+                            <div class="row g-2">
+                                <% impactoStatuses.forEach(function (st) { %>
+                                    <div class="col-6">
+                                        <div class="d-flex justify-content-between align-items-center border rounded p-3">
+                                            <div>
+                                                <div class="small text-muted"><%= st.rotulo %></div>
+                                                <div class="fs-3 fw-bold"><%= dash.validacao[st.nome] || 0 %></div>
+                                            </div>
+                                            <span class="st-badge <%= st.classe %>"><%= st.rotulo %></span>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card section-card h-100">
+                            <h5 class="card-title mb-3"><i class="bi bi-truck text-primary"></i>Destinação</h5>
+                            <div class="row g-2 mb-3">
+                                <% destinacaoStatuses.forEach(function (st) { %>
+                                    <div class="col-4">
+                                        <div class="d-flex justify-content-between align-items-center border rounded p-3">
+                                            <div>
+                                                <div class="small text-muted"><%= st.rotulo %></div>
+                                                <div class="fs-3 fw-bold"><%= dash.destinacao[st.nome] || 0 %></div>
+                                            </div>
+                                            <span class="st-badge <%= st.classe %>"><%= st.rotulo %></span>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-6"><div class="alert-card h-100 mb-0"><i class="bi bi-box me-2"></i><strong><%= dash.destinacao.itensDestinados.toLocaleString('pt-BR') %></strong> itens destinados</div></div>
+                                <div class="col-6"><div class="alert-card h-100 mb-0"><i class="bi bi-hourglass me-2"></i><strong><%= dash.destinacao.aguardandoDestinacao.toLocaleString('pt-BR') %></strong> aguardando destinação</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LINHA 4: Por tipo + ranking -->
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-5">
+                        <div class="card section-card h-100">
+                            <h5 class="card-title mb-3"><i class="bi bi-pie-chart text-primary"></i>Participação por tipo</h5>
+                            <% var totalItens = dash.porTipo.DOACAO_CALCADO.quantidade + dash.porTipo.DEVOLUCAO_CAIXA.quantidade; %>
+                                <% var pCalc = totalItens ? Math.round(dash.porTipo.DOACAO_CALCADO.quantidade / totalItens * 100) : 0; %>
+                                    <% var pCx = 100 - pCalc; %>
+                                        <div class="d-flex align-items-center justify-content-center gap-4 my-4 flex-wrap">
+                                            <div class="donut" style="background: conic-gradient(#f59e0b 0 <%= pCalc %>% , #94a3b8 <%= pCalc %>% 100%)">
+                                                <div class="donut-hole"><%= totalItens %></div>
+                                            </div>
+                                            <div>
+                                                <div class="mb-2"><span class="st-badge st-calcados"><i class="bi bi-box2-heart me-1"></i>Calçados</span> <strong class="ms-1"><%= dash.porTipo.DOACAO_CALCADO.quantidade %></strong></div>
+                                                <div class="mb-2"><span class="st-badge st-caixas"><i class="bi bi-box-seam me-1"></i>Caixas</span> <strong class="ms-1"><%= dash.porTipo.DEVOLUCAO_CAIXA.quantidade %></strong></div>
+                                            </div>
+                                        </div>
+                                        <div class="alert-card mb-0"><i class="bi bi-star me-2"></i><%= dash.configuraveis.bonusDoacao %> pts por calçado aprovado · <%= dash.configuraveis.bonusCaixa %> pts por caixa aprovada.</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="card section-card h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title"><i class="bi bi-trophy text-primary"></i>Maior engajamento</h5>
+                                <a href="/impacto/ranking" class="small">ver ranking completo</a>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Pos.</th>
+                                            <th>Cliente</th>
+                                            <th class="text-end">Calçados</th>
+                                            <th class="text-end">Caixas</th>
+                                            <th class="text-end">Ações</th>
+                                            <th class="text-end">Pontos de impacto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% if (dash.ranking.length) { %>
+                                            <% dash.ranking.forEach(function (row, index) { %>
+                                                <tr>
+                                                    <td><span class="rank-pos <%= 'top-' + (index + 1) %>"><%= index + 1 %>º</span></td>
+                                                    <td><a href="/clientes/<%= row.cliente_id %>" class="text-decoration-none text-reset"><div class="d-flex align-items-center gap-2"><span class="avatar"><%= row.iniciais %></span><%= row.nome %></div></a></td>
+                                                    <td class="text-end"><%= row.calcados %></td>
+                                                    <td class="text-end"><%= row.caixas %></td>
+                                                    <td class="text-end"><%= row.acoes %></td>
+                                                    <td class="text-end fw-bold"><%= row.pontosBonus.toLocaleString('pt-BR') %></td>
+                                                </tr>
+                                                <% }); %>
+                                                    <% } else { %>
+                                                        <tr><td colspan="6" class="text-center text-muted py-4">Nenhuma participação ainda. <a href="/impacto/registrar">Registrar primeira ação</a>.</td></tr>
+                                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LINHA 5: Fluxo da campanha -->
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div class="card section-card">
+                            <h5 class="card-title mb-3"><i class="bi bi-signpost-split text-primary"></i>Fluxo da campanha</h5>
+                            <div class="d-flex flex-wrap gap-2 align-items-center">
+                                <span class="st-badge st-recebido">Recebido · <%= dash.validacao.RECEBIDO %></span>
+                                <i class="bi bi-arrow-right text-muted"></i>
+                                <span class="st-badge st-emtriagem">Em triagem · <%= dash.validacao.EM_TRIAGEM %></span>
+                                <i class="bi bi-arrow-right text-muted"></i>
+                                <span class="st-badge st-aprovado">Aprovado · <%= dash.validacao.APROVADO %></span>
+                                <i class="bi bi-arrow-right text-muted"></i>
+                                <span class="st-badge st-destinado">Destinado · <%= dash.destinacao.DESTINADO %></span>
+                                <i class="bi bi-arrow-right text-muted"></i>
+                                <span class="st-badge st-entregue">Entregue · <%= dash.destinacao.ENTREGUE %></span>
+                                <span class="ms-auto small text-muted">Acompanhe em <a href="/impacto/acoes">Acompanhamento</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <%- include('../includes/footer') %>

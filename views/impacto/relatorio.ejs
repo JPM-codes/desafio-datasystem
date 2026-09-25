@@ -1,0 +1,114 @@
+<%- include('../includes/header') %>
+    <%- include('../includes/navbar') %>
+        <%- include('../includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Campanha Impacto</div>
+                        <h1 class="page-title">Relatório da Campanha</h1>
+                        <div class="page-subtitle">Síntese do impacto por período e ponto de coleta</div>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="/impacto" class="btn btn-light"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+                    </div>
+                </div>
+
+                <!-- Filtros -->
+                <div class="card section-card mb-4">
+                    <form method="get" action="/impacto/relatorio" class="row g-2 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label small text-muted">De</label>
+                            <input type="date" name="data_inicio" class="form-control" value="<%= filtrosAtivos.data_inicio || '' %>">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small text-muted">Até</label>
+                            <input type="date" name="data_fim" class="form-control" value="<%= filtrosAtivos.data_fim || '' %>">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small text-muted">Ponto de coleta</label>
+                            <select name="ponto_coleta" class="form-select">
+                                <option value="">Todos</option>
+                                <% pontosColeta.forEach(function (p) { %>
+                                    <option value="<%= p %>" <%= filtrosAtivos.ponto_coleta === p ? 'selected' : '' %>><%= p %></option>
+                                    <% }); %>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-primary"><i class="bi bi-funnel me-2"></i>Gerar</button>
+                            <a href="/impacto/relatorio" class="btn btn-light">Limpar</a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- KPIs -->
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-xl-2">
+                        <div class="card kpi kpi-tone-2">
+                            <div class="kpi-top"><div class="kpi-icon"><i class="bi bi-box2-heart"></i></div></div>
+                            <div class="kpi-value"><%= rel.calcados.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Calçados arrecadados</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-2">
+                        <div class="card kpi kpi-tone-4">
+                            <div class="kpi-top"><div class="kpi-icon"><i class="bi bi-box-seam"></i></div></div>
+                            <div class="kpi-value"><%= rel.caixas.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Caixas devolvidas</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-2">
+                        <div class="card kpi kpi-tone-1">
+                            <div class="kpi-top"><div class="kpi-icon"><i class="bi bi-people"></i></div></div>
+                            <div class="kpi-value"><%= rel.participantes.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Participantes</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-2">
+                        <div class="card kpi kpi-tone-5">
+                            <div class="kpi-top"><div class="kpi-icon"><i class="bi bi-stars"></i></div></div>
+                            <div class="kpi-value"><%= rel.pontosConcedidos.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Pontos concedidos</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-2">
+                        <div class="card kpi kpi-tone-3">
+                            <div class="kpi-top"><div class="kpi-icon"><i class="bi bi-truck"></i></div></div>
+                            <div class="kpi-value"><%= rel.itensDestinados.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Itens destinados</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-2">
+                        <div class="card kpi kpi-tone-1">
+                            <div class="kpi-top"><div class="kpi-icon"><i class="bi bi-hourglass-split"></i></div></div>
+                            <div class="kpi-value"><%= rel.aguardandoDestinacao.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Aguardando destino</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card section-card">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <h5 class="card-title mb-0"><i class="bi bi-info-circle text-primary"></i>Resumo do período</h5>
+                        <span class="small text-muted">
+                            <%= rel.acoesTotal %> ação(ões) no recorte atual
+                            <% if (rel.periodo.inicio || rel.periodo.fim) { %>
+                                · <%= rel.periodo.inicio ? fmt.data(rel.periodo.inicio) : 'início' %> a <%= rel.periodo.fim ? fmt.data(rel.periodo.fim) : 'hoje' %>
+                                <% } %>
+                                    <% if (rel.periodo.ponto_coleta) { %>
+                                        · <%= rel.periodo.ponto_coleta %>
+                                        <% } %>
+                        </span>
+                    </div>
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-6">
+                            <div class="alert-card mb-0"><i class="bi bi-clipboard-check me-2"></i>Métricas consideram apenas o período e o ponto de coleta filtrados. Sem filtros, o resumo cobre toda a campanha.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert-card mb-0"><i class="bi bi-lightbulb me-2"></i>Este relatório é separado do relatório de fidelidade (saldo/resgates): Impacto mede logística reversa + ação social.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <%- include('../includes/footer') %>

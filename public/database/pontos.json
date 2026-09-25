@@ -8,6 +8,7 @@
         "data_expiracao": "2027-01-28T16:34:00.000Z",
         "compras_id": 1,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-01-28T16:34:00.000Z"
     },
     {
@@ -19,6 +20,7 @@
         "data_expiracao": "2027-02-13T15:57:00.000Z",
         "compras_id": 2,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-13T15:57:00.000Z"
     },
     {
@@ -30,6 +32,7 @@
         "data_expiracao": "2027-02-26T16:34:00.000Z",
         "compras_id": 3,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-26T16:34:00.000Z"
     },
     {
@@ -41,6 +44,7 @@
         "data_expiracao": "2027-03-15T14:32:00.000Z",
         "compras_id": 4,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-15T14:32:00.000Z"
     },
     {
@@ -52,6 +56,7 @@
         "data_expiracao": "2027-03-31T17:47:00.000Z",
         "compras_id": 5,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-31T17:47:00.000Z"
     },
     {
@@ -63,6 +68,7 @@
         "data_expiracao": "2027-04-14T21:22:00.000Z",
         "compras_id": 6,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-14T21:22:00.000Z"
     },
     {
@@ -74,6 +80,7 @@
         "data_expiracao": "2027-05-01T14:33:00.000Z",
         "compras_id": 7,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-01T14:33:00.000Z"
     },
     {
@@ -85,6 +92,7 @@
         "data_expiracao": "2027-05-15T13:02:00.000Z",
         "compras_id": 8,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-15T13:02:00.000Z"
     },
     {
@@ -96,6 +104,7 @@
         "data_expiracao": "2027-06-01T19:03:00.000Z",
         "compras_id": 9,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-01T19:03:00.000Z"
     },
     {
@@ -107,6 +116,7 @@
         "data_expiracao": "2027-06-17T20:17:00.000Z",
         "compras_id": 10,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-17T20:17:00.000Z"
     },
     {
@@ -118,6 +128,7 @@
         "data_expiracao": "2027-07-02T16:34:00.000Z",
         "compras_id": 11,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-02T16:34:00.000Z"
     },
     {
@@ -129,6 +140,7 @@
         "data_expiracao": "2027-07-19T14:34:00.000Z",
         "compras_id": 12,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-19T14:34:00.000Z"
     },
     {
@@ -140,6 +152,7 @@
         "data_expiracao": "2027-08-01T19:32:00.000Z",
         "compras_id": 13,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-01T19:32:00.000Z"
     },
     {
@@ -151,6 +164,7 @@
         "data_expiracao": "2027-08-18T15:52:00.000Z",
         "compras_id": 14,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-18T15:52:00.000Z"
     },
     {
@@ -162,6 +176,7 @@
         "data_expiracao": "2027-09-03T14:16:00.000Z",
         "compras_id": 15,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-03T14:16:00.000Z"
     },
     {
@@ -173,6 +188,7 @@
         "data_expiracao": "2027-09-18T14:11:00.000Z",
         "compras_id": 16,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-18T14:11:00.000Z"
     },
     {
@@ -184,6 +200,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-02-13T15:57:00.000Z"
     },
     {
@@ -195,6 +212,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-02-26T16:34:00.000Z"
     },
     {
@@ -206,6 +224,7 @@
         "data_expiracao": "2027-01-26T18:47:00.000Z",
         "compras_id": 17,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-01-26T18:47:00.000Z"
     },
     {
@@ -217,6 +236,7 @@
         "data_expiracao": "2027-02-10T15:05:00.000Z",
         "compras_id": 18,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-10T15:05:00.000Z"
     },
     {
@@ -228,6 +248,7 @@
         "data_expiracao": "2027-02-27T21:05:00.000Z",
         "compras_id": 19,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-27T21:05:00.000Z"
     },
     {
@@ -239,6 +260,7 @@
         "data_expiracao": "2027-03-13T17:03:00.000Z",
         "compras_id": 20,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-13T17:03:00.000Z"
     },
     {
@@ -250,6 +272,7 @@
         "data_expiracao": "2027-03-30T20:31:00.000Z",
         "compras_id": 21,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-30T20:31:00.000Z"
     },
     {
@@ -261,6 +284,7 @@
         "data_expiracao": "2027-04-14T14:16:00.000Z",
         "compras_id": 22,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-14T14:16:00.000Z"
     },
     {
@@ -272,6 +296,7 @@
         "data_expiracao": "2027-04-27T20:33:00.000Z",
         "compras_id": 23,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-27T20:33:00.000Z"
     },
     {
@@ -283,6 +308,7 @@
         "data_expiracao": "2027-05-13T13:55:00.000Z",
         "compras_id": 24,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-13T13:55:00.000Z"
     },
     {
@@ -294,6 +320,7 @@
         "data_expiracao": "2027-05-30T21:40:00.000Z",
         "compras_id": 25,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-30T21:40:00.000Z"
     },
     {
@@ -305,6 +332,7 @@
         "data_expiracao": "2027-06-12T12:10:00.000Z",
         "compras_id": 26,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-12T12:10:00.000Z"
     },
     {
@@ -316,6 +344,7 @@
         "data_expiracao": "2027-06-29T14:41:00.000Z",
         "compras_id": 27,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-29T14:41:00.000Z"
     },
     {
@@ -327,6 +356,7 @@
         "data_expiracao": "2027-07-13T14:40:00.000Z",
         "compras_id": 28,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-13T14:40:00.000Z"
     },
     {
@@ -338,6 +368,7 @@
         "data_expiracao": "2027-07-27T16:25:00.000Z",
         "compras_id": 29,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-27T16:25:00.000Z"
     },
     {
@@ -349,6 +380,7 @@
         "data_expiracao": "2027-08-14T14:13:00.000Z",
         "compras_id": 30,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-14T14:13:00.000Z"
     },
     {
@@ -360,6 +392,7 @@
         "data_expiracao": "2027-08-29T17:15:00.000Z",
         "compras_id": 31,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-29T17:15:00.000Z"
     },
     {
@@ -371,6 +404,7 @@
         "data_expiracao": "2027-09-12T17:12:00.000Z",
         "compras_id": 32,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-12T17:12:00.000Z"
     },
     {
@@ -382,6 +416,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-02-10T15:05:00.000Z"
     },
     {
@@ -393,6 +428,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-02-27T21:05:00.000Z"
     },
     {
@@ -404,6 +440,7 @@
         "data_expiracao": "2027-01-28T14:22:00.000Z",
         "compras_id": 33,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-01-28T14:22:00.000Z"
     },
     {
@@ -415,6 +452,7 @@
         "data_expiracao": "2027-02-12T21:04:00.000Z",
         "compras_id": 34,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-12T21:04:00.000Z"
     },
     {
@@ -426,6 +464,7 @@
         "data_expiracao": "2027-02-27T15:53:00.000Z",
         "compras_id": 35,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-27T15:53:00.000Z"
     },
     {
@@ -437,6 +476,7 @@
         "data_expiracao": "2027-03-14T19:38:00.000Z",
         "compras_id": 36,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-14T19:38:00.000Z"
     },
     {
@@ -448,6 +488,7 @@
         "data_expiracao": "2027-03-30T16:03:00.000Z",
         "compras_id": 37,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-30T16:03:00.000Z"
     },
     {
@@ -459,6 +500,7 @@
         "data_expiracao": "2027-04-16T21:59:00.000Z",
         "compras_id": 38,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-16T21:59:00.000Z"
     },
     {
@@ -470,6 +512,7 @@
         "data_expiracao": "2027-04-30T15:53:00.000Z",
         "compras_id": 39,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-30T15:53:00.000Z"
     },
     {
@@ -481,6 +524,7 @@
         "data_expiracao": "2027-05-17T15:59:00.000Z",
         "compras_id": 40,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-17T15:59:00.000Z"
     },
     {
@@ -492,6 +536,7 @@
         "data_expiracao": "2027-06-01T17:29:00.000Z",
         "compras_id": 41,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-01T17:29:00.000Z"
     },
     {
@@ -503,6 +548,7 @@
         "data_expiracao": "2027-06-15T17:54:00.000Z",
         "compras_id": 42,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-15T17:54:00.000Z"
     },
     {
@@ -514,6 +560,7 @@
         "data_expiracao": "2027-07-02T16:36:00.000Z",
         "compras_id": 43,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-02T16:36:00.000Z"
     },
     {
@@ -525,6 +572,7 @@
         "data_expiracao": "2027-07-19T12:25:00.000Z",
         "compras_id": 44,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-19T12:25:00.000Z"
     },
     {
@@ -536,6 +584,7 @@
         "data_expiracao": "2027-08-02T19:27:00.000Z",
         "compras_id": 45,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-02T19:27:00.000Z"
     },
     {
@@ -547,6 +596,7 @@
         "data_expiracao": "2027-08-17T18:42:00.000Z",
         "compras_id": 46,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-17T18:42:00.000Z"
     },
     {
@@ -558,6 +608,7 @@
         "data_expiracao": "2027-09-02T14:55:00.000Z",
         "compras_id": 47,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-02T14:55:00.000Z"
     },
     {
@@ -569,6 +620,7 @@
         "data_expiracao": "2027-09-18T12:23:00.000Z",
         "compras_id": 48,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-18T12:23:00.000Z"
     },
     {
@@ -580,6 +632,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-02-12T21:04:00.000Z"
     },
     {
@@ -591,6 +644,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-02-27T15:53:00.000Z"
     },
     {
@@ -602,6 +656,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 3,
+        "origem": "RESGATE",
         "create_at": "2026-03-14T19:38:00.000Z"
     },
     {
@@ -613,6 +668,7 @@
         "data_expiracao": "2027-01-28T12:03:00.000Z",
         "compras_id": 49,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-01-28T12:03:00.000Z"
     },
     {
@@ -624,6 +680,7 @@
         "data_expiracao": "2027-02-10T16:22:00.000Z",
         "compras_id": 50,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-10T16:22:00.000Z"
     },
     {
@@ -635,6 +692,7 @@
         "data_expiracao": "2027-02-24T19:34:00.000Z",
         "compras_id": 51,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-24T19:34:00.000Z"
     },
     {
@@ -646,6 +704,7 @@
         "data_expiracao": "2027-03-11T18:59:00.000Z",
         "compras_id": 52,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-11T18:59:00.000Z"
     },
     {
@@ -657,6 +716,7 @@
         "data_expiracao": "2027-03-25T20:49:00.000Z",
         "compras_id": 53,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-25T20:49:00.000Z"
     },
     {
@@ -668,6 +728,7 @@
         "data_expiracao": "2027-04-10T20:25:00.000Z",
         "compras_id": 54,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-10T20:25:00.000Z"
     },
     {
@@ -679,6 +740,7 @@
         "data_expiracao": "2027-04-24T12:06:00.000Z",
         "compras_id": 55,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-24T12:06:00.000Z"
     },
     {
@@ -690,6 +752,7 @@
         "data_expiracao": "2027-05-10T13:31:00.000Z",
         "compras_id": 56,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-10T13:31:00.000Z"
     },
     {
@@ -701,6 +764,7 @@
         "data_expiracao": "2027-05-23T20:14:00.000Z",
         "compras_id": 57,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-23T20:14:00.000Z"
     },
     {
@@ -712,6 +776,7 @@
         "data_expiracao": "2027-06-06T14:29:00.000Z",
         "compras_id": 58,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-06T14:29:00.000Z"
     },
     {
@@ -723,6 +788,7 @@
         "data_expiracao": "2027-06-22T13:25:00.000Z",
         "compras_id": 59,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-22T13:25:00.000Z"
     },
     {
@@ -734,6 +800,7 @@
         "data_expiracao": "2027-07-06T15:40:00.000Z",
         "compras_id": 60,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-06T15:40:00.000Z"
     },
     {
@@ -745,6 +812,7 @@
         "data_expiracao": "2027-07-21T15:54:00.000Z",
         "compras_id": 61,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-21T15:54:00.000Z"
     },
     {
@@ -756,6 +824,7 @@
         "data_expiracao": "2027-08-03T21:00:00.000Z",
         "compras_id": 62,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-03T21:00:00.000Z"
     },
     {
@@ -767,6 +836,7 @@
         "data_expiracao": "2027-08-19T19:38:00.000Z",
         "compras_id": 63,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-19T19:38:00.000Z"
     },
     {
@@ -778,6 +848,7 @@
         "data_expiracao": "2027-09-02T17:11:00.000Z",
         "compras_id": 64,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-02T17:11:00.000Z"
     },
     {
@@ -789,6 +860,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-02-24T19:34:00.000Z"
     },
     {
@@ -800,6 +872,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-03-25T20:49:00.000Z"
     },
     {
@@ -811,6 +884,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 3,
+        "origem": "RESGATE",
         "create_at": "2026-04-10T20:25:00.000Z"
     },
     {
@@ -822,6 +896,7 @@
         "data_expiracao": "2027-07-02T21:02:00.000Z",
         "compras_id": 65,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-02T21:02:00.000Z"
     },
     {
@@ -833,6 +908,7 @@
         "data_expiracao": "2027-04-07T12:09:00.000Z",
         "compras_id": 66,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-07T12:09:00.000Z"
     },
     {
@@ -844,6 +920,7 @@
         "data_expiracao": "2027-07-29T20:57:00.000Z",
         "compras_id": 67,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-29T20:57:00.000Z"
     },
     {
@@ -855,6 +932,7 @@
         "data_expiracao": "2027-05-07T19:00:00.000Z",
         "compras_id": 68,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-07T19:00:00.000Z"
     },
     {
@@ -866,6 +944,7 @@
         "data_expiracao": "2027-03-12T15:51:00.000Z",
         "compras_id": 69,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-12T15:51:00.000Z"
     },
     {
@@ -877,6 +956,7 @@
         "data_expiracao": "2027-03-28T19:38:00.000Z",
         "compras_id": 70,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-28T19:38:00.000Z"
     },
     {
@@ -888,6 +968,7 @@
         "data_expiracao": "2027-04-12T17:34:00.000Z",
         "compras_id": 71,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-12T17:34:00.000Z"
     },
     {
@@ -899,6 +980,7 @@
         "data_expiracao": "2027-04-26T13:05:00.000Z",
         "compras_id": 72,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-26T13:05:00.000Z"
     },
     {
@@ -910,6 +992,7 @@
         "data_expiracao": "2027-05-09T18:18:00.000Z",
         "compras_id": 73,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-09T18:18:00.000Z"
     },
     {
@@ -921,6 +1004,7 @@
         "data_expiracao": "2027-05-25T18:25:00.000Z",
         "compras_id": 74,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-25T18:25:00.000Z"
     },
     {
@@ -932,6 +1016,7 @@
         "data_expiracao": "2027-06-08T18:48:00.000Z",
         "compras_id": 75,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-08T18:48:00.000Z"
     },
     {
@@ -943,6 +1028,7 @@
         "data_expiracao": "2027-06-23T19:45:00.000Z",
         "compras_id": 76,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-23T19:45:00.000Z"
     },
     {
@@ -954,6 +1040,7 @@
         "data_expiracao": "2027-07-08T12:12:00.000Z",
         "compras_id": 77,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-08T12:12:00.000Z"
     },
     {
@@ -965,6 +1052,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-04-26T13:05:00.000Z"
     },
     {
@@ -976,6 +1064,7 @@
         "data_expiracao": "2027-03-14T17:33:00.000Z",
         "compras_id": 78,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-14T17:33:00.000Z"
     },
     {
@@ -987,6 +1076,7 @@
         "data_expiracao": "2027-03-31T12:24:00.000Z",
         "compras_id": 79,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-31T12:24:00.000Z"
     },
     {
@@ -998,6 +1088,7 @@
         "data_expiracao": "2027-04-14T19:13:00.000Z",
         "compras_id": 80,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-14T19:13:00.000Z"
     },
     {
@@ -1009,6 +1100,7 @@
         "data_expiracao": "2027-05-01T21:08:00.000Z",
         "compras_id": 81,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-01T21:08:00.000Z"
     },
     {
@@ -1020,6 +1112,7 @@
         "data_expiracao": "2027-05-18T15:59:00.000Z",
         "compras_id": 82,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-18T15:59:00.000Z"
     },
     {
@@ -1031,6 +1124,7 @@
         "data_expiracao": "2027-06-02T16:33:00.000Z",
         "compras_id": 83,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-02T16:33:00.000Z"
     },
     {
@@ -1042,6 +1136,7 @@
         "data_expiracao": "2027-06-17T16:12:00.000Z",
         "compras_id": 84,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-17T16:12:00.000Z"
     },
     {
@@ -1053,6 +1148,7 @@
         "data_expiracao": "2027-07-05T13:37:00.000Z",
         "compras_id": 85,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-05T13:37:00.000Z"
     },
     {
@@ -1064,6 +1160,7 @@
         "data_expiracao": "2027-07-23T13:21:00.000Z",
         "compras_id": 86,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-23T13:21:00.000Z"
     },
     {
@@ -1075,6 +1172,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-05-01T21:08:00.000Z"
     },
     {
@@ -1086,6 +1184,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-05-18T15:59:00.000Z"
     },
     {
@@ -1097,6 +1196,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 3,
+        "origem": "RESGATE",
         "create_at": "2026-06-02T16:33:00.000Z"
     },
     {
@@ -1108,6 +1208,7 @@
         "data_expiracao": "2027-03-14T19:26:00.000Z",
         "compras_id": 87,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-14T19:26:00.000Z"
     },
     {
@@ -1119,6 +1220,7 @@
         "data_expiracao": "2027-03-26T20:04:00.000Z",
         "compras_id": 88,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-26T20:04:00.000Z"
     },
     {
@@ -1130,6 +1232,7 @@
         "data_expiracao": "2027-04-08T16:54:00.000Z",
         "compras_id": 89,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-08T16:54:00.000Z"
     },
     {
@@ -1141,6 +1244,7 @@
         "data_expiracao": "2027-04-23T20:44:00.000Z",
         "compras_id": 90,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-23T20:44:00.000Z"
     },
     {
@@ -1152,6 +1256,7 @@
         "data_expiracao": "2027-05-06T20:01:00.000Z",
         "compras_id": 91,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-06T20:01:00.000Z"
     },
     {
@@ -1163,6 +1268,7 @@
         "data_expiracao": "2027-05-20T20:39:00.000Z",
         "compras_id": 92,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-20T20:39:00.000Z"
     },
     {
@@ -1174,6 +1280,7 @@
         "data_expiracao": "2027-06-01T16:36:00.000Z",
         "compras_id": 93,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-01T16:36:00.000Z"
     },
     {
@@ -1185,6 +1292,7 @@
         "data_expiracao": "2027-06-15T17:36:00.000Z",
         "compras_id": 94,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-15T17:36:00.000Z"
     },
     {
@@ -1196,6 +1304,7 @@
         "data_expiracao": "2027-06-29T16:07:00.000Z",
         "compras_id": 95,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-29T16:07:00.000Z"
     },
     {
@@ -1207,6 +1316,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-03-26T20:04:00.000Z"
     },
     {
@@ -1218,6 +1328,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-05-06T20:01:00.000Z"
     },
     {
@@ -1229,6 +1340,7 @@
         "data_expiracao": "2027-03-14T19:37:00.000Z",
         "compras_id": 96,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-14T19:37:00.000Z"
     },
     {
@@ -1240,6 +1352,7 @@
         "data_expiracao": "2027-03-28T16:41:00.000Z",
         "compras_id": 97,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-28T16:41:00.000Z"
     },
     {
@@ -1251,6 +1364,7 @@
         "data_expiracao": "2027-04-10T21:21:00.000Z",
         "compras_id": 98,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-10T21:21:00.000Z"
     },
     {
@@ -1262,6 +1376,7 @@
         "data_expiracao": "2027-04-22T14:09:00.000Z",
         "compras_id": 99,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-22T14:09:00.000Z"
     },
     {
@@ -1273,6 +1388,7 @@
         "data_expiracao": "2027-05-06T16:07:00.000Z",
         "compras_id": 100,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-06T16:07:00.000Z"
     },
     {
@@ -1284,6 +1400,7 @@
         "data_expiracao": "2027-05-20T19:17:00.000Z",
         "compras_id": 101,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-20T19:17:00.000Z"
     },
     {
@@ -1295,6 +1412,7 @@
         "data_expiracao": "2027-06-01T15:43:00.000Z",
         "compras_id": 102,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-01T15:43:00.000Z"
     },
     {
@@ -1306,6 +1424,7 @@
         "data_expiracao": "2027-06-17T17:57:00.000Z",
         "compras_id": 103,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-17T17:57:00.000Z"
     },
     {
@@ -1317,6 +1436,7 @@
         "data_expiracao": "2027-06-30T13:06:00.000Z",
         "compras_id": 104,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-30T13:06:00.000Z"
     },
     {
@@ -1328,6 +1448,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-03-28T16:41:00.000Z"
     },
     {
@@ -1339,6 +1460,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-04-10T21:21:00.000Z"
     },
     {
@@ -1350,6 +1472,7 @@
         "data_expiracao": "2027-02-15T16:23:00.000Z",
         "compras_id": 105,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-15T16:23:00.000Z"
     },
     {
@@ -1361,6 +1484,7 @@
         "data_expiracao": "2027-03-02T16:19:00.000Z",
         "compras_id": 106,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-02T16:19:00.000Z"
     },
     {
@@ -1372,6 +1496,7 @@
         "data_expiracao": "2027-03-17T14:36:00.000Z",
         "compras_id": 107,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-17T14:36:00.000Z"
     },
     {
@@ -1383,6 +1508,7 @@
         "data_expiracao": "2027-03-29T15:39:00.000Z",
         "compras_id": 108,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-29T15:39:00.000Z"
     },
     {
@@ -1394,6 +1520,7 @@
         "data_expiracao": "2027-04-13T14:53:00.000Z",
         "compras_id": 109,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-13T14:53:00.000Z"
     },
     {
@@ -1405,6 +1532,7 @@
         "data_expiracao": "2027-04-26T14:05:00.000Z",
         "compras_id": 110,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-26T14:05:00.000Z"
     },
     {
@@ -1416,6 +1544,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-03-02T16:19:00.000Z"
     },
     {
@@ -1427,6 +1556,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-03-29T15:39:00.000Z"
     },
     {
@@ -1438,6 +1568,7 @@
         "data_expiracao": "2027-02-15T18:17:00.000Z",
         "compras_id": 111,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-15T18:17:00.000Z"
     },
     {
@@ -1449,6 +1580,7 @@
         "data_expiracao": "2027-03-04T15:17:00.000Z",
         "compras_id": 112,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-04T15:17:00.000Z"
     },
     {
@@ -1460,6 +1592,7 @@
         "data_expiracao": "2027-03-17T15:11:00.000Z",
         "compras_id": 113,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-17T15:11:00.000Z"
     },
     {
@@ -1471,6 +1604,7 @@
         "data_expiracao": "2027-04-02T21:09:00.000Z",
         "compras_id": 114,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-02T21:09:00.000Z"
     },
     {
@@ -1482,6 +1616,7 @@
         "data_expiracao": "2027-04-16T13:03:00.000Z",
         "compras_id": 115,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-16T13:03:00.000Z"
     },
     {
@@ -1493,6 +1628,7 @@
         "data_expiracao": "2027-05-01T14:13:00.000Z",
         "compras_id": 116,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-01T14:13:00.000Z"
     },
     {
@@ -1504,6 +1640,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-03-17T15:11:00.000Z"
     },
     {
@@ -1515,6 +1652,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-04-16T13:03:00.000Z"
     },
     {
@@ -1526,6 +1664,7 @@
         "data_expiracao": "2027-02-15T16:57:00.000Z",
         "compras_id": 117,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-15T16:57:00.000Z"
     },
     {
@@ -1537,6 +1676,7 @@
         "data_expiracao": "2027-03-05T12:51:00.000Z",
         "compras_id": 118,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-05T12:51:00.000Z"
     },
     {
@@ -1548,6 +1688,7 @@
         "data_expiracao": "2027-03-21T15:53:00.000Z",
         "compras_id": 119,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-21T15:53:00.000Z"
     },
     {
@@ -1559,6 +1700,7 @@
         "data_expiracao": "2027-04-08T14:41:00.000Z",
         "compras_id": 120,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-08T14:41:00.000Z"
     },
     {
@@ -1570,6 +1712,7 @@
         "data_expiracao": "2027-04-25T14:28:00.000Z",
         "compras_id": 121,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-25T14:28:00.000Z"
     },
     {
@@ -1581,6 +1724,7 @@
         "data_expiracao": "2027-05-14T17:55:00.000Z",
         "compras_id": 122,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-14T17:55:00.000Z"
     },
     {
@@ -1592,6 +1736,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-03-05T12:51:00.000Z"
     },
     {
@@ -1603,6 +1748,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-03-21T15:53:00.000Z"
     },
     {
@@ -1614,6 +1760,7 @@
         "data_expiracao": "2027-02-15T13:38:00.000Z",
         "compras_id": 123,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-15T13:38:00.000Z"
     },
     {
@@ -1625,6 +1772,7 @@
         "data_expiracao": "2027-03-06T13:45:00.000Z",
         "compras_id": 124,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-06T13:45:00.000Z"
     },
     {
@@ -1636,6 +1784,7 @@
         "data_expiracao": "2027-03-25T13:06:00.000Z",
         "compras_id": 125,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-25T13:06:00.000Z"
     },
     {
@@ -1647,6 +1796,7 @@
         "data_expiracao": "2027-04-12T18:47:00.000Z",
         "compras_id": 126,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-12T18:47:00.000Z"
     },
     {
@@ -1658,6 +1808,7 @@
         "data_expiracao": "2027-05-03T19:07:00.000Z",
         "compras_id": 127,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-03T19:07:00.000Z"
     },
     {
@@ -1669,6 +1820,7 @@
         "data_expiracao": "2027-05-19T14:12:00.000Z",
         "compras_id": 128,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-19T14:12:00.000Z"
     },
     {
@@ -1680,6 +1832,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-03-25T13:06:00.000Z"
     },
     {
@@ -1691,6 +1844,7 @@
         "data_expiracao": "2027-02-16T17:13:00.000Z",
         "compras_id": 129,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-16T17:13:00.000Z"
     },
     {
@@ -1702,6 +1856,7 @@
         "data_expiracao": "2027-03-03T16:45:00.000Z",
         "compras_id": 130,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-03T16:45:00.000Z"
     },
     {
@@ -1713,6 +1868,7 @@
         "data_expiracao": "2027-03-18T17:54:00.000Z",
         "compras_id": 131,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-18T17:54:00.000Z"
     },
     {
@@ -1724,6 +1880,7 @@
         "data_expiracao": "2027-04-02T14:23:00.000Z",
         "compras_id": 132,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-02T14:23:00.000Z"
     },
     {
@@ -1735,6 +1892,7 @@
         "data_expiracao": "2027-04-16T18:51:00.000Z",
         "compras_id": 133,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-16T18:51:00.000Z"
     },
     {
@@ -1746,6 +1904,7 @@
         "data_expiracao": "2027-04-30T20:07:00.000Z",
         "compras_id": 134,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-30T20:07:00.000Z"
     },
     {
@@ -1757,6 +1916,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-03-03T16:45:00.000Z"
     },
     {
@@ -1768,6 +1928,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-03-18T17:54:00.000Z"
     },
     {
@@ -1779,6 +1940,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 3,
+        "origem": "RESGATE",
         "create_at": "2026-04-16T18:51:00.000Z"
     },
     {
@@ -1790,6 +1952,7 @@
         "data_expiracao": "2027-02-17T14:23:00.000Z",
         "compras_id": 135,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-17T14:23:00.000Z"
     },
     {
@@ -1801,6 +1964,7 @@
         "data_expiracao": "2027-03-09T12:47:00.000Z",
         "compras_id": 136,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-09T12:47:00.000Z"
     },
     {
@@ -1812,6 +1976,7 @@
         "data_expiracao": "2027-03-31T20:26:00.000Z",
         "compras_id": 137,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-31T20:26:00.000Z"
     },
     {
@@ -1823,6 +1988,7 @@
         "data_expiracao": "2027-04-21T12:11:00.000Z",
         "compras_id": 138,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-21T12:11:00.000Z"
     },
     {
@@ -1834,6 +2000,7 @@
         "data_expiracao": "2027-05-12T14:30:00.000Z",
         "compras_id": 139,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-12T14:30:00.000Z"
     },
     {
@@ -1845,6 +2012,7 @@
         "data_expiracao": "2027-06-04T18:01:00.000Z",
         "compras_id": 140,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-04T18:01:00.000Z"
     },
     {
@@ -1856,6 +2024,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-03-09T12:47:00.000Z"
     },
     {
@@ -1867,6 +2036,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-03-31T20:26:00.000Z"
     },
     {
@@ -1878,6 +2048,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 3,
+        "origem": "RESGATE",
         "create_at": "2026-04-21T12:11:00.000Z"
     },
     {
@@ -1889,6 +2060,7 @@
         "data_expiracao": "2027-03-02T18:49:00.000Z",
         "compras_id": 141,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-02T18:49:00.000Z"
     },
     {
@@ -1900,6 +2072,7 @@
         "data_expiracao": "2027-03-15T12:05:00.000Z",
         "compras_id": 142,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-15T12:05:00.000Z"
     },
     {
@@ -1911,6 +2084,7 @@
         "data_expiracao": "2027-03-29T15:34:00.000Z",
         "compras_id": 143,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-29T15:34:00.000Z"
     },
     {
@@ -1922,6 +2096,7 @@
         "data_expiracao": "2027-04-12T18:26:00.000Z",
         "compras_id": 144,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-12T18:26:00.000Z"
     },
     {
@@ -1933,6 +2108,7 @@
         "data_expiracao": "2027-04-24T16:31:00.000Z",
         "compras_id": 145,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-24T16:31:00.000Z"
     },
     {
@@ -1944,6 +2120,7 @@
         "data_expiracao": "2027-05-08T14:16:00.000Z",
         "compras_id": 146,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-08T14:16:00.000Z"
     },
     {
@@ -1955,6 +2132,7 @@
         "data_expiracao": "2027-05-19T17:42:00.000Z",
         "compras_id": 147,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-19T17:42:00.000Z"
     },
     {
@@ -1966,6 +2144,7 @@
         "data_expiracao": "2027-06-02T21:06:00.000Z",
         "compras_id": 148,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-02T21:06:00.000Z"
     },
     {
@@ -1977,6 +2156,7 @@
         "data_expiracao": "2027-06-15T19:05:00.000Z",
         "compras_id": 149,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-15T19:05:00.000Z"
     },
     {
@@ -1988,6 +2168,7 @@
         "data_expiracao": "2027-06-28T20:05:00.000Z",
         "compras_id": 150,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-28T20:05:00.000Z"
     },
     {
@@ -1999,6 +2180,7 @@
         "data_expiracao": "2027-03-02T20:35:00.000Z",
         "compras_id": 151,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-02T20:35:00.000Z"
     },
     {
@@ -2010,6 +2192,7 @@
         "data_expiracao": "2027-03-15T18:28:00.000Z",
         "compras_id": 152,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-15T18:28:00.000Z"
     },
     {
@@ -2021,6 +2204,7 @@
         "data_expiracao": "2027-03-24T21:52:00.000Z",
         "compras_id": 153,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-24T21:52:00.000Z"
     },
     {
@@ -2032,6 +2216,7 @@
         "data_expiracao": "2027-04-04T17:31:00.000Z",
         "compras_id": 154,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-04T17:31:00.000Z"
     },
     {
@@ -2043,6 +2228,7 @@
         "data_expiracao": "2027-04-15T15:09:00.000Z",
         "compras_id": 155,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-15T15:09:00.000Z"
     },
     {
@@ -2054,6 +2240,7 @@
         "data_expiracao": "2027-04-25T20:04:00.000Z",
         "compras_id": 156,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-25T20:04:00.000Z"
     },
     {
@@ -2065,6 +2252,7 @@
         "data_expiracao": "2027-05-07T16:53:00.000Z",
         "compras_id": 157,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-07T16:53:00.000Z"
     },
     {
@@ -2076,6 +2264,7 @@
         "data_expiracao": "2027-05-17T15:28:00.000Z",
         "compras_id": 158,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-17T15:28:00.000Z"
     },
     {
@@ -2087,6 +2276,7 @@
         "data_expiracao": "2027-05-30T15:44:00.000Z",
         "compras_id": 159,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-30T15:44:00.000Z"
     },
     {
@@ -2098,6 +2288,7 @@
         "data_expiracao": "2027-06-08T20:55:00.000Z",
         "compras_id": 160,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-08T20:55:00.000Z"
     },
     {
@@ -2109,6 +2300,7 @@
         "data_expiracao": "2027-03-04T16:12:00.000Z",
         "compras_id": 161,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-04T16:12:00.000Z"
     },
     {
@@ -2120,6 +2312,7 @@
         "data_expiracao": "2027-03-13T14:25:00.000Z",
         "compras_id": 162,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-13T14:25:00.000Z"
     },
     {
@@ -2131,6 +2324,7 @@
         "data_expiracao": "2027-03-24T12:50:00.000Z",
         "compras_id": 163,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-24T12:50:00.000Z"
     },
     {
@@ -2142,6 +2336,7 @@
         "data_expiracao": "2027-04-02T15:23:00.000Z",
         "compras_id": 164,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-02T15:23:00.000Z"
     },
     {
@@ -2153,6 +2348,7 @@
         "data_expiracao": "2027-04-12T21:07:00.000Z",
         "compras_id": 165,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-12T21:07:00.000Z"
     },
     {
@@ -2164,6 +2360,7 @@
         "data_expiracao": "2027-04-22T21:25:00.000Z",
         "compras_id": 166,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-22T21:25:00.000Z"
     },
     {
@@ -2175,6 +2372,7 @@
         "data_expiracao": "2027-04-30T20:32:00.000Z",
         "compras_id": 167,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-30T20:32:00.000Z"
     },
     {
@@ -2186,6 +2384,7 @@
         "data_expiracao": "2027-05-11T18:52:00.000Z",
         "compras_id": 168,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-11T18:52:00.000Z"
     },
     {
@@ -2197,6 +2396,7 @@
         "data_expiracao": "2027-05-20T16:42:00.000Z",
         "compras_id": 169,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-20T16:42:00.000Z"
     },
     {
@@ -2208,6 +2408,7 @@
         "data_expiracao": "2027-05-31T13:31:00.000Z",
         "compras_id": 170,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-31T13:31:00.000Z"
     },
     {
@@ -2219,6 +2420,7 @@
         "data_expiracao": "2027-03-02T15:22:00.000Z",
         "compras_id": 171,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-02T15:22:00.000Z"
     },
     {
@@ -2230,6 +2432,7 @@
         "data_expiracao": "2027-03-13T15:59:00.000Z",
         "compras_id": 172,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-13T15:59:00.000Z"
     },
     {
@@ -2241,6 +2444,7 @@
         "data_expiracao": "2027-03-23T12:02:00.000Z",
         "compras_id": 173,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-23T12:02:00.000Z"
     },
     {
@@ -2252,6 +2456,7 @@
         "data_expiracao": "2027-04-01T18:58:00.000Z",
         "compras_id": 174,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-01T18:58:00.000Z"
     },
     {
@@ -2263,6 +2468,7 @@
         "data_expiracao": "2027-04-12T16:56:00.000Z",
         "compras_id": 175,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-12T16:56:00.000Z"
     },
     {
@@ -2274,6 +2480,7 @@
         "data_expiracao": "2027-04-22T15:19:00.000Z",
         "compras_id": 176,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-22T15:19:00.000Z"
     },
     {
@@ -2285,6 +2492,7 @@
         "data_expiracao": "2027-05-04T17:36:00.000Z",
         "compras_id": 177,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-04T17:36:00.000Z"
     },
     {
@@ -2296,6 +2504,7 @@
         "data_expiracao": "2027-05-14T20:50:00.000Z",
         "compras_id": 178,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-14T20:50:00.000Z"
     },
     {
@@ -2307,6 +2516,7 @@
         "data_expiracao": "2027-05-23T16:08:00.000Z",
         "compras_id": 179,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-23T16:08:00.000Z"
     },
     {
@@ -2318,6 +2528,7 @@
         "data_expiracao": "2027-06-02T15:49:00.000Z",
         "compras_id": 180,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-02T15:49:00.000Z"
     },
     {
@@ -2329,6 +2540,7 @@
         "data_expiracao": "2027-01-21T21:14:00.000Z",
         "compras_id": 181,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-01-21T21:14:00.000Z"
     },
     {
@@ -2340,6 +2552,7 @@
         "data_expiracao": "2027-02-03T21:04:00.000Z",
         "compras_id": 182,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-03T21:04:00.000Z"
     },
     {
@@ -2351,6 +2564,7 @@
         "data_expiracao": "2027-02-12T13:33:00.000Z",
         "compras_id": 183,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-12T13:33:00.000Z"
     },
     {
@@ -2362,6 +2576,7 @@
         "data_expiracao": "2027-02-23T18:55:00.000Z",
         "compras_id": 184,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-23T18:55:00.000Z"
     },
     {
@@ -2373,6 +2588,7 @@
         "data_expiracao": "2027-03-08T20:57:00.000Z",
         "compras_id": 185,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-08T20:57:00.000Z"
     },
     {
@@ -2384,6 +2600,7 @@
         "data_expiracao": "2027-03-18T14:43:00.000Z",
         "compras_id": 186,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-18T14:43:00.000Z"
     },
     {
@@ -2395,6 +2612,7 @@
         "data_expiracao": "2027-03-28T15:44:00.000Z",
         "compras_id": 187,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-28T15:44:00.000Z"
     },
     {
@@ -2406,6 +2624,7 @@
         "data_expiracao": "2027-04-08T20:40:00.000Z",
         "compras_id": 188,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-08T20:40:00.000Z"
     },
     {
@@ -2417,6 +2636,7 @@
         "data_expiracao": "2027-04-20T15:21:00.000Z",
         "compras_id": 189,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-20T15:21:00.000Z"
     },
     {
@@ -2428,6 +2648,7 @@
         "data_expiracao": "2027-04-28T12:34:00.000Z",
         "compras_id": 190,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-28T12:34:00.000Z"
     },
     {
@@ -2439,6 +2660,7 @@
         "data_expiracao": "2027-05-12T16:57:00.000Z",
         "compras_id": 191,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-12T16:57:00.000Z"
     },
     {
@@ -2450,6 +2672,7 @@
         "data_expiracao": "2027-05-21T14:25:00.000Z",
         "compras_id": 192,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-21T14:25:00.000Z"
     },
     {
@@ -2461,6 +2684,7 @@
         "data_expiracao": "2027-06-02T12:36:00.000Z",
         "compras_id": 193,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-02T12:36:00.000Z"
     },
     {
@@ -2472,6 +2696,7 @@
         "data_expiracao": "2027-06-13T17:42:00.000Z",
         "compras_id": 194,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-13T17:42:00.000Z"
     },
     {
@@ -2483,6 +2708,7 @@
         "data_expiracao": "2027-06-24T19:55:00.000Z",
         "compras_id": 195,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-24T19:55:00.000Z"
     },
     {
@@ -2494,6 +2720,7 @@
         "data_expiracao": "2027-07-03T12:06:00.000Z",
         "compras_id": 196,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-03T12:06:00.000Z"
     },
     {
@@ -2505,6 +2732,7 @@
         "data_expiracao": "2027-07-14T21:41:00.000Z",
         "compras_id": 197,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-14T21:41:00.000Z"
     },
     {
@@ -2516,6 +2744,7 @@
         "data_expiracao": "2027-07-25T13:14:00.000Z",
         "compras_id": 198,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-25T13:14:00.000Z"
     },
     {
@@ -2527,6 +2756,7 @@
         "data_expiracao": "2027-08-06T15:42:00.000Z",
         "compras_id": 199,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-06T15:42:00.000Z"
     },
     {
@@ -2538,6 +2768,7 @@
         "data_expiracao": "2027-08-15T13:06:00.000Z",
         "compras_id": 200,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-15T13:06:00.000Z"
     },
     {
@@ -2549,6 +2780,7 @@
         "data_expiracao": "2027-08-27T15:55:00.000Z",
         "compras_id": 201,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-27T15:55:00.000Z"
     },
     {
@@ -2560,6 +2792,7 @@
         "data_expiracao": "2027-09-07T19:23:00.000Z",
         "compras_id": 202,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-07T19:23:00.000Z"
     },
     {
@@ -2571,6 +2804,7 @@
         "data_expiracao": "2027-09-17T16:02:00.000Z",
         "compras_id": 203,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-17T16:02:00.000Z"
     },
     {
@@ -2582,6 +2816,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-02-12T13:33:00.000Z"
     },
     {
@@ -2593,6 +2828,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-03-08T20:57:00.000Z"
     },
     {
@@ -2604,6 +2840,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 3,
+        "origem": "RESGATE",
         "create_at": "2026-03-28T15:44:00.000Z"
     },
     {
@@ -2615,6 +2852,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 4,
+        "origem": "RESGATE",
         "create_at": "2026-04-20T15:21:00.000Z"
     },
     {
@@ -2626,6 +2864,7 @@
         "data_expiracao": "2027-01-22T19:10:00.000Z",
         "compras_id": 204,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-01-22T19:10:00.000Z"
     },
     {
@@ -2637,6 +2876,7 @@
         "data_expiracao": "2027-02-02T12:16:00.000Z",
         "compras_id": 205,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-02T12:16:00.000Z"
     },
     {
@@ -2648,6 +2888,7 @@
         "data_expiracao": "2027-02-14T18:24:00.000Z",
         "compras_id": 206,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-14T18:24:00.000Z"
     },
     {
@@ -2659,6 +2900,7 @@
         "data_expiracao": "2027-02-22T14:57:00.000Z",
         "compras_id": 207,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-22T14:57:00.000Z"
     },
     {
@@ -2670,6 +2912,7 @@
         "data_expiracao": "2027-03-04T16:39:00.000Z",
         "compras_id": 208,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-04T16:39:00.000Z"
     },
     {
@@ -2681,6 +2924,7 @@
         "data_expiracao": "2027-03-17T15:33:00.000Z",
         "compras_id": 209,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-17T15:33:00.000Z"
     },
     {
@@ -2692,6 +2936,7 @@
         "data_expiracao": "2027-03-26T21:42:00.000Z",
         "compras_id": 210,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-26T21:42:00.000Z"
     },
     {
@@ -2703,6 +2948,7 @@
         "data_expiracao": "2027-04-06T15:51:00.000Z",
         "compras_id": 211,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-06T15:51:00.000Z"
     },
     {
@@ -2714,6 +2960,7 @@
         "data_expiracao": "2027-04-16T20:20:00.000Z",
         "compras_id": 212,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-16T20:20:00.000Z"
     },
     {
@@ -2725,6 +2972,7 @@
         "data_expiracao": "2027-04-29T12:22:00.000Z",
         "compras_id": 213,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-29T12:22:00.000Z"
     },
     {
@@ -2736,6 +2984,7 @@
         "data_expiracao": "2027-05-08T13:17:00.000Z",
         "compras_id": 214,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-08T13:17:00.000Z"
     },
     {
@@ -2747,6 +2996,7 @@
         "data_expiracao": "2027-05-19T21:21:00.000Z",
         "compras_id": 215,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-19T21:21:00.000Z"
     },
     {
@@ -2758,6 +3008,7 @@
         "data_expiracao": "2027-05-30T19:16:00.000Z",
         "compras_id": 216,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-30T19:16:00.000Z"
     },
     {
@@ -2769,6 +3020,7 @@
         "data_expiracao": "2027-06-08T19:34:00.000Z",
         "compras_id": 217,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-08T19:34:00.000Z"
     },
     {
@@ -2780,6 +3032,7 @@
         "data_expiracao": "2027-06-19T14:42:00.000Z",
         "compras_id": 218,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-19T14:42:00.000Z"
     },
     {
@@ -2791,6 +3044,7 @@
         "data_expiracao": "2027-07-01T16:47:00.000Z",
         "compras_id": 219,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-01T16:47:00.000Z"
     },
     {
@@ -2802,6 +3056,7 @@
         "data_expiracao": "2027-07-12T21:05:00.000Z",
         "compras_id": 220,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-12T21:05:00.000Z"
     },
     {
@@ -2813,6 +3068,7 @@
         "data_expiracao": "2027-07-23T15:51:00.000Z",
         "compras_id": 221,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-23T15:51:00.000Z"
     },
     {
@@ -2824,6 +3080,7 @@
         "data_expiracao": "2027-08-01T17:14:00.000Z",
         "compras_id": 222,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-01T17:14:00.000Z"
     },
     {
@@ -2835,6 +3092,7 @@
         "data_expiracao": "2027-08-13T21:20:00.000Z",
         "compras_id": 223,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-13T21:20:00.000Z"
     },
     {
@@ -2846,6 +3104,7 @@
         "data_expiracao": "2027-08-23T21:57:00.000Z",
         "compras_id": 224,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-23T21:57:00.000Z"
     },
     {
@@ -2857,6 +3116,7 @@
         "data_expiracao": "2027-09-01T13:47:00.000Z",
         "compras_id": 225,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-01T13:47:00.000Z"
     },
     {
@@ -2868,6 +3128,7 @@
         "data_expiracao": "2027-09-12T14:56:00.000Z",
         "compras_id": 226,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-12T14:56:00.000Z"
     },
     {
@@ -2879,6 +3140,7 @@
         "data_expiracao": "2027-01-22T15:00:00.000Z",
         "compras_id": 227,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-01-22T15:00:00.000Z"
     },
     {
@@ -2890,6 +3152,7 @@
         "data_expiracao": "2027-02-03T12:33:00.000Z",
         "compras_id": 228,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-03T12:33:00.000Z"
     },
     {
@@ -2901,6 +3164,7 @@
         "data_expiracao": "2027-02-12T14:36:00.000Z",
         "compras_id": 229,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-12T14:36:00.000Z"
     },
     {
@@ -2912,6 +3176,7 @@
         "data_expiracao": "2027-02-23T18:24:00.000Z",
         "compras_id": 230,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-23T18:24:00.000Z"
     },
     {
@@ -2923,6 +3188,7 @@
         "data_expiracao": "2027-03-06T21:23:00.000Z",
         "compras_id": 231,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-06T21:23:00.000Z"
     },
     {
@@ -2934,6 +3200,7 @@
         "data_expiracao": "2027-03-18T13:34:00.000Z",
         "compras_id": 232,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-18T13:34:00.000Z"
     },
     {
@@ -2945,6 +3212,7 @@
         "data_expiracao": "2027-03-29T17:30:00.000Z",
         "compras_id": 233,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-29T17:30:00.000Z"
     },
     {
@@ -2956,6 +3224,7 @@
         "data_expiracao": "2027-04-08T15:40:00.000Z",
         "compras_id": 234,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-08T15:40:00.000Z"
     },
     {
@@ -2967,6 +3236,7 @@
         "data_expiracao": "2027-04-18T15:53:00.000Z",
         "compras_id": 235,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-18T15:53:00.000Z"
     },
     {
@@ -2978,6 +3248,7 @@
         "data_expiracao": "2027-04-29T15:07:00.000Z",
         "compras_id": 236,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-29T15:07:00.000Z"
     },
     {
@@ -2989,6 +3260,7 @@
         "data_expiracao": "2027-05-12T14:32:00.000Z",
         "compras_id": 237,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-12T14:32:00.000Z"
     },
     {
@@ -3000,6 +3272,7 @@
         "data_expiracao": "2027-05-21T19:04:00.000Z",
         "compras_id": 238,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-21T19:04:00.000Z"
     },
     {
@@ -3011,6 +3284,7 @@
         "data_expiracao": "2027-06-03T14:19:00.000Z",
         "compras_id": 239,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-03T14:19:00.000Z"
     },
     {
@@ -3022,6 +3296,7 @@
         "data_expiracao": "2027-06-14T20:41:00.000Z",
         "compras_id": 240,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-14T20:41:00.000Z"
     },
     {
@@ -3033,6 +3308,7 @@
         "data_expiracao": "2027-06-25T12:36:00.000Z",
         "compras_id": 241,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-25T12:36:00.000Z"
     },
     {
@@ -3044,6 +3320,7 @@
         "data_expiracao": "2027-07-04T12:01:00.000Z",
         "compras_id": 242,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-04T12:01:00.000Z"
     },
     {
@@ -3055,6 +3332,7 @@
         "data_expiracao": "2027-07-15T13:48:00.000Z",
         "compras_id": 243,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-15T13:48:00.000Z"
     },
     {
@@ -3066,6 +3344,7 @@
         "data_expiracao": "2027-07-25T13:33:00.000Z",
         "compras_id": 244,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-25T13:33:00.000Z"
     },
     {
@@ -3077,6 +3356,7 @@
         "data_expiracao": "2027-08-05T20:22:00.000Z",
         "compras_id": 245,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-05T20:22:00.000Z"
     },
     {
@@ -3088,6 +3368,7 @@
         "data_expiracao": "2027-08-18T21:45:00.000Z",
         "compras_id": 246,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-18T21:45:00.000Z"
     },
     {
@@ -3099,6 +3380,7 @@
         "data_expiracao": "2027-08-27T21:57:00.000Z",
         "compras_id": 247,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-27T21:57:00.000Z"
     },
     {
@@ -3110,6 +3392,7 @@
         "data_expiracao": "2027-09-08T15:20:00.000Z",
         "compras_id": 248,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-08T15:20:00.000Z"
     },
     {
@@ -3121,6 +3404,7 @@
         "data_expiracao": "2027-09-17T13:45:00.000Z",
         "compras_id": 249,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-17T13:45:00.000Z"
     },
     {
@@ -3132,6 +3416,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-02-12T14:36:00.000Z"
     },
     {
@@ -3143,6 +3428,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-02-23T18:24:00.000Z"
     },
     {
@@ -3154,6 +3440,7 @@
         "data_expiracao": "2027-01-21T16:52:00.000Z",
         "compras_id": 250,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-01-21T16:52:00.000Z"
     },
     {
@@ -3165,6 +3452,7 @@
         "data_expiracao": "2027-02-02T17:42:00.000Z",
         "compras_id": 251,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-02T17:42:00.000Z"
     },
     {
@@ -3176,6 +3464,7 @@
         "data_expiracao": "2027-02-11T13:30:00.000Z",
         "compras_id": 252,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-11T13:30:00.000Z"
     },
     {
@@ -3187,6 +3476,7 @@
         "data_expiracao": "2027-02-22T13:57:00.000Z",
         "compras_id": 253,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-22T13:57:00.000Z"
     },
     {
@@ -3198,6 +3488,7 @@
         "data_expiracao": "2027-03-06T18:56:00.000Z",
         "compras_id": 254,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-06T18:56:00.000Z"
     },
     {
@@ -3209,6 +3500,7 @@
         "data_expiracao": "2027-03-17T19:55:00.000Z",
         "compras_id": 255,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-17T19:55:00.000Z"
     },
     {
@@ -3220,6 +3512,7 @@
         "data_expiracao": "2027-03-29T19:16:00.000Z",
         "compras_id": 256,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-29T19:16:00.000Z"
     },
     {
@@ -3231,6 +3524,7 @@
         "data_expiracao": "2027-04-06T18:47:00.000Z",
         "compras_id": 257,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-06T18:47:00.000Z"
     },
     {
@@ -3242,6 +3536,7 @@
         "data_expiracao": "2027-04-18T15:37:00.000Z",
         "compras_id": 258,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-18T15:37:00.000Z"
     },
     {
@@ -3253,6 +3548,7 @@
         "data_expiracao": "2027-04-29T18:08:00.000Z",
         "compras_id": 259,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-29T18:08:00.000Z"
     },
     {
@@ -3264,6 +3560,7 @@
         "data_expiracao": "2027-05-10T12:56:00.000Z",
         "compras_id": 260,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-10T12:56:00.000Z"
     },
     {
@@ -3275,6 +3572,7 @@
         "data_expiracao": "2027-05-21T15:24:00.000Z",
         "compras_id": 261,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-21T15:24:00.000Z"
     },
     {
@@ -3286,6 +3584,7 @@
         "data_expiracao": "2027-06-01T20:58:00.000Z",
         "compras_id": 262,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-01T20:58:00.000Z"
     },
     {
@@ -3297,6 +3596,7 @@
         "data_expiracao": "2027-06-10T17:19:00.000Z",
         "compras_id": 263,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-10T17:19:00.000Z"
     },
     {
@@ -3308,6 +3608,7 @@
         "data_expiracao": "2027-06-22T19:48:00.000Z",
         "compras_id": 264,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-22T19:48:00.000Z"
     },
     {
@@ -3319,6 +3620,7 @@
         "data_expiracao": "2027-07-03T21:58:00.000Z",
         "compras_id": 265,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-03T21:58:00.000Z"
     },
     {
@@ -3330,6 +3632,7 @@
         "data_expiracao": "2027-07-11T15:35:00.000Z",
         "compras_id": 266,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-11T15:35:00.000Z"
     },
     {
@@ -3341,6 +3644,7 @@
         "data_expiracao": "2027-07-23T17:55:00.000Z",
         "compras_id": 267,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-23T17:55:00.000Z"
     },
     {
@@ -3352,6 +3656,7 @@
         "data_expiracao": "2027-08-03T12:43:00.000Z",
         "compras_id": 268,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-03T12:43:00.000Z"
     },
     {
@@ -3363,6 +3668,7 @@
         "data_expiracao": "2027-08-13T12:01:00.000Z",
         "compras_id": 269,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-13T12:01:00.000Z"
     },
     {
@@ -3374,6 +3680,7 @@
         "data_expiracao": "2027-08-23T21:50:00.000Z",
         "compras_id": 270,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-23T21:50:00.000Z"
     },
     {
@@ -3385,6 +3692,7 @@
         "data_expiracao": "2027-09-04T18:41:00.000Z",
         "compras_id": 271,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-04T18:41:00.000Z"
     },
     {
@@ -3396,6 +3704,7 @@
         "data_expiracao": "2027-09-15T17:49:00.000Z",
         "compras_id": 272,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-15T17:49:00.000Z"
     },
     {
@@ -3407,6 +3716,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-02-22T13:57:00.000Z"
     },
     {
@@ -3418,6 +3728,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-03-06T18:56:00.000Z"
     },
     {
@@ -3429,6 +3740,7 @@
         "data_expiracao": "2027-02-02T20:04:00.000Z",
         "compras_id": 273,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-02T20:04:00.000Z"
     },
     {
@@ -3440,6 +3752,7 @@
         "data_expiracao": "2027-02-27T14:18:00.000Z",
         "compras_id": 274,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-27T14:18:00.000Z"
     },
     {
@@ -3451,6 +3764,7 @@
         "data_expiracao": "2027-03-22T18:36:00.000Z",
         "compras_id": 275,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-22T18:36:00.000Z"
     },
     {
@@ -3462,6 +3776,7 @@
         "data_expiracao": "2027-04-14T20:01:00.000Z",
         "compras_id": 276,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-14T20:01:00.000Z"
     },
     {
@@ -3473,6 +3788,7 @@
         "data_expiracao": "2027-05-09T21:01:00.000Z",
         "compras_id": 277,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-09T21:01:00.000Z"
     },
     {
@@ -3484,6 +3800,7 @@
         "data_expiracao": "2027-06-03T16:52:00.000Z",
         "compras_id": 278,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-03T16:52:00.000Z"
     },
     {
@@ -3495,6 +3812,7 @@
         "data_expiracao": "2027-06-29T12:11:00.000Z",
         "compras_id": 279,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-29T12:11:00.000Z"
     },
     {
@@ -3506,6 +3824,7 @@
         "data_expiracao": "2027-07-23T18:30:00.000Z",
         "compras_id": 280,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-23T18:30:00.000Z"
     },
     {
@@ -3517,6 +3836,7 @@
         "data_expiracao": "2027-08-17T13:56:00.000Z",
         "compras_id": 281,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-17T13:56:00.000Z"
     },
     {
@@ -3528,6 +3848,7 @@
         "data_expiracao": "2027-09-10T20:23:00.000Z",
         "compras_id": 282,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-10T20:23:00.000Z"
     },
     {
@@ -3539,6 +3860,7 @@
         "data_expiracao": "2027-02-01T13:41:00.000Z",
         "compras_id": 283,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-01T13:41:00.000Z"
     },
     {
@@ -3550,6 +3872,7 @@
         "data_expiracao": "2027-02-28T19:19:00.000Z",
         "compras_id": 284,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-28T19:19:00.000Z"
     },
     {
@@ -3561,6 +3884,7 @@
         "data_expiracao": "2027-03-23T16:01:00.000Z",
         "compras_id": 285,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-23T16:01:00.000Z"
     },
     {
@@ -3572,6 +3896,7 @@
         "data_expiracao": "2027-04-18T16:37:00.000Z",
         "compras_id": 286,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-18T16:37:00.000Z"
     },
     {
@@ -3583,6 +3908,7 @@
         "data_expiracao": "2027-05-13T12:24:00.000Z",
         "compras_id": 287,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-13T12:24:00.000Z"
     },
     {
@@ -3594,6 +3920,7 @@
         "data_expiracao": "2027-06-08T18:04:00.000Z",
         "compras_id": 288,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-08T18:04:00.000Z"
     },
     {
@@ -3605,6 +3932,7 @@
         "data_expiracao": "2027-07-03T15:32:00.000Z",
         "compras_id": 289,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-03T15:32:00.000Z"
     },
     {
@@ -3616,6 +3944,7 @@
         "data_expiracao": "2027-07-30T19:27:00.000Z",
         "compras_id": 290,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-30T19:27:00.000Z"
     },
     {
@@ -3627,6 +3956,7 @@
         "data_expiracao": "2027-08-22T16:19:00.000Z",
         "compras_id": 291,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-22T16:19:00.000Z"
     },
     {
@@ -3638,6 +3968,7 @@
         "data_expiracao": "2027-09-17T14:38:00.000Z",
         "compras_id": 292,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-17T14:38:00.000Z"
     },
     {
@@ -3649,6 +3980,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-02-28T19:19:00.000Z"
     },
     {
@@ -3660,6 +3992,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-03-23T16:01:00.000Z"
     },
     {
@@ -3671,6 +4004,7 @@
         "data_expiracao": "2027-02-01T17:41:00.000Z",
         "compras_id": 293,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-01T17:41:00.000Z"
     },
     {
@@ -3682,6 +4016,7 @@
         "data_expiracao": "2027-02-26T12:55:00.000Z",
         "compras_id": 294,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-26T12:55:00.000Z"
     },
     {
@@ -3693,6 +4028,7 @@
         "data_expiracao": "2027-03-23T13:20:00.000Z",
         "compras_id": 295,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-23T13:20:00.000Z"
     },
     {
@@ -3704,6 +4040,7 @@
         "data_expiracao": "2027-04-20T16:35:00.000Z",
         "compras_id": 296,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-20T16:35:00.000Z"
     },
     {
@@ -3715,6 +4052,7 @@
         "data_expiracao": "2027-05-15T14:38:00.000Z",
         "compras_id": 297,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-15T14:38:00.000Z"
     },
     {
@@ -3726,6 +4064,7 @@
         "data_expiracao": "2027-06-09T17:32:00.000Z",
         "compras_id": 298,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-09T17:32:00.000Z"
     },
     {
@@ -3737,6 +4076,7 @@
         "data_expiracao": "2027-07-04T14:40:00.000Z",
         "compras_id": 299,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-04T14:40:00.000Z"
     },
     {
@@ -3748,6 +4088,7 @@
         "data_expiracao": "2027-07-31T15:46:00.000Z",
         "compras_id": 300,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-31T15:46:00.000Z"
     },
     {
@@ -3759,6 +4100,7 @@
         "data_expiracao": "2027-08-23T13:44:00.000Z",
         "compras_id": 301,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-23T13:44:00.000Z"
     },
     {
@@ -3770,6 +4112,7 @@
         "data_expiracao": "2027-09-18T13:20:00.000Z",
         "compras_id": 302,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-18T13:20:00.000Z"
     },
     {
@@ -3781,6 +4124,7 @@
         "data_expiracao": "2027-01-31T15:21:00.000Z",
         "compras_id": 303,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-01-31T15:21:00.000Z"
     },
     {
@@ -3792,6 +4136,7 @@
         "data_expiracao": "2027-02-25T12:04:00.000Z",
         "compras_id": 304,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-02-25T12:04:00.000Z"
     },
     {
@@ -3803,6 +4148,7 @@
         "data_expiracao": "2027-03-23T16:36:00.000Z",
         "compras_id": 305,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-03-23T16:36:00.000Z"
     },
     {
@@ -3814,6 +4160,7 @@
         "data_expiracao": "2027-04-19T15:21:00.000Z",
         "compras_id": 306,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-04-19T15:21:00.000Z"
     },
     {
@@ -3825,6 +4172,7 @@
         "data_expiracao": "2027-05-13T14:38:00.000Z",
         "compras_id": 307,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-05-13T14:38:00.000Z"
     },
     {
@@ -3836,6 +4184,7 @@
         "data_expiracao": "2027-06-10T17:45:00.000Z",
         "compras_id": 308,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-06-10T17:45:00.000Z"
     },
     {
@@ -3847,6 +4196,7 @@
         "data_expiracao": "2027-07-03T21:22:00.000Z",
         "compras_id": 309,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-03T21:22:00.000Z"
     },
     {
@@ -3858,6 +4208,7 @@
         "data_expiracao": "2027-07-30T21:51:00.000Z",
         "compras_id": 310,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-07-30T21:51:00.000Z"
     },
     {
@@ -3869,6 +4220,7 @@
         "data_expiracao": "2027-08-23T19:23:00.000Z",
         "compras_id": 311,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-08-23T19:23:00.000Z"
     },
     {
@@ -3880,6 +4232,7 @@
         "data_expiracao": "2027-09-19T12:15:00.000Z",
         "compras_id": 312,
         "resgates_id": 0,
+        "origem": "COMPRA",
         "create_at": "2026-09-19T12:15:00.000Z"
     },
     {
@@ -3891,6 +4244,7 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 1,
+        "origem": "RESGATE",
         "create_at": "2026-03-23T16:36:00.000Z"
     },
     {
@@ -3902,6 +4256,332 @@
         "data_expiracao": null,
         "compras_id": 0,
         "resgates_id": 2,
+        "origem": "RESGATE",
         "create_at": "2026-07-03T21:22:00.000Z"
+    },
+    {
+        "id": 356,
+        "cliente_id": 5,
+        "tipo": "acumulo",
+        "pontos": 20,
+        "data_movimentacao": "2026-06-01T12:55:00.000Z",
+        "data_expiracao": "2027-06-01T12:55:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_CAIXA",
+        "origem_id": 3,
+        "create_at": "2026-06-01T12:55:00.000Z"
+    },
+    {
+        "id": 357,
+        "cliente_id": 25,
+        "tipo": "acumulo",
+        "pontos": 20,
+        "data_movimentacao": "2026-06-26T18:06:00.000Z",
+        "data_expiracao": "2027-06-26T18:06:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_CAIXA",
+        "origem_id": 4,
+        "create_at": "2026-06-26T18:06:00.000Z"
+    },
+    {
+        "id": 358,
+        "cliente_id": 25,
+        "tipo": "acumulo",
+        "pontos": 50,
+        "data_movimentacao": "2026-07-21T18:14:00.000Z",
+        "data_expiracao": "2027-07-21T18:14:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_DOACAO",
+        "origem_id": 5,
+        "create_at": "2026-07-21T18:14:00.000Z"
+    },
+    {
+        "id": 359,
+        "cliente_id": 24,
+        "tipo": "acumulo",
+        "pontos": 50,
+        "data_movimentacao": "2026-06-19T15:57:00.000Z",
+        "data_expiracao": "2027-06-19T15:57:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_DOACAO",
+        "origem_id": 6,
+        "create_at": "2026-06-19T15:57:00.000Z"
+    },
+    {
+        "id": 360,
+        "cliente_id": 24,
+        "tipo": "acumulo",
+        "pontos": 50,
+        "data_movimentacao": "2026-07-03T19:43:00.000Z",
+        "data_expiracao": "2027-07-03T19:43:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_DOACAO",
+        "origem_id": 8,
+        "create_at": "2026-07-03T19:43:00.000Z"
+    },
+    {
+        "id": 361,
+        "cliente_id": 7,
+        "tipo": "acumulo",
+        "pontos": 50,
+        "data_movimentacao": "2026-08-10T12:56:00.000Z",
+        "data_expiracao": "2027-08-10T12:56:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_DOACAO",
+        "origem_id": 11,
+        "create_at": "2026-08-10T12:56:00.000Z"
+    },
+    {
+        "id": 362,
+        "cliente_id": 2,
+        "tipo": "acumulo",
+        "pontos": 50,
+        "data_movimentacao": "2026-07-21T16:53:00.000Z",
+        "data_expiracao": "2027-07-21T16:53:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_DOACAO",
+        "origem_id": 12,
+        "create_at": "2026-07-21T16:53:00.000Z"
+    },
+    {
+        "id": 363,
+        "cliente_id": 2,
+        "tipo": "acumulo",
+        "pontos": 20,
+        "data_movimentacao": "2026-05-26T20:21:00.000Z",
+        "data_expiracao": "2027-05-26T20:21:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_CAIXA",
+        "origem_id": 13,
+        "create_at": "2026-05-26T20:21:00.000Z"
+    },
+    {
+        "id": 364,
+        "cliente_id": 10,
+        "tipo": "acumulo",
+        "pontos": 50,
+        "data_movimentacao": "2026-08-09T18:44:00.000Z",
+        "data_expiracao": "2027-08-09T18:44:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_DOACAO",
+        "origem_id": 14,
+        "create_at": "2026-08-09T18:44:00.000Z"
+    },
+    {
+        "id": 365,
+        "cliente_id": 12,
+        "tipo": "acumulo",
+        "pontos": 20,
+        "data_movimentacao": "2026-05-25T13:52:00.000Z",
+        "data_expiracao": "2027-05-25T13:52:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_CAIXA",
+        "origem_id": 16,
+        "create_at": "2026-05-25T13:52:00.000Z"
+    },
+    {
+        "id": 366,
+        "cliente_id": 12,
+        "tipo": "acumulo",
+        "pontos": 50,
+        "data_movimentacao": "2026-05-25T19:22:00.000Z",
+        "data_expiracao": "2027-05-25T19:22:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_DOACAO",
+        "origem_id": 17,
+        "create_at": "2026-05-25T19:22:00.000Z"
+    },
+    {
+        "id": 367,
+        "cliente_id": 17,
+        "tipo": "acumulo",
+        "pontos": 50,
+        "data_movimentacao": "2026-07-27T15:33:00.000Z",
+        "data_expiracao": "2027-07-27T15:33:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_DOACAO",
+        "origem_id": 18,
+        "create_at": "2026-07-27T15:33:00.000Z"
+    },
+    {
+        "id": 368,
+        "cliente_id": 17,
+        "tipo": "acumulo",
+        "pontos": 20,
+        "data_movimentacao": "2026-08-14T18:43:00.000Z",
+        "data_expiracao": "2027-08-14T18:43:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_CAIXA",
+        "origem_id": 20,
+        "create_at": "2026-08-14T18:43:00.000Z"
+    },
+    {
+        "id": 369,
+        "cliente_id": 19,
+        "tipo": "acumulo",
+        "pontos": 50,
+        "data_movimentacao": "2026-09-12T18:57:00.000Z",
+        "data_expiracao": "2027-09-12T18:57:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_DOACAO",
+        "origem_id": 21,
+        "create_at": "2026-09-12T18:57:00.000Z"
+    },
+    {
+        "id": 370,
+        "cliente_id": 1,
+        "tipo": "acumulo",
+        "pontos": 20,
+        "data_movimentacao": "2026-07-19T12:58:00.000Z",
+        "data_expiracao": "2027-07-19T12:58:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_CAIXA",
+        "origem_id": 25,
+        "create_at": "2026-07-19T12:58:00.000Z"
+    },
+    {
+        "id": 371,
+        "cliente_id": 4,
+        "tipo": "acumulo",
+        "pontos": 50,
+        "data_movimentacao": "2026-06-12T18:01:00.000Z",
+        "data_expiracao": "2027-06-12T18:01:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_DOACAO",
+        "origem_id": 26,
+        "create_at": "2026-06-12T18:01:00.000Z"
+    },
+    {
+        "id": 372,
+        "cliente_id": 9,
+        "tipo": "acumulo",
+        "pontos": 50,
+        "data_movimentacao": "2026-06-29T18:25:00.000Z",
+        "data_expiracao": "2027-06-29T18:25:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_DOACAO",
+        "origem_id": 27,
+        "create_at": "2026-06-29T18:25:00.000Z"
+    },
+    {
+        "id": 373,
+        "cliente_id": 9,
+        "tipo": "acumulo",
+        "pontos": 50,
+        "data_movimentacao": "2026-05-21T14:09:00.000Z",
+        "data_expiracao": "2027-05-21T14:09:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_DOACAO",
+        "origem_id": 28,
+        "create_at": "2026-05-21T14:09:00.000Z"
+    },
+    {
+        "id": 374,
+        "cliente_id": 28,
+        "tipo": "acumulo",
+        "pontos": 50,
+        "data_movimentacao": "2026-08-04T15:07:00.000Z",
+        "data_expiracao": "2027-08-04T15:07:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_DOACAO",
+        "origem_id": 29,
+        "create_at": "2026-08-04T15:07:00.000Z"
+    },
+    {
+        "id": 375,
+        "cliente_id": 29,
+        "tipo": "acumulo",
+        "pontos": 20,
+        "data_movimentacao": "2026-06-08T13:26:00.000Z",
+        "data_expiracao": "2027-06-08T13:26:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_CAIXA",
+        "origem_id": 30,
+        "create_at": "2026-06-08T13:26:00.000Z"
+    },
+    {
+        "id": 376,
+        "cliente_id": 29,
+        "tipo": "acumulo",
+        "pontos": 50,
+        "data_movimentacao": "2026-05-24T13:10:00.000Z",
+        "data_expiracao": "2027-05-24T13:10:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_DOACAO",
+        "origem_id": 31,
+        "create_at": "2026-05-24T13:10:00.000Z"
+    },
+    {
+        "id": 377,
+        "cliente_id": 29,
+        "tipo": "acumulo",
+        "pontos": 20,
+        "data_movimentacao": "2026-06-15T19:06:00.000Z",
+        "data_expiracao": "2027-06-15T19:06:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_CAIXA",
+        "origem_id": 32,
+        "create_at": "2026-06-15T19:06:00.000Z"
+    },
+    {
+        "id": 378,
+        "cliente_id": 16,
+        "tipo": "acumulo",
+        "pontos": 20,
+        "data_movimentacao": "2026-09-05T21:40:00.000Z",
+        "data_expiracao": "2027-09-05T21:40:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_CAIXA",
+        "origem_id": 34,
+        "create_at": "2026-09-05T21:40:00.000Z"
+    },
+    {
+        "id": 379,
+        "cliente_id": 16,
+        "tipo": "acumulo",
+        "pontos": 20,
+        "data_movimentacao": "2026-06-23T21:34:00.000Z",
+        "data_expiracao": "2027-06-23T21:34:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_CAIXA",
+        "origem_id": 35,
+        "create_at": "2026-06-23T21:34:00.000Z"
+    },
+    {
+        "id": 380,
+        "cliente_id": 16,
+        "tipo": "acumulo",
+        "pontos": 50,
+        "data_movimentacao": "2026-06-15T14:59:00.000Z",
+        "data_expiracao": "2027-06-15T14:59:00.000Z",
+        "compras_id": 0,
+        "resgates_id": 0,
+        "origem": "BONUS_DOACAO",
+        "origem_id": 36,
+        "create_at": "2026-06-15T14:59:00.000Z"
     }
 ]

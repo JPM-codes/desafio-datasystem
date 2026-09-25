@@ -57,6 +57,80 @@
                                 class="ms-2">/compras/:id</strong>
                             <div class="text-muted small mt-2">Consulta uma compra específica.</div>
                         </div>
+                        <div class="endpoint"><span class="method post">POST</span> <strong
+                                class="ms-2">/compras</strong>
+                            <div class="text-muted small mt-2">Registra uma compra e credita os pontos
+                                (R$ 1 = 1 ponto, com bônus de nível).</div>
+                        </div>
+
+                        <h5 class="fw-bold my-3">Resgates e pontos</h5>
+                        <div class="endpoint"><span class="method get">GET</span> <strong
+                                class="ms-2">/resgates</strong>
+                            <div class="text-muted small mt-2">Lista os resgates realizados.</div>
+                        </div>
+                        <div class="endpoint"><span class="method post">POST</span> <strong
+                                class="ms-2">/resgates</strong>
+                            <div class="text-muted small mt-2">Realiza um resgate (100 pontos = R$ 5).</div>
+                        </div>
+                        <div class="endpoint"><span class="method get">GET</span> <strong
+                                class="ms-2">/pontos/saldo/:clienteId</strong>
+                            <div class="text-muted small mt-2">Saldo de pontos disponíveis do cliente.</div>
+                        </div>
+                        <div class="endpoint"><span class="method get">GET</span> <strong
+                                class="ms-2">/pontos/historico/:clienteId</strong>
+                            <div class="text-muted small mt-2">Histórico de movimentações do cliente.</div>
+                        </div>
+                        <div class="endpoint"><span class="method get">GET</span> <strong
+                                class="ms-2">/pontos/expiracao</strong>
+                            <div class="text-muted small mt-2">Pontos que expiram em breve (janela configurável).</div>
+                        </div>
+
+                        <h5 class="fw-bold my-3">Impacto (logística reversa + social)</h5>
+                        <div class="endpoint"><span class="method get">GET</span> <strong
+                                class="ms-2">/impacto</strong>
+                            <div class="text-muted small mt-2">Lista as ações, com filtros por tipo, status e
+                                ponto de coleta.</div>
+                        </div>
+                        <div class="endpoint"><span class="method post">POST</span> <strong
+                                class="ms-2">/impacto</strong>
+                            <div class="text-muted small mt-2">Registra recebimento (doação de calçado ou
+                                devolução de caixa) pelo CPF/cliente.</div>
+                        </div>
+                        <div class="endpoint"><span class="method post">POST</span> <strong
+                                class="ms-2">/impacto/:id/validar</strong>
+                            <div class="text-muted small mt-2">Inicia a triagem do item (RECEBIDO → EM_TRIAGEM).</div>
+                        </div>
+                        <div class="endpoint"><span class="method post">POST</span> <strong
+                                class="ms-2">/impacto/:id/aprovar</strong>
+                            <div class="text-muted small mt-2">Aprova e concede o bônus no saldo
+                                (bônus configurável; nunca duplica — 409).</div>
+                        </div>
+                        <div class="endpoint"><span class="method post">POST</span> <strong
+                                class="ms-2">/impacto/:id/recusar</strong>
+                            <div class="text-muted small mt-2">Recusa o item (nenhum ponto concedido).</div>
+                        </div>
+                        <div class="endpoint"><span class="method post">POST</span> <strong
+                                class="ms-2">/impacto/:id/destinar</strong>
+                            <div class="text-muted small mt-2">Registra a destinação (caixas: reutilização,
+                                reciclagem ou outro).</div>
+                        </div>
+                        <div class="endpoint"><span class="method post">POST</span> <strong
+                                class="ms-2">/impacto/:id/entregar</strong>
+                            <div class="text-muted small mt-2">Marca o item como entregue.</div>
+                        </div>
+                        <div class="endpoint"><span class="method get">GET</span> <strong
+                                class="ms-2">/impacto/dashboard</strong>
+                            <div class="text-muted small mt-2">KPIs da campanha (arrecadados, participantes,
+                                evolução, status).</div>
+                        </div>
+                        <div class="endpoint"><span class="method get">GET</span> <strong
+                                class="ms-2">/impacto/ranking</strong>
+                            <div class="text-muted small mt-2">Ranking de engajamento (separado do RFM).</div>
+                        </div>
+                        <div class="endpoint"><span class="method get">GET</span> <strong
+                                class="ms-2">/impacto/relatorio</strong>
+                            <div class="text-muted small mt-2">Síntese por período e ponto de coleta.</div>
+                        </div>
                     </div>
 
                     <div class="col-lg-4">

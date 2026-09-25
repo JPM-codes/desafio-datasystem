@@ -154,6 +154,71 @@
                     </div>
                 </div>
 
+                <!-- Participação na campanha Impacto -->
+                <div class="card section-card mb-4">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                        <h5 class="card-title mb-0"><i class="bi bi-box2-heart text-primary"></i>Participação na campanha Impacto</h5>
+                        <a href="/impacto" class="small">ver campanha</a>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-6 col-lg-3">
+                            <div class="stat-mini">
+                                <div class="label">Calçados doados</div>
+                                <div class="value"><%= impactoCliente.calcados %></div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="stat-mini">
+                                <div class="label">Caixas devolvidas</div>
+                                <div class="value"><%= impactoCliente.caixas %></div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="stat-mini">
+                                <div class="label">Ações registradas</div>
+                                <div class="value"><%= impactoCliente.totalAcoes %></div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="stat-mini">
+                                <div class="label">Pontos de impacto</div>
+                                <div class="value text-primary"><%= impactoCliente.pontosBonus.toLocaleString('pt-BR') %></div>
+                            </div>
+                        </div>
+                    </div>
+                    <% if (impactoCliente.acoes.length) { %>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Tipo</th>
+                                        <th class="text-end">Extra</th>
+                                        <th>Validação</th>
+                                        <th class="text-end">Bônus</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% impactoCliente.acoes.slice().sort(function (a, b) { return new Date(b.data_recebimento) - new Date(a.data_recebimento); }).forEach(function (acao) { %>
+                                        <tr>
+                                            <td class="text-nowrap"><%= fmt.data(acao.data_recebimento) %></td>
+                                            <td><span class="badge-soft"><i class="<%= fmt.tipoAcao(acao.tipo_acao) === 'Doação de calçado' ? 'bi bi-box2-heart' : 'bi bi-box-seam' %> me-1"></i><%= fmt.tipoAcao(acao.tipo_acao) %></span></td>
+                                            <td class="text-end"><%= acao.quantidade %></td>
+                                            <td>
+                                                <% var st = impactoStatuses.find(function (s) { return s.nome === acao.status_validacao; }); %>
+                                                    <span class="st-badge <%= st ? st.classe : 'st-pendente' %>"><%= st ? st.rotulo : acao.status_validacao %></span>
+                                            </td>
+                                            <td class="text-end fw-bold"><%= acao.pontos_bonus %> pts</td>
+                                        </tr>
+                                        <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <% } else { %>
+                            <div class="text-muted small"><i class="bi bi-info-circle me-2"></i>Cliente ainda não participou da campanha. <a href="/impacto/registrar?q=<%= cliente.documento %>">Registrar ação</a>.</div>
+                            <% } %>
+                </div>
+
                 <!-- Compras recentes -->
                 <div class="card section-card mb-4">
                     <h5 class="card-title mb-3"><i class="bi bi-cart3 text-primary"></i>Compras recentes</h5>
@@ -222,9 +287,10 @@
                         <div style="max-height:360px;overflow:auto">
                             <table class="table">
                                 <thead>
-                                    <tr>
+<tr>
                                         <th>Data</th>
                                         <th>Tipo</th>
+                                        <th>Origem</th>
                                         <th class="text-end">Pontos</th>
                                         <th>Expiração</th>
                                     </tr>
@@ -234,12 +300,13 @@
                                         <tr>
                                             <td class="text-nowrap"><%= mov.data %></td>
                                             <td><span class="badge-tipo <%= mov.tipo %>"><%= mov.tipo.toUpperCase() %></span></td>
+                                            <td><%= mov.origem_rotulo %></td>
                                             <td class="text-end fw-bold <%= mov.pontos > 0 ? 'text-success' : 'text-danger' %>"><%= mov.pontos > 0 ? '+' : '' %><%= mov.pontos.toLocaleString('pt-BR') %></td>
                                             <td class="text-nowrap"><%= mov.expiracao %></td>
                                         </tr>
                                         <% }); %>
                                         <% if (!movimentacoes.length) { %>
-                                            <tr><td colspan="4" class="text-center text-muted py-3">Sem movimentações.</td></tr>
+                                            <tr><td colspan="5" class="text-center text-muted py-3">Sem movimentações.</td></tr>
                                             <% } %>
                                 </tbody>
                             </table>

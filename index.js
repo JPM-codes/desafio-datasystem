@@ -8,6 +8,7 @@ const comprasRoutes = require("./api/compras");
 const pontosRoutes = require("./api/pontos");
 const resgatesRoutes = require("./api/resgates");
 const dashboardRoutes = require("./api/dashboard");
+const impactoRoutes = require("./api/impacto");
 const dashboardWebRoutes = require("./views/index");
 
 
@@ -25,6 +26,7 @@ app.use("/api/compras", comprasRoutes);
 app.use("/api/pontos", pontosRoutes);
 app.use("/api/resgates", resgatesRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/impacto", impactoRoutes);
 app.use("/", dashboardWebRoutes);
 
 app.listen(3000, () => {

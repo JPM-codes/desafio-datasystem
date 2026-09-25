@@ -13,6 +13,7 @@
 const fs = require("fs");
 const path = require("path");
 const regras = require("../services/regras");
+const impacto = require("../services/impacto");
 
 const DIR = path.join(__dirname, "..", "public", "database");
 const HOJE = new Date("2026-09-24T12:00:00Z");
@@ -116,6 +117,30 @@ const NOMES = [
     "Vitória Santana", "Wesley Pinto", "Yasmin Moraes", "Zeca Ribeiro",
     "Alice Duarte", "Breno Fontes", "Carla Menezes", "Daniela Siqueira",
     "Eduardo Vasconcelos", "Fernanda Goulart",
+];
+
+// ============================================================
+// Campanha de Impacto (logística reversa + ação social)
+// ============================================================
+const PONTOS_COLETA = [
+    "Loja Franca - Centro",
+    "Loja Franca - Shopping",
+    "Loja Ribeirão Preto",
+    "Hub Logístico Cajuru",
+];
+
+const INSTITUICOES = [
+    "Instituto Passo Futuro",
+    "Casa da Esperança",
+    "Projeto Pé no Chão",
+    "Instituto Caminho Certo",
+];
+
+const OPERADORES = [
+    "Atendente Loja Centro",
+    "Atendente Loja Shopping",
+    "Atendente Ribeirão Preto",
+    "Supervisor de Logística",
 ];
 
 // ============================================================
@@ -324,6 +349,101 @@ function gerarCliente(id, nome, perfil) {
 }
 
 // ============================================================
+// Campanha de Impacto
+// ============================================================
+function gerarCampanhaImpacto(clientes, pontos, idPonto) {
+    const acoes = [];
+    const participantes = amostrarN(clientes.map((c) => c.id), 16);
+
+    participantes.forEach((clienteId, i) => {
+        const nAcoes = inteiro(1, 4);
+        for (let j = 0; j < nAcoes; j++) {
+            const calçado = rng() < 0.6;
+            const tipo = calçado ? "DOACAO_CALCADO" : "DEVOLUCAO_CAIXA";
+            const quantidade = inteiro(1, 3);
+            const dataRecebimento = isoDiasAtras(inteiro(10, 130));
+            const bonus = impacto.bonusDe(tipo);
+
+            const sorteio = rng();
+            let statusValidacao;
+            if (sorteio < 0.7) statusValidacao = "APROVADO";
+            else if (sorteio < 0.8) statusValidacao = "RECUSADO";
+            else if (sorteio < 0.93) statusValidacao = "EM_TRIAGEM";
+            else statusValidacao = "RECEBIDO";
+
+            const responsavel =
+                statusValidacao === "RECEBIDO" ? null : amostrar(OPERADORES);
+
+            let statusDestinacao = "PENDENTE";
+            let destino = null;
+            let dataDestinacao = null;
+
+            if (statusValidacao === "APROVADO") {
+                const sorteioDest = rng();
+                statusDestinacao = sorteioDest < 0.7 ? "DESTINADO" : "ENTREGUE";
+                destino = calçado ? amostrar(INSTITUICOES) : amostrar(impacto.DESTINOS_CAIXA.map((d) => d.chave));
+            } else if (statusValidacao === "RECUSADO") {
+                if (rng() < 0.8) {
+                    statusDestinacao = rng() < 0.75 ? "DESTINADO" : "ENTREGUE";
+                    destino = calçado ? "Reciclagem de materiais" : "RECICLAGEM";
+                }
+            }
+
+            const acao = {
+                id: acoes.length + 1,
+                cliente_id: clienteId,
+                tipo_acao: tipo,
+                quantidade,
+                data_recebimento: dataRecebimento,
+                ponto_coleta: amostrar(PONTOS_COLETA),
+                pontos_bonus: bonus,
+                status_validacao: statusValidacao,
+                status_destinacao: statusDestinacao,
+                destino,
+                data_destinacao: null,
+                observacao: calçado
+                    ? "Entrega voluntária de calçado em bom estado."
+                    : "Devolução de caixa de papelão da campanha.",
+                responsavel_validacao: responsavel,
+                created_at: dataRecebimento,
+                updated_at: dataRecebimento,
+            };
+
+            if (statusValidacao === "APROVADO") {
+                const validacao = new Date(new Date(acao.data_recebimento).getTime() + inteiro(1, 3) * 86400000);
+                const validacaoIso = validacao.toISOString();
+                const expiracao = regras.calcularDataExpiracao(validacaoIso, regras.REGRAS.validadeMeses);
+                pontos.push({
+                    id: idPonto.val,
+                    cliente_id: clienteId,
+                    tipo: "acumulo",
+                    pontos: bonus,
+                    data_movimentacao: validacaoIso,
+                    data_expiracao: expiracao ? expiracao.toISOString() : null,
+                    compras_id: 0,
+                    resgates_id: 0,
+                    origem: impacto.origemDe(tipo),
+                    origem_id: acao.id,
+                    create_at: validacaoIso,
+                });
+                idPonto.val++;
+                acao.updated_at = validacaoIso;
+            }
+
+            if (statusDestinacao !== "PENDENTE") {
+                const destinado = new Date(new Date(acao.data_recebimento).getTime() + inteiro(3, 9) * 86400000);
+                acao.data_destinacao = destinado.toISOString();
+                acao.updated_at = destinado.toISOString();
+            }
+
+            acoes.push(acao);
+        }
+    });
+
+    return acoes;
+}
+
+// ============================================================
 // Principal
 // ============================================================
 function main() {
@@ -376,6 +496,7 @@ function main() {
                     data_expiracao: expiracao ? expiracao.toISOString() : null,
                     compras_id: idCompra,
                     resgates_id: 0,
+                    origem: "COMPRA",
                     create_at: c.data_compra,
                 });
                 idCompra++;
@@ -396,6 +517,7 @@ function main() {
                     data_expiracao: null,
                     compras_id: 0,
                     resgates_id: m.resgates_id,
+                    origem: "RESGATE",
                     create_at: m.create_at,
                 });
             });
@@ -406,18 +528,26 @@ function main() {
         }
     }
 
+    const acoesImpacto = gerarCampanhaImpacto(clientes, pontos, { val: idPonto });
+
     if (!fs.existsSync(DIR)) fs.mkdirSync(DIR, { recursive: true });
     fs.writeFileSync(path.join(DIR, "cliente.json"), `${JSON.stringify(clientes, null, 4)}\n`, "utf8");
     fs.writeFileSync(path.join(DIR, "compras.json"), `${JSON.stringify(compras, null, 4)}\n`, "utf8");
     fs.writeFileSync(path.join(DIR, "pontos.json"), `${JSON.stringify(pontos, null, 4)}\n`, "utf8");
     fs.writeFileSync(path.join(DIR, "resgate.json"), `${JSON.stringify(resgates, null, 4)}\n`, "utf8");
+    fs.writeFileSync(path.join(DIR, "acoes_impacto.json"), `${JSON.stringify(acoesImpacto, null, 4)}\n`, "utf8");
 
     const resgateTotal = resgates.reduce((s, r) => s + r.pontos_utilizados, 0);
+    const bonusImpacto = pontos
+        .filter((m) => m.origem === "BONUS_DOACAO" || m.origem === "BONUS_CAIXA")
+        .reduce((s, m) => s + m.pontos, 0);
+    const participantes = new Set(acoesImpacto.map((a) => a.cliente_id)).size;
     console.log("Massa de dados gerada:");
     console.log(`  clientes : ${clientes.length}`);
     console.log(`  compras  : ${compras.length}`);
     console.log(`  pontos   : ${pontos.length} movimentações`);
     console.log(`  resgates : ${resgates.length} (${resgateTotal.toLocaleString("pt-BR")} pts)`);
+    console.log(`  impacto  : ${acoesImpacto.length} ações (${participantes} participantes, ${bonusImpacto} pts bônus)`);
     console.log(`  janela   : ${compras[0].data_compra.slice(0, 10)} a ${compras[compras.length - 1].data_compra.slice(0, 10)}`);
 }
 

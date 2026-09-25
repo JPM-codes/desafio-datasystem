@@ -1,0 +1,164 @@
+<%- include('../includes/header') %>
+    <%- include('../includes/navbar') %>
+        <%- include('../includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Campanha Impacto</div>
+                        <h1 class="page-title">Acompanhamento de Ações</h1>
+                        <div class="page-subtitle">Recebimento, triagem, aprovação e destinação das doações</div>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="/impacto" class="btn btn-light"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+                        <a href="/impacto/registrar" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Registrar ação</a>
+                    </div>
+                </div>
+
+                <% if (filtrosAtivos.ok) { %>
+                    <div class="alert alert-success d-flex align-items-center gap-2"><i class="bi bi-check-circle-fill"></i><%= filtrosAtivos.ok %></div>
+                    <% } %>
+                    <% if (filtrosAtivos.erro) { %>
+                        <div class="alert alert-danger d-flex align-items-center gap-2"><i class="bi bi-x-circle-fill"></i><%= filtrosAtivos.erro %></div>
+                        <% } %>
+
+                <!-- Filtros -->
+                <div class="card section-card mb-4">
+                    <form method="get" action="/impacto/acoes" class="row g-2 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label small text-muted">Tipo</label>
+                            <select name="tipo_acao" class="form-select">
+                                <option value="">Todos</option>
+                                <option value="DOACAO_CALCADO" <%= filtrosAtivos.tipo_acao === 'DOACAO_CALCADO' ? 'selected' : '' %>>Doação de calçado</option>
+                                <option value="DEVOLUCAO_CAIXA" <%= filtrosAtivos.tipo_acao === 'DEVOLUCAO_CAIXA' ? 'selected' : '' %>>Devolução de caixa</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small text-muted">Status da validação</label>
+                            <select name="status_validacao" class="form-select">
+                                <option value="">Todos</option>
+                                <% impactoStatuses.forEach(function (st) { %>
+                                    <option value="<%= st.nome %>" <%= filtrosAtivos.status_validacao === st.nome ? 'selected' : '' %>><%= st.rotulo %></option>
+                                    <% }); %>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small text-muted">Status da destinação</label>
+                            <select name="status_destinacao" class="form-select">
+                                <option value="">Todos</option>
+                                <% destinacaoStatuses.forEach(function (st) { %>
+                                    <option value="<%= st.nome %>" <%= filtrosAtivos.status_destinacao === st.nome ? 'selected' : '' %>><%= st.rotulo %></option>
+                                    <% }); %>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small text-muted">Ponto de coleta</label>
+                            <select name="ponto_coleta" class="form-select">
+                                <option value="">Todos</option>
+                                <% pontosColeta.forEach(function (p) { %>
+                                    <option value="<%= p %>" <%= filtrosAtivos.ponto_coleta === p ? 'selected' : '' %>><%= p %></option>
+                                    <% }); %>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-primary"><i class="bi bi-funnel me-2"></i>Filtrar</button>
+                            <a href="/impacto/acoes" class="btn btn-light">Limpar</a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Lista de ações -->
+                <div class="card section-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                        <h5 class="card-title mb-0"><i class="bi bi-clipboard-check text-primary"></i><%= acoes.length %> ação(ões) encontrada(s)</h5>
+                        <span class="small text-muted">Só ações <strong>APROVADAS</strong> concedem pontos de fidelidade</span>
+                    </div>
+
+                    <% if (!acoes.length) { %>
+                        <div class="text-center text-muted py-5">
+                            <div class="fs-1 mb-2"><i class="bi bi-inbox"></i></div>
+                            Nenhuma ação encontrada com os filtros atuais.
+                        </div>
+                        <% } else { %>
+                            <div class="table-responsive">
+                                <table class="table align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Cliente</th>
+                                            <th>Tipo</th>
+                                            <th class="text-end">Extra</th>
+                                            <th>Coleta</th>
+                                            <th>Recebido em</th>
+                                            <th>Validação</th>
+                                            <th>Destino</th>
+                                            <th>Bônus</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% acoes.forEach(function (a) { %>
+                                            <tr>
+                                                <td class="text-muted">#<%= a.id %></td>
+                                                <td><a href="/clientes/<%= a.cliente_id %>" class="text-decoration-none text-reset"><span class="avatar"><%= a.iniciais %></span></a>&nbsp;<%= a.cliente_nome %></td>
+                                                <td><span class="badge-soft"><i class="<%= a.icone %> me-1"></i><%= a.tipo_rotulo %></span></td>
+                                                <td class="text-end fw-bold"><%= a.quantidade %></td>
+                                                <td class="small"><%= a.ponto_coleta %></td>
+                                                <td class="small"><%= a.data %><%= a.data_destinacao ? '<br><span class="text-muted">dest. ' + a.data_destinacao + '</span>' : '' %></td>
+                                                <td><span class="st-badge <%= a.stv_classe %>"><%= a.stv_rotulo %></span></td>
+                                                <td>
+                                                    <% if (a.destino_rotulo) { %>
+                                                        <span class="st-badge <%= a.std_classe %>"><%= a.destino_rotulo %></span>
+                                                        <% } else { %>
+                                                            <span class="st-badge st-pendente">Pendente</span>
+                                                            <% } %>
+                                                </td>
+                                                <td class="text-end fw-bold"><%= a.pontos_bonus %> pts</td>
+                                                <td class="text-end">
+                                                    <details class="det">
+                                                        <summary class="btn btn-light btn-sm">Ações</summary>
+                                                        <div class="det-panel p-3">
+                                                            <div class="d-grid gap-2">
+                                                                <% if (a.status_validacao === 'RECEBIDO') { %>
+                                                                    <form method="post" action="/impacto/acoes/<%= a.id %>/validar">
+                                                                        <button class="btn btn-action w-100"><i class="bi bi-search me-2"></i>Iniciar triagem</button>
+                                                                    </form>
+                                                                    <% } %>
+                                                                    <% if (a.status_validacao === 'EM_TRIAGEM') { %>
+                                                                        <form method="post" action="/impacto/acoes/<%= a.id %>/aprovar">
+                                                                            <button class="btn btn-action w-100"><i class="bi bi-check-lg me-2"></i>Aprovar (+<%= a.pontos_bonus %> pts)</button>
+                                                                        </form>
+                                                                        <form method="post" action="/impacto/acoes/<%= a.id %>/recusar">
+                                                                            <button class="btn btn-light w-100"><i class="bi bi-x-lg me-2"></i>Recusar</button>
+                                                                        </form>
+                                                                        <% } %>
+                                                                        <% if ((a.tipo_acao === 'DEVOLUCAO_CAIXA') && (a.status_destinacao === 'PENDENTE')) { %>
+                                                                            <form method="post" action="/impacto/acoes/<%= a.id %>/destinar">
+                                                                                <select name="destino" class="form-select mb-2" required>
+                                                                                    <option value="">Destino da caixa…</option>
+                                                                                    <% destinosCaixa.forEach(function (d) { %>
+                                                                                        <option value="<%= d.nome %>"><%= d.rotulo %></option>
+                                                                                        <% }); %>
+                                                                                </select>
+                                                                                <button class="btn btn-action w-100"><i class="bi bi-truck me-2"></i>Destinar</button>
+                                                                            </form>
+                                                                            <% } %>
+                                                                            <% if (a.status_validacao === 'APROVADO' && a.status_destinacao === 'DESTINADO') { %>
+                                                                                <form method="post" action="/impacto/acoes/<%= a.id %>/entregar">
+                                                                                    <button class="btn btn-action w-100"><i class="bi bi-flag me-2"></i>Marcar como entregue</button>
+                                                                                </form>
+                                                                                <% } %>
+                                                            </div>
+                                                        </div>
+                                                    </details>
+                                                </td>
+                                            </tr>
+                                            <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <% } %>
+                </div>
+            </section>
+
+            <%- include('../includes/footer') %>

@@ -7,6 +7,7 @@
  */
 const store = require("../services/store");
 const regras = require("../services/regras");
+const impacto = require("../services/impacto");
 
 const base = store.carregar();
 const refer = new Date("2026-09-24T12:00:00Z");
@@ -186,6 +187,87 @@ teste("Soma dos níveis = total de clientes", dash.niveis.bronze + dash.niveis.p
 teste("Evolução de pontos possui dados (6 meses)", dash.evolucaoPontos.length === 6);
 const temGerados = dash.evolucaoPontos.some((m) => m.gerados > 0);
 teste("Evolução de pontos possui pontos gerados", temGerados);
+
+// ============================================================
+// 7. Campanha de Impacto
+// ============================================================
+console.log("\n7) Campanha de Impacto");
+
+const acoes = base.acoes_impacto || [];
+teste(`Ações de impacto geradas (atual: ${acoes.length})`, acoes.length >= 10);
+
+
+// Configuração centralizada
+teste(`bonusDoacao == 50 (atual: ${impacto.CONFIG.bonusDoacao})`, impacto.CONFIG.bonusDoacao === 50);
+teste(`bonusCaixa == 20 (atual: ${impacto.CONFIG.bonusCaixa})`, impacto.CONFIG.bonusCaixa === 20);
+
+// Estrutura das ações
+const statusValidos = impacto.VALIDACAO_STATUSES.map((s) => s.nome);
+const statusDestValidos = impacto.DESTINACAO_STATUSES.map((s) => s.nome);
+acoes.forEach((a) => {
+    if (!impacto.tipoValido(a.tipo_acao)) erro(`Ação ${a.id} com tipo inválido.`);
+    if (!statusValidos.includes(a.status_validacao)) erro(`Ação ${a.id} com status de validação inválido.`);
+    if (!statusDestValidos.includes(a.status_destinacao)) erro(`Ação ${a.id} com status de destinação inválido.`);
+    if (!(Number(a.quantidade) >= 1)) erro(`Ação ${a.id} sem quantidade.`);
+    if (Number(a.pontos_bonus) !== impacto.bonusDe(a.tipo_acao)) {
+        erro(`Ação ${a.id}: pontos_bonus não segue o config centralizado.`);
+    }
+    if (["DESTINADO", "ENTREGUE"].includes(a.status_destinacao) && !a.destino) {
+        erro(`Ação ${a.id} destinada sem destino informado.`);
+    }
+});
+ok("Estrutura das ações consistente.");
+
+// Pontuação única: 1 movimento BONUS_* por ação aprovada
+const bonusMov = base.pontos.filter((m) => m.origem === "BONUS_DOACAO" || m.origem === "BONUS_CAIXA");
+const aprovadas = acoes.filter((a) => a.status_validacao === "APROVADO");
+
+let integralidade = true;
+aprovadas.forEach((a) => {
+    const movs = bonusMov.filter((m) => m.origem_id === a.id);
+    if (movs.length !== 1) {
+        erro(`Ação aprovada ${a.id} deve ter exatamente 1 movimento de bônus (tem ${movs.length}).`);
+        integralidade = false;
+    } else if (movs[0].pontos !== Number(a.pontos_bonus)) {
+        erro(`Movimento da ação ${a.id} com valor divergente do pontos_bonus.`);
+        integralidade = false;
+    }
+});
+
+acoes.filter((a) => a.status_validacao !== "APROVADO").forEach((a) => {
+    const movs = bonusMov.filter((m) => m.origem_id === a.id);
+    if (movs.length) erro(`Ação não aprovada ${a.id} possui movimento de bônus.`);
+});
+
+if (aprovadas.length !== bonusMov.length) {
+    erro(`${aprovadas.length} ações aprovadas x ${bonusMov.length} movimentos de bônus (devem ser iguais).`);
+} else {
+    ok(`${aprovadas.length} ações aprovadas == ${bonusMov.length} movimentos de bônus (não há pontuação duplicada).`);
+}
+
+// Origens devidamente identificadas
+const origensSemCampo = base.pontos.filter((m) => !m.origem).length;
+if (origensSemCampo) aviso(`${origensSemCampo} movimentação(ões) sem campo 'origem' (retrocompatível).`);
+else ok("Todas as movimentações possuem origem identificada.");
+
+const bonusNoSaldo = bonusMov.every((m) => m.tipo === "acumulo");
+teste("Movimentos de impacto entram como acúmulo no saldo normal", bonusNoSaldo);
+
+const bonusExpiracaoOk = bonusMov.every((m) => {
+    const esperado = regras.adicionarMeses(m.data_movimentacao, regras.REGRAS.validadeMeses);
+    return esperado && String(m.data_expiracao).slice(0, 7) === esperado.toISOString().slice(0, 7);
+});
+teste("Bônus de impacto seguem a validade de 12 meses", bonusExpiracaoOk);
+
+const dashImpacto = store.dashboardImpacto(base, refer);
+const taxaEsperada = base.clientes.length
+    ? (store.rankingImpacto(base, refer).length / base.clientes.length) * 100
+    : 0;
+teste(
+    `Taxa de participação = participantes / total (${dashImpacto.totais.taxaParticipacao.toFixed(1)}% vs ${taxaEsperada.toFixed(1)}%)`,
+    Math.abs(dashImpacto.totais.taxaParticipacao - taxaEsperada) < 0.01
+);
+teste("Dashboard de impacto reporta 6 meses de evolução", dashImpacto.evolucao.length <= 6 && dashImpacto.evolucao.length > 0);
 
 // ============================================================
 // Fim

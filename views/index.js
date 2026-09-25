@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const regras = require("../services/regras");
 const store = require("../services/store");
+const impacto = require("../services/impacto");
 
 const DATA_REF = () => new Date();
 
@@ -12,9 +13,18 @@ router.use((req, res, next) => {
         data: regras.formatarData,
         moeda: (v) => regras.formatarMoeda(v),
         desconto: (v) => regras.calcularDesconto(v),
+        origem: (o) => impacto.rotuloOrigem(o),
+        tipoAcao: (t) => impacto.rotuloTipo(t),
     };
+    res.locals.impactoCfg = impacto.config();
+    res.locals.impactoStatuses = impacto.VALIDACAO_STATUSES;
+    res.locals.destinacaoStatuses = impacto.DESTINACAO_STATUSES;
+    res.locals.destinosCaixa = impacto.DESTINOS_CAIXA;
     next();
 });
+
+// Aceita formulários (criação e transições de estado de impacto)
+router.use(express.urlencoded({ extended: true }));
 
 const baseNomes = () => {
     const b = store.carregar();
@@ -152,6 +162,7 @@ router.get("/clientes/:id", (req, res) => {
             data: regras.formatarData(m.data_movimentacao),
             expiracao: regras.formatarData(m.data_expiracao),
             pontos: m.tipo === "acumulo" ? m.pontos : -Math.abs(m.pontos),
+            origem_rotulo: m.origem ? impacto.rotuloOrigem(m.origem) : "—",
         }));
 
     res.render("clientes/perfil", {
@@ -159,6 +170,7 @@ router.get("/clientes/:id", (req, res) => {
         rota: "/clientes",
         cliente,
         movimentacoes,
+        impactoCliente: store.resumoImpactoDoCliente(base, id),
         opcoes: opcoesDeFiltro(store.enriquecerClientes(base, DATA_REF())),
     });
 });
@@ -292,10 +304,12 @@ router.get("/historico", (req, res) => {
         .map((p) => ({
             data: p.data_movimentacao,
             tipo: "acumulo",
-            descricao: "acúmulo",
+            descricao: p.origem ? impacto.rotuloOrigem(p.origem) : "acúmulo",
             pontos: p.pontos,
             cliente: nomes[p.cliente_id] || "Cliente",
-            referencia: `Compra #${p.compras_id}`,
+            referencia: p.origem === "BONUS_DOACAO" || p.origem === "BONUS_CAIXA"
+                ? `Campanha Impacto #${p.origem_id}`
+                : `Compra #${p.compras_id}`,
             expiracao: p.data_expiracao,
         }));
 
@@ -351,6 +365,350 @@ router.get("/inteligencia", (req, res) => {
         emRisco,
         porRfm,
         dash,
+        dashImpacto: store.dashboardImpacto(base, DATA_REF()),
+        participantesImpacto: store.rankingImpacto(base, DATA_REF()),
+    });
+});
+
+// ============================================================
+// Impacto (campanha de logística reversa + ação social)
+// ============================================================
+function acoesParaView(base, q) {
+    const nomes = baseNomes();
+    let lista = [...(base.acoes_impacto || [])];
+    const filtro = q || {};
+
+    if (filtro.tipo_acao) lista = lista.filter((a) => a.tipo_acao === filtro.tipo_acao);
+    if (filtro.status_validacao) lista = lista.filter((a) => a.status_validacao === filtro.status_validacao);
+    if (filtro.status_destinacao) lista = lista.filter((a) => a.status_destinacao === filtro.status_destinacao);
+    if (filtro.cliente_id) lista = lista.filter((a) => a.cliente_id === parseInt(filtro.cliente_id));
+    if (filtro.ponto_coleta) {
+        const termo = String(filtro.ponto_coleta).trim().toLowerCase();
+        lista = lista.filter((a) => String(a.ponto_coleta || "").toLowerCase() === termo);
+    }
+
+    return lista
+        .sort((a, b) => new Date(b.data_recebimento) - new Date(a.data_recebimento))
+        .map((a) => {
+            const nome = nomes[a.cliente_id] || "Cliente";
+            const sv = impacto.statusValidacao(a.status_validacao);
+            const sd = impacto.statusDestinacao(a.status_destinacao);
+            return {
+                id: a.id,
+                cliente_id: a.cliente_id,
+                cliente_nome: nome,
+                iniciais: store.iniciaisDoNome(nome),
+                tipo_acao: a.tipo_acao,
+                tipo_rotulo: impacto.rotuloTipo(a.tipo_acao),
+                icone: impacto.TIPOS[a.tipo_acao]
+                    ? impacto.TIPOS[a.tipo_acao].icone
+                    : "bi-box",
+                quantidade: a.quantidade,
+                ponto_coleta: a.ponto_coleta,
+                data_recebimento: a.data_recebimento,
+                data: regras.formatarData(a.data_recebimento),
+                data_destinacao: regras.formatarData(a.data_destinacao),
+                pontos_bonus: a.pontos_bonus,
+                status_validacao: a.status_validacao,
+                stv_rotulo: sv.rotulo,
+                stv_classe: sv.classe,
+                status_destinacao: a.status_destinacao,
+                std_rotulo: sd.rotulo,
+                std_classe: sd.classe,
+                destino: a.destino,
+                destino_rotulo: impacto.rotuloDestino(a.destino),
+                observacao: a.observacao,
+                responsavel_validacao: a.responsavel_validacao,
+            };
+        });
+}
+
+function pontosDeColeta(base) {
+    const existentes = [...new Set((base.acoes_impacto || []).map((a) => a.ponto_coleta))].filter(Boolean);
+    const padrao = [
+        "Loja Franca - Centro",
+        "Loja Franca - Shopping",
+        "Loja Ribeirão Preto",
+        "Hub Logístico Cajuru",
+    ];
+    return [...new Set([...existentes, ...padrao])];
+}
+
+router.get("/impacto", (req, res) => {
+    const base = store.carregar();
+    const dash = store.dashboardImpacto(base, DATA_REF());
+    res.render("impacto/dashboard", {
+        titulo: "Impacto",
+        rota: "/impacto",
+        dash,
+        pontosColeta: pontosDeColeta(base),
+    });
+});
+
+router.get("/impacto/acoes", (req, res) => {
+    const base = store.carregar();
+    const lista = acoesParaView(base, req.query);
+    res.render("impacto/acoes", {
+        titulo: "Acompanhamento de Impacto",
+        rota: "/impacto",
+        acoes: lista,
+        filtrosAtivos: req.query,
+        pontosColeta: pontosDeColeta(base),
+    });
+});
+
+router.get("/impacto/registrar", (req, res) => {
+    const base = store.carregar();
+    const q = String(req.query.q || "").trim();
+    const busca = Boolean(q);
+
+    const hoje = new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    const regrasFormatoDataHoje =
+        hoje.getFullYear() + "-" + pad(hoje.getMonth() + 1) + "-" + pad(hoje.getDate());
+
+    let result = [];
+    let clienteSelecionado = null;
+
+    if (busca) {
+        const digitos = regras.soDigitos(q);
+        const candidatos = store
+            .enriquecerClientes(base, DATA_REF())
+            .filter((c) => regras.soDigitos(c.documento).includes(digitos))
+            .map((c) => ({
+                id: c.id,
+                nome: c.nome,
+                sobrenome: c.sobrenome,
+                cpf: c.documento,
+                iniciais: store.iniciaisDoNome(c.nome),
+                status: c.status,
+            }));
+        result = candidatos.slice(0, 5);
+        if (candidatos.length === 1) clienteSelecionado = candidatos[0];
+    }
+
+    if (!clienteSelecionado && req.query.cliente_id) {
+        const c = base.clientes.find((x) => x.id === parseInt(req.query.cliente_id));
+        if (c) {
+            clienteSelecionado = {
+                id: c.id,
+                nome: c.nome,
+                sobrenome: c.sobrenome,
+                cpf: c.documento,
+            };
+        }
+    }
+
+    res.render("impacto/registrar", {
+        titulo: "Registrar Ação de Impacto",
+        rota: "/impacto",
+        pontosColeta: pontosDeColeta(base),
+        q,
+        busca,
+        clientes: result,
+        clienteSelecionado,
+        regrasFormatoDataHoje,
+    });
+});
+
+// ============================================================
+// Transições de estado (web, via formulário simples)
+// ============================================================
+function findAcaoWeb(base, idParam) {
+    const id = parseInt(idParam);
+    if (isNaN(id)) return null;
+    return base.acoes_impacto.find((a) => a.id === id);
+}
+
+function redirErro(res, msg) {
+    return res.redirect("/impacto/acoes?erro=" + encodeURIComponent(msg));
+}
+
+router.post("/impacto", (req, res) => {
+    const base = store.carregar();
+    const body = req.body || {};
+    const tipo = body.tipo_acao;
+    if (!impacto.tipoValido(tipo)) return redirErro(res, "Tipo de ação inválido.");
+
+    const quantidade = Math.max(1, Math.round(Number(body.quantidade) || 1));
+    const pontoColeta = String(body.ponto_coleta || "").trim();
+    if (!pontoColeta) return redirErro(res, "Informe o ponto de coleta.");
+
+    const idCliente = parseInt(body.idCliente || body.selId || 0);
+    const cliente = base.clientes.find((c) => c.id === idCliente);
+    if (!cliente) return redirErro(res, "Selecione um cliente na busca por CPF.");
+
+    const { utilizado, limite } = store.limiteMensalDoCliente(base, cliente.id, tipo);
+    const novoUso = utilizado + 1;
+    if (limite !== null && limite >= 0 && novoUso > limite) {
+        return redirErro(
+            res,
+            `Limite mensal atingido para ${impacto.rotuloTipo(tipo).toLowerCase()} (${limite}/mês, usado ${utilizado}).`
+        );
+    }
+
+    const agora = store.agoraIso();
+    const acao = {
+        id: store.proximoId(base.acoes_impacto),
+        cliente_id: cliente.id,
+        tipo_acao: tipo,
+        quantidade,
+        data_recebimento: body.data_recebimento ? new Date(body.data_recebimento).toISOString() : agora,
+        ponto_coleta: pontoColeta,
+        pontos_bonus: impacto.bonusDe(tipo),
+        status_validacao: "RECEBIDO",
+        status_destinacao: "PENDENTE",
+        destino: null,
+        data_destinacao: null,
+        observacao: body.observacao ? String(body.observacao).trim() : "",
+        responsavel_validacao: null,
+        created_at: agora,
+        updated_at: agora,
+    };
+
+    base.acoes_impacto.push(acao);
+    store.salvar("acoes_impacto", base.acoes_impacto);
+    return res.redirect(
+        "/impacto/acoes?ponto_coleta=" + encodeURIComponent(pontoColeta) +
+        "&ok=" + encodeURIComponent(`Ação #${acao.id} registrada para ${cliente.nome}.`)
+    );
+});
+
+router.post("/impacto/acoes/:id/validar", (req, res) => {
+    const base = store.carregar();
+    const acao = findAcaoWeb(base, req.params.id);
+    if (!acao) return redirErro(res, "Ação não encontrada.");
+    if (acao.status_validacao === "APROVADO" || acao.status_validacao === "RECUSADO") {
+        return redirErro(res, `Ação já encerrada como ${acao.status_validacao}.`);
+    }
+    acao.status_validacao = "EM_TRIAGEM";
+    acao.responsavel_validacao = acao.responsavel_validacao || "Sistema";
+    acao.updated_at = store.agoraIso();
+    store.salvar("acoes_impacto", base.acoes_impacto);
+    return res.redirect("/impacto/acoes?ok=" + encodeURIComponent("Triagem iniciada."));
+});
+
+router.post("/impacto/acoes/:id/aprovar", (req, res) => {
+    const base = store.carregar();
+    const acao = findAcaoWeb(base, req.params.id);
+    if (!acao) return redirErro(res, "Ação não encontrada.");
+
+    const jaPontuada = base.pontos.find(
+        (m) => m.origem_id === acao.id && (m.origem === "BONUS_DOACAO" || m.origem === "BONUS_CAIXA")
+    );
+    if (jaPontuada || acao.status_validacao === "APROVADO") {
+        return redirErro(res, "Pontos já concedidos para esta ação.");
+    }
+    if (acao.status_validacao === "RECUSADO") {
+        return redirErro(res, "Ação recusada não pode ser aprovada.");
+    }
+
+    const agora = store.agoraIso();
+    const bonus = Number(acao.pontos_bonus) || impacto.bonusDe(acao.tipo_acao);
+    const expiracao = regras.calcularDataExpiracao(agora, regras.REGRAS.validadeMeses);
+    const movimento = {
+        id: store.proximoId(base.pontos),
+        cliente_id: acao.cliente_id,
+        tipo: "acumulo",
+        pontos: bonus,
+        data_movimentacao: agora,
+        data_expiracao: expiracao ? expiracao.toISOString() : null,
+        compras_id: 0,
+        resgates_id: 0,
+        origem: impacto.origemDe(acao.tipo_acao),
+        origem_id: acao.id,
+        create_at: agora,
+    };
+
+    acao.status_validacao = "APROVADO";
+    acao.responsavel_validacao = acao.responsavel_validacao || "Sistema";
+    acao.pontos_bonus = bonus;
+    acao.updated_at = agora;
+
+    base.pontos.push(movimento);
+    store.salvar("pontos", base.pontos);
+    store.salvar("acoes_impacto", base.acoes_impacto);
+
+    return res.redirect(
+        "/impacto/acoes?ok=" +
+        encodeURIComponent(`${bonus} pontos de bônus concedidos (${impacto.rotuloOrigem(movimento.origem)}).`)
+    );
+});
+
+router.post("/impacto/acoes/:id/recusar", (req, res) => {
+    const base = store.carregar();
+    const acao = findAcaoWeb(base, req.params.id);
+    if (!acao) return redirErro(res, "Ação não encontrada.");
+    if (acao.status_validacao === "APROVADO") {
+        return redirErro(res, "Não é possível recusar após a concessão de pontos.");
+    }
+    if (acao.status_validacao === "RECUSADO") return redirErro(res, "Ação já recusada.");
+    acao.status_validacao = "RECUSADO";
+    acao.responsavel_validacao = acao.responsavel_validacao || "Sistema";
+    acao.updated_at = store.agoraIso();
+    store.salvar("acoes_impacto", base.acoes_impacto);
+    return res.redirect("/impacto/acoes?ok=" + encodeURIComponent("Ação recusada. Nenhum ponto concedido."));
+});
+
+router.post("/impacto/acoes/:id/destinar", (req, res) => {
+    const base = store.carregar();
+    const acao = findAcaoWeb(base, req.params.id);
+    if (!acao) return redirErro(res, "Ação não encontrada.");
+    if (acao.status_validacao !== "APROVADO" && acao.status_validacao !== "RECUSADO") {
+        return redirErro(res, "Destinação só após aprovação ou recusa do item.");
+    }
+    const destino = String((req.body && req.body.destino) || "").trim();
+    if (!destino) return redirErro(res, "Informe o destino.");
+    if (acao.tipo_acao === "DEVOLUCAO_CAIXA" && !impacto.destinoCaixaValido(destino)) {
+        return redirErro(res, "Destino inválido para caixa.");
+    }
+    acao.destino = destino;
+    acao.status_destinacao = "DESTINADO";
+    acao.data_destinacao = store.agoraIso();
+    acao.updated_at = store.agoraIso();
+    store.salvar("acoes_impacto", base.acoes_impacto);
+    return res.redirect("/impacto/acoes?ok=" + encodeURIComponent("Destino registrado."));
+});
+
+router.post("/impacto/acoes/:id/entregar", (req, res) => {
+    const base = store.carregar();
+    const acao = findAcaoWeb(base, req.params.id);
+    if (!acao) return redirErro(res, "Ação não encontrada.");
+    acao.status_destinacao = "ENTREGUE";
+    acao.data_destinacao = acao.data_destinacao || store.agoraIso();
+    acao.updated_at = store.agoraIso();
+    store.salvar("acoes_impacto", base.acoes_impacto);
+    return res.redirect("/impacto/acoes?ok=" + encodeURIComponent("Ação marcada como entregue."));
+});
+
+router.get("/impacto/ranking", (req, res) => {
+    const base = store.carregar();
+    const ranking = store.rankingImpacto(base, DATA_REF());
+    res.render("impacto/ranking", {
+        titulo: "Ranking de Impacto",
+        rota: "/impacto",
+        podio: ranking.slice(0, 3),
+        demais: ranking.slice(3),
+    });
+});
+
+router.get("/impacto/relatorio", (req, res) => {
+    const base = store.carregar();
+    const rel = store.relatorioImpacto(
+        base,
+        {
+            data_inicio: req.query.data_inicio || null,
+            data_fim: req.query.data_fim || null,
+            ponto_coleta: req.query.ponto_coleta || null,
+        },
+        DATA_REF()
+    );
+    res.render("impacto/relatorio", {
+        titulo: "Relatório da Campanha Impacto",
+        rota: "/impacto",
+        rel,
+        filtrosAtivos: req.query,
+        pontosColeta: pontosDeColeta(base),
     });
 });
 

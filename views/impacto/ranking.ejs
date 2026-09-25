@@ -1,0 +1,87 @@
+<%- include('../includes/header') %>
+    <%- include('../includes/navbar') %>
+        <%- include('../includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Campanha Impacto</div>
+                        <h1 class="page-title">Ranking de Impacto</h1>
+                        <div class="page-subtitle">Engajamento dos clientes na campanha, separado do ranking de fidelidade (RFM)</div>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="/impacto/acoes" class="btn btn-light"><i class="bi bi-clipboard-check me-2"></i>Acompanhamento</a>
+                    </div>
+                </div>
+
+                <!-- Pódio -->
+                <div class="row g-3 mb-4 justify-content-center">
+                    <% if (!podio.length) { %>
+                        <div class="col-12">
+                            <div class="card section-card text-center text-muted py-5">
+                                Nenhum cliente participou da campanha ainda.
+                            </div>
+                        </div>
+                        <% } else { %>
+                            <% podio.forEach(function (row, index) { %>
+                                <div class="col-6 col-md-4">
+                                    <div class="card podium <%= 'podium-' + (index + 1) %>">
+                                        <div class="podium-rank"><%= index + 1 %>º</div>
+                                        <div class="d-flex flex-column align-items-center gap-1 text-center">
+                                            <span class="avatar-lg"><%= row.iniciais %></span>
+                                            <div class="fw-bold"><%= row.nome %></div>
+                                            <div class="small text-muted"><%= row.acoes %> ação(ões) · <%= row.pontosBonus.toLocaleString('pt-BR') %> pts</div>
+                                        </div>
+                                        <div class="d-flex justify-content-around w-100 mt-3 small text-muted">
+                                            <span><i class="bi bi-box2-heart me-1"></i><%= row.calcados %></span>
+                                            <span><i class="bi bi-box-seam me-1"></i><%= row.caixas %></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }); %>
+                                    <% } %>
+                </div>
+
+                <!-- Demais -->
+                <div class="card section-card">
+                    <h5 class="card-title mb-3"><i class="bi bi-list-ol text-primary"></i>Classificação completa</h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Pos.</th>
+                                    <th>Cliente</th>
+                                    <th class="text-end">Calçados</th>
+                                    <th class="text-end">Caixas</th>
+                                    <th class="text-end">Ações</th>
+                                    <th class="text-end">Pontos de impacto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% podio.forEach(function (row, index) { %>
+                                    <tr class="table-active">
+                                        <td><span class="rank-pos <%= 'top-' + (index + 1) %>"><%= index + 1 %>º</span></td>
+                                        <td><a href="/clientes/<%= row.cliente_id %>" class="text-decoration-none text-reset"><span class="avatar"><%= row.iniciais %></span> <%= row.nome %></a></td>
+                                        <td class="text-end"><%= row.calcados %></td>
+                                        <td class="text-end"><%= row.caixas %></td>
+                                        <td class="text-end"><%= row.acoes %></td>
+                                        <td class="text-end fw-bold"><%= row.pontosBonus.toLocaleString('pt-BR') %></td>
+                                    </tr>
+                                    <% }); %>
+                                        <% demais.forEach(function (row, index) { %>
+                                            <tr>
+                                                <td><span class="rank-pos"><%= podio.length + index + 1 %>º</span></td>
+                                                <td><a href="/clientes/<%= row.cliente_id %>" class="text-decoration-none text-reset"><span class="avatar"><%= row.iniciais %></span> <%= row.nome %></a></td>
+                                                <td class="text-end"><%= row.calcados %></td>
+                                                <td class="text-end"><%= row.caixas %></td>
+                                                <td class="text-end"><%= row.acoes %></td>
+                                                <td class="text-end fw-bold"><%= row.pontosBonus.toLocaleString('pt-BR') %></td>
+                                            </tr>
+                                            <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <%- include('../includes/footer') %>

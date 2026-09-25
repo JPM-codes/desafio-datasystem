@@ -1068,3 +1068,109 @@ body {
         font-size: 1.45rem;
     }
 }
+/* ============ Impacto ============ */
+.st-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: .72rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.st-recebido { background: #eff6ff; color: #2563eb; }
+.st-emtriagem { background: #fff6df; color: #b45309; }
+.st-aprovado { background: #e7f8f0; color: #059669; }
+.st-recusado { background: #fdeeee; color: #e11d48; }
+.st-destinado { background: #f4f0ff; color: #7c3aed; }
+.st-entregue { background: #e0f2fe; color: #0369a1; }
+.st-pendente { background: #eef1f6; color: #64748b; }
+.st-calcados { background: #fff6df; color: #b45309; }
+.st-caixas { background: #eef1f6; color: #64748b; }
+
+/* pódio */
+.podium {
+    position: relative;
+    text-align: center;
+    padding: 1.4rem 1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .15rem;
+}
+.podium-rank {
+    position: absolute;
+    top: .6rem;
+    left: .9rem;
+    font-weight: 800;
+    color: var(--accent);
+}
+.podium-1 { border-top: 4px solid var(--blue); }
+.podium-2 { border-top: 4px solid #64748b; }
+.podium-3 { border-top: 4px solid #d97706; }
+.avatar-lg {
+    width: 52px; height: 52px;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--blue-2));
+    color: #fff; font-weight: 700; font-size: 1rem;
+}
+.rank-pos { font-weight: 700; color: var(--muted); }
+.rank-pos.top-1 { color: var(--blue); }
+.rank-pos.top-2 { color: #64748b; }
+.rank-pos.top-3 { color: #d97706; }
+
+/* evolução (barras agrupadas) */
+.col-tipo { flex: 1 1 0; display: flex; flex-direction: column; align-items: center; }
+.bar-group { display: flex; align-items: flex-end; gap: 4px; height: 100%; }
+.series-calcados { background: linear-gradient(180deg, #fbbf24, #d97706); }
+.series-caixas { background: linear-gradient(180deg, #94a3b8, #64748b); }
+.series-participantes { background: linear-gradient(180deg, #60a5fa, var(--blue)); }
+.legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; }
+.legend-calcados { background: #fbbf24; }
+.legend-caixas { background: #94a3b8; }
+.legend-participantes { background: #60a5fa; }
+
+/* donut */
+.donut {
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center; justify-content: center;
+}
+.donut-hole {
+    width: 92px; height: 92px;
+    background: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center; justify-content: center;
+    font-weight: 800; font-size: 1.25rem;
+}
+.badge-soft {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 8px;
+    background: #eef3ff;
+    color: var(--blue);
+    font-size: .74rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.det { position: relative; }
+.det summary { list-style: none; cursor: pointer; }
+.det summary::-webkit-details-marker { display: none; }
+.det-panel {
+    position: absolute;
+    right: 0; top: calc(100% + 6px);
+    min-width: 230px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lg);
+    z-index: 30;
+    text-align: left;
+}

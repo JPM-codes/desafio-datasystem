@@ -118,6 +118,49 @@
                         <span>Inteligência</span>
                 </a>
 
+                <!-- Impacto -->
+                <li class="nav-item dropdown list-unstyled">
+                        <a class="nav-link dropdown-toggle <%= rota.startsWith('/impacto') ? 'active' : '' %>" href="#"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                <i class="bi bi-box2-heart"></i>
+                                <span>Impacto</span>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                                <li>
+                                        <a class="dropdown-item" href="/impacto">
+                                                <i class="bi bi-speedometer2 me-2"></i>
+                                                Dashboard de Impacto
+                                        </a>
+                                </li>
+                                <li>
+                                        <a class="dropdown-item" href="/impacto/registrar">
+                                                <i class="bi bi-plus-circle me-2"></i>
+                                                Registrar ação
+                                        </a>
+                                </li>
+                                <li>
+                                        <a class="dropdown-item" href="/impacto/acoes">
+                                                <i class="bi bi-clipboard-check me-2"></i>
+                                                Acompanhamento
+                                        </a>
+                                </li>
+                                <li>
+                                        <a class="dropdown-item" href="/impacto/ranking">
+                                                <i class="bi bi-trophy me-2"></i>
+                                                Ranking de Impacto
+                                        </a>
+                                </li>
+                                <li>
+                                        <a class="dropdown-item" href="/impacto/relatorio">
+                                                <i class="bi bi-file-earmark-bar-graph me-2"></i>
+                                                Relatório da campanha
+                                        </a>
+                                </li>
+                        </ul>
+                </li>
+
                 <!-- Movimentações -->
                 <a class="nav-link <%= rota === '/historico' ? 'active' : '' %>" href="/historico">
                         <i class="bi bi-arrow-left-right"></i>
