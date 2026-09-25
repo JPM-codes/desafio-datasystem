@@ -13,11 +13,10 @@
 
                 <div class="row g-3">
                     <div class="col-xl-7">
-                        <div class="card section-card">
+                        <form id="form-compra" class="card section-card">
                             <h5 class="card-title mb-3"><i class="bi bi-cart3 text-primary"></i>Dados da compra</h5>
 
-                            <div class="mb-3"><label class="form-label">Cliente *</label><select class="form-select"
-                                    id="cliente-select">
+                            <div class="mb-3"><label class="form-label">Cliente *</label><select class="form-select" id="cliente-select" required>
                                     <% if ((typeof clientes !== 'undefined') && clientes.length) { %>
                                         <% clientes.forEach(function (cliente) { %>
                                             <option value="<%= cliente.id %>" data-pontos="<%= cliente.pontos %>">
@@ -31,27 +30,31 @@
                             </select></div>
 
                             <div class="row g-3 mb-3">
-                                <div class="col-md-6"><label class="form-label">Valor da compra (R$) *</label><input
-                                        type="number" step="0.01" min="0" class="form-control form-control-lg"
-                                        id="valor-compra" placeholder="0,00"></div>
-                                <div class="col-md-6"><label class="form-label">Data da compra</label><input type="date"
-                                        class="form-control form-control-lg" id="data-compra"
-                                        value="<%= new Date().toISOString().slice(0, 10) %>"></div>
+                                <div class="col-md-6"><label class="form-label">Produto</label>
+                                    <select class="form-select" id="input-produto">
+                                        <option>Venda livre</option>
+                                        <option>Tênis Esportivo</option><option>Tênis Casual</option><option>Tênis Lazer</option>
+                                        <option>Tênis Corrida</option><option>Sandália Conforto</option><option>Sandália Elegante</option>
+                                        <option>Chinelo Premium</option><option>Scarpin Salto</option><option>Sapatilha Básica</option>
+                                        <option>Mocassim Clássico</option><option>Bota Adventure</option><option>Social Couro</option>
+                                    </select></div>
+                                <div class="col-md-6"><label class="form-label">Quantidade</label>
+                                    <input type="number" min="1" value="1" class="form-control" id="input-qtd"></div>
+                                <div class="col-md-6"><label class="form-label">Valor total da compra (R$) *</label>
+                                    <input type="number" step="0.01" min="0" class="form-control form-control-lg" id="valor-compra" placeholder="0,00" required></div>
+                                <div class="col-md-6"><label class="form-label">Data da compra</label>
+                                    <input type="date" class="form-control form-control-lg" id="data-compra" value="<%= new Date().toISOString().slice(0, 10) %>"></div>
                             </div>
 
-                            <div class="alert-card mb-3"><i
-                                    class="bi bi-info-circle me-2"></i>Os pontos são calculados automaticamente conforme o
-                                nível de fidelidade do cliente.</div>
+                            <div class="alert-card mb-3" id="feedback" style="display:none"></div>
 
-                            <div class="text-end"><button class="btn btn-primary btn-lg px-4"><i
-                                        class="bi bi-check-lg me-2"></i>Registrar compra</button></div>
-                        </div>
+                            <div class="text-end"><button class="btn btn-primary btn-lg px-4" type="submit"><i class="bi bi-check-lg me-2"></i>Registrar compra</button></div>
+                        </form>
                     </div>
 
                     <div class="col-xl-5">
                         <div class="card section-card h-100">
-                            <h5 class="card-title mb-3"><i class="bi bi-calculator text-primary"></i>Cálculo de pontos
-                            </h5>
+                            <h5 class="card-title mb-3"><i class="bi bi-calculator text-primary"></i>Cálculo de pontos</h5>
                             <div class="d-flex align-items-center gap-3 mb-3">
                                 <span class="avatar avatar-lg bg-gradient"><i class="bi bi-person"></i></span>
                                 <div>
@@ -75,15 +78,17 @@
                                 </div>
                             </div>
 
-                            <div class="alert-card"><i class="bi bi-stars me-2"></i>Níveis: <strong>Bronze</strong> até
-                                999 pts · <strong>Prata</strong> até 4.999 pts · <strong>Ouro</strong> 5.000+ pts</div>
+                            <div class="alert-card"><i class="bi bi-stars me-2"></i>Níveis: <strong>Bronze</strong> até <%= (regrasCfg.niveis[1].minimo - 1).toLocaleString('pt-BR') %> pts · <strong>Prata</strong> até <%= (regrasCfg.niveis[2].minimo - 1).toLocaleString('pt-BR') %> pts · <strong>Ouro</strong> <%= regrasCfg.niveis[2].minimo.toLocaleString('pt-BR') %>+ pts.</div>
                         </div>
                     </div>
                 </div>
             </section>
 
             <script>
-                const bonusNivel = { 'Bronze': 0, 'Prata': 0.10, 'Ouro': 0.20 };
+                const bonusNivel = {};
+                <% regrasCfg.niveis.forEach(function (n) { %>
+                    bonusNivel['<%= n.nome %>'] = <%= n.bonus * 100 %>;
+                    <% }); %>
                 const sel = document.getElementById('cliente-select');
                 const valCompra = document.getElementById('valor-compra');
                 const elNome = document.getElementById('resumo-nome');
@@ -101,19 +106,54 @@
 
                     const valor = Math.max(0, Number(valCompra.value.replace(',', '.')) || 0);
                     const base = Math.round(valor);
-                    const bonus = Math.round(base * (bonusNivel[nivel] || 0));
+                    const bonus = Math.round(base * ((bonusNivel[nivel] || 0) / 100));
                     const total = base + bonus;
 
                     elNome.textContent = nome;
                     elNivel.innerHTML = 'Nível: <span class="badge-level ' + (nivel === 'Ouro' ? 'gold' : nivel === 'Prata' ? 'silver' : 'bronze') + '">' + nivel + '</span> · Saldo: ' + pontos.toLocaleString('pt-BR') + ' pts';
                     elBase.textContent = base.toLocaleString('pt-BR');
-                    elBonus.textContent = (bonusNivel[nivel] * 100) + '%  (+' + bonus + ')';
+                    elBonus.textContent = (bonusNivel[nivel] || 0) + '%  (+' + bonus + ')';
                     elTotal.textContent = total.toLocaleString('pt-BR');
                 }
 
                 sel.addEventListener('change', atualizar);
                 valCompra.addEventListener('input', atualizar);
+                document.getElementById('data-compra').value = new Date().toISOString().slice(0, 10);
                 atualizar();
+
+                const alerta = (msg, ok) => {
+                    const f = document.getElementById('feedback');
+                    f.style.display = 'block';
+                    f.className = 'alert-card mb-3 ' + (ok ? '' : 'alert-danger');
+                    f.innerHTML = (ok ? '<i class="bi bi-check-circle me-2"></i>' : '<i class="bi bi-x-circle me-2"></i>') + msg;
+                };
+
+                document.getElementById('form-compra').addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    const payload = {
+                        cliente_id: Number(sel.value),
+                        produto: document.getElementById('input-produto').value,
+                        quantidade: Number(document.getElementById('input-qtd').value) || 1,
+                        valor: Number(document.getElementById('valor-compra').value.replace(',', '.')) || 0,
+                        data_compra: document.getElementById('data-compra').value || null,
+                    };
+                    try {
+                        const resp = await fetch('/api/compras', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload),
+                        });
+                        const json = await resp.json();
+                        if (!resp.ok) {
+                            alerta(json.message || 'Não foi possível registrar.', false);
+                            return;
+                        }
+                        alerta(json.mensagem, true);
+                        setTimeout(() => location.href = '/compras', 700);
+                    } catch (err) {
+                        alerta('Falha ao registrar a compra.', false);
+                    }
+                });
             </script>
 
             <%- include('../includes/footer') %>

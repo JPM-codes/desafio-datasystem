@@ -13,11 +13,10 @@
 
                 <div class="row g-3">
                     <div class="col-xl-7">
-                        <div class="card section-card">
+                        <form id="form-resgate" class="card section-card">
                             <h5 class="card-title mb-3"><i class="bi bi-gift text-primary"></i>Dados do resgate</h5>
 
-                            <div class="mb-3"><label class="form-label">Cliente *</label><select class="form-select"
-                                    id="cliente-select">
+                            <div class="mb-3"><label class="form-label">Cliente *</label><select class="form-select" id="cliente-select" required>
                                     <% if ((typeof clientes !== 'undefined') && clientes.length) { %>
                                         <% clientes.forEach(function (cliente) { %>
                                             <option value="<%= cliente.id %>" data-pontos="<%= cliente.pontos %>">
@@ -32,17 +31,16 @@
 
                             <div class="mb-3"><label class="form-label">Pontos para resgate *</label>
                                 <div class="input-group input-group-lg">
-                                    <input type="number" min="0" class="form-control" id="pontos-resgate" value="500">
+                                    <input type="number" min="0" step="100" class="form-control" id="pontos-resgate" value="500" required>
                                     <span class="input-group-text">pontos</span>
                                 </div>
+                                <div class="form-text">Mínimo: <%= regrasCfg.conversao.pontos %> pontos (= <%= regrasCfg.conversao.valorReal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %>).</div>
                             </div>
 
-                            <div class="alert-card mb-3"><i class="bi bi-info-circle me-2"></i>100 pontos = R$ 5,00 de
-                                desconto em qualquer compra.</div>
+                            <div class="alert-card mb-3" id="feedback" style="display:none"></div>
 
-                            <div class="text-end"><button class="btn btn-primary btn-lg px-4" id="btn-resgate"><i
-                                        class="bi bi-gift me-2"></i>Realizar resgate</button></div>
-                        </div>
+                            <div class="text-end"><button class="btn btn-primary btn-lg px-4" type="submit"><i class="bi bi-gift me-2"></i>Realizar resgate</button></div>
+                        </form>
                     </div>
 
                     <div class="col-xl-5">
@@ -72,8 +70,7 @@
                                 </div>
                             </div>
 
-                            <div class="alert-card" id="alerta-saldo" style="display:none"><i
-                                    class="bi bi-exclamation-triangle me-2"></i><span id="alerta-texto"></span></div>
+                            <div class="alert-card" id="alerta-saldo" style="display:none"><i class="bi bi-exclamation-triangle me-2"></i><span id="alerta-texto"></span></div>
                         </div>
                     </div>
                 </div>
@@ -89,9 +86,13 @@
                 const elDesconto = document.getElementById('resumo-desconto');
                 const alerta = document.getElementById('alerta-saldo');
                 const alertaTexto = document.getElementById('alerta-texto');
+                const conversao = <%= JSON.stringify(regrasCfg.conversao) %>;
 
                 function reais(valor) {
                     return 'R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                }
+                function descontoDe(pontos) {
+                    return pontos / conversao.pontos * conversao.valorReal;
                 }
 
                 function atualizar() {
@@ -106,8 +107,8 @@
                     elNome.textContent = nome;
                     elNivel.innerHTML = 'Nível: <span class="badge-level ' + (nivel === 'Ouro' ? 'gold' : nivel === 'Prata' ? 'silver' : 'bronze') + '">' + nivel + '</span>';
                     elSaldo.textContent = pontos.toLocaleString('pt-BR') + ' pts';
-                    elValor.textContent = reais(pontos * 0.05);
-                    elDesconto.textContent = reais(resgate * 0.05);
+                    elValor.textContent = reais(descontoDe(pontos));
+                    elDesconto.textContent = reais(descontoDe(resgate));
 
                     if (resgate > pontos) {
                         alertaTexto.textContent = 'O resgate solicitado excede o saldo do cliente.';
@@ -123,6 +124,41 @@
                 sel.addEventListener('change', atualizar);
                 inputPontos.addEventListener('input', atualizar);
                 atualizar();
+
+                const alertaFb = (msg, ok) => {
+                    const f = document.getElementById('feedback');
+                    f.style.display = 'block';
+                    f.className = 'alert-card mb-3 ' + (ok ? '' : 'alert-danger');
+                    f.innerHTML = (ok ? '<i class="bi bi-check-circle me-2"></i>' : '<i class="bi bi-x-circle me-2"></i>') + msg;
+                };
+
+                document.getElementById('form-resgate').addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    const payload = {
+                        cliente_id: Number(sel.value),
+                        pontos: Number(inputPontos.value) || 0,
+                    };
+                    if (payload.pontos > Number(sel.options[sel.selectedIndex].dataset.pontos)) {
+                        alertaFb('Resgate excede o saldo do cliente.', false);
+                        return;
+                    }
+                    try {
+                        const resp = await fetch('/api/resgates', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload),
+                        });
+                        const json = await resp.json();
+                        if (!resp.ok) {
+                            alertaFb(json.message || 'Não foi possível realizar o resgate.', false);
+                            return;
+                        }
+                        alertaFb('Resgate de ' + payload.pontos.toLocaleString('pt-BR') + ' pts realizado! (' + reais(descontoDe(payload.pontos)) + ' de desconto)', true);
+                        setTimeout(() => location.href = '/resgates', 700);
+                    } catch (err) {
+                        alertaFb('Falha ao realizar o resgate.', false);
+                    }
+                });
             </script>
 
             <%- include('../includes/footer') %>

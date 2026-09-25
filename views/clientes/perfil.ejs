@@ -1,0 +1,271 @@
+<%- include('../includes/header') %>
+    <%- include('../includes/navbar') %>
+        <%- include('../includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Cadastros</div>
+                        <h1 class="page-title">Perfil do cliente</h1>
+                        <div class="page-subtitle">Visão completa de <strong><%= cliente.nome %></strong></div>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap align-items-center">
+                        <a href="/clientes" class="btn btn-light"><i class="bi bi-arrow-left me-2"></i>Clientes</a>
+                        <a href="/clientes/edit/<%= cliente.id %>" class="btn btn-primary"><i class="bi bi-pencil me-2"></i>Editar</a>
+                    </div>
+                </div>
+
+                <!-- Cabeçalho do cliente -->
+                <div class="card section-card mb-4">
+                    <div class="d-flex flex-wrap align-items-center gap-4">
+                        <span class="avatar avatar-lg bg-gradient" style="width:72px;height:72px;font-size:1.4rem;border-radius:20px"><%= cliente.iniciais %></span>
+                        <div class="flex-grow-1" style="min-width:220px">
+                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <h3 class="fw-bold mb-0"><%= cliente.nome %></h3>
+                                <span class="badge-level <%= cliente.nivel.classe %>"><%= cliente.nivel.nome %></span>
+                                <span class="badge-status <%= cliente.status.classe %>"><%= cliente.status.nome.toLowerCase() %></span>
+                            </div>
+                            <div class="text-muted small mt-1">
+                                <%= cliente.tipo_documento %> <%= cliente.documento %> · cadastro em <%= fmt.data(cliente.data_cadastro || cliente.create_at) %>
+                            </div>
+                            <div class="d-flex gap-2 flex-wrap mt-2">
+                                <% (cliente.tags || []).forEach(function (tag) { %>
+                                    <span class="tag-chip"><%= tag %></span>
+                                    <% }); %>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-4 flex-wrap">
+                            <div class="text-center">
+                                <div class="fs-2xl fw-800 text-primary"><%= cliente.pontosDisponiveis.toLocaleString('pt-BR') %></div>
+                                <small class="text-muted">pontos disponíveis</small>
+                                <div class="small text-muted">≈ <%= fmt.moeda(cliente.valorPotencial) %> em descontos</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="fs-2xl fw-800"><%= cliente.pontosAcumulados.toLocaleString('pt-BR') %></div>
+                                <small class="text-muted">pontos acumulados</small>
+                            </div>
+                            <div class="text-center">
+                                <div class="fs-2xl fw-800 text-danger"><%= cliente.pontosResgatados.toLocaleString('pt-BR') %></div>
+                                <small class="text-muted">pontos resgatados</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <% if (cliente.proximoNivel) { %>
+                        <% var pctNivel = Math.min(100, Math.round(cliente.pontosAcumulados / cliente.proximoNivel.minimo * 100)); %>
+                            <div class="alert-card mt-3">
+                                <i class="bi bi-stars me-2"></i>Faltam <strong><%= cliente.proximoNivel.pontosRestantes.toLocaleString('pt-BR') %></strong> pontos para o nível
+                                <strong><%= cliente.proximoNivel.nome %></strong>.
+                                <div class="progress mt-2" style="height:8px">
+                                    <div class="progress-bar" role="progressbar" style="width:<%= pctNivel %>%"></div>
+                                </div>
+                            </div>
+                            <% } %>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <!-- RFM e relação -->
+                    <div class="col-lg-4">
+                        <div class="card section-card h-100">
+                            <h5 class="card-title mb-3"><i class="bi bi-grid-3x3-gap text-primary"></i>Comportamento (RFM)</h5>
+                            <div class="stat-grid mb-3">
+                                <div class="stat-mini">
+                                    <div class="label">Recência</div>
+                                    <div class="value"><%= cliente.rfm.recencia !== null ? cliente.rfm.recencia + ' dias' : '—' %></div>
+                                </div>
+                                <div class="stat-mini">
+                                    <div class="label">Frequência</div>
+                                    <div class="value"><%= cliente.rfm.frequencia %> compras</div>
+                                </div>
+                            </div>
+                            <div class="stat-grid mb-3">
+                                <div class="stat-mini">
+                                    <div class="label">Monetário</div>
+                                    <div class="value text-primary"><%= fmt.moeda(cliente.rfm.monetario) %></div>
+                                </div>
+                                <div class="stat-mini">
+                                    <div class="label">Ticket médio</div>
+                                    <div class="value"><%= fmt.moeda(cliente.ticketMedio) %></div>
+                                </div>
+                            </div>
+                            <div class="stat-grid">
+                                <div class="stat-mini">
+                                    <div class="label">Última compra</div>
+                                    <div class="value"><%= fmt.data(cliente.ultimaCompra) %></div>
+                                </div>
+                                <div class="stat-mini">
+                                    <div class="label">Dias sem comprar</div>
+                                    <div class="value"><%= cliente.diasSemComprar !== null ? cliente.diasSemComprar : '—' %></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dados pessoais -->
+                    <div class="col-lg-4">
+                        <div class="card section-card h-100">
+                            <h5 class="card-title mb-3"><i class="bi bi-person-vcard text-primary"></i>Dados pessoais</h5>
+                            <ul class="list-unstyled perfil-list">
+                                <li><span>Email</span><strong><%= cliente.email || '—' %></strong></li>
+                                <li><span>WhatsApp</span><strong><%= cliente.whatsapp || '—' %></strong></li>
+                                <li><span>Nascimento</span><strong><%= cliente.data_nascimento ? fmt.data(cliente.data_nascimento) : '—' %></strong></li>
+                                <li><span>Numeração</span><strong><%= cliente.numero_calcado || '—' %></strong></li>
+                                <li><span>Cidade / Bairro</span><strong><%= [cliente.cidade, cliente.bairro].filter(Boolean).join(' — ') || '—' %></strong></li>
+                                <li>
+                                    <span>Comunicação</span>
+                                    <strong><%= cliente.consentimento_comunicacao ? 'Consentiu contato' : 'Sem consentimento' %></strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Preferências -->
+                    <div class="col-lg-4">
+                        <div class="card section-card h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title"><i class="bi bi-sliders text-primary"></i>Preferências</h5>
+                                <button class="btn btn-sm btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#editar-preferencias" aria-expanded="false"><i class="bi bi-pencil me-1"></i>Editar</button>
+                            </div>
+
+                            <div class="pref-block"><span class="pref-label">Categorias</span>
+                                <% (cliente.preferencias.categorias || []).forEach(function (c) { %><span class="tag-chip"><%= c %></span><% }); %>
+                                    <% if (!(cliente.preferencias.categorias || []).length) { %><span class="text-muted small">—</span><% } %></div>
+                            <div class="pref-block"><span class="pref-label">Estilos</span>
+                                <% (cliente.preferencias.estilos || []).forEach(function (c) { %><span class="tag-chip"><%= c %></span><% }); %>
+                                    <% if (!(cliente.preferencias.estilos || []).length) { %><span class="text-muted small">—</span><% } %></div>
+                            <div class="pref-block"><span class="pref-label">Prioridades</span>
+                                <% (cliente.preferencias.prioridades || []).forEach(function (c) { %><span class="tag-chip"><%= c %></span><% }); %>
+                                    <% if (!(cliente.preferencias.prioridades || []).length) { %><span class="text-muted small">—</span><% } %></div>
+                            <div class="pref-block"><span class="pref-label">Cores</span>
+                                <% (cliente.preferencias.cores || []).forEach(function (c) { %><span class="tag-chip"><%= c %></span><% }); %>
+                                    <% if (!(cliente.preferencias.cores || []).length) { %><span class="text-muted small">—</span><% } %></div>
+                            <div class="pref-block"><span class="pref-label">Faixa de preço</span><span class="tag-chip"><%= cliente.preferencias.faixa_preco || '—' %></span></div>
+
+                            <div class="collapse mt-3" id="editar-preferencias">
+                                <form id="form-tags">
+                                    <label class="form-label">Tags do cliente</label>
+                                    <input class="form-control mb-2" id="input-tags" value="<%= (cliente.tags || []).join(', ') %>" placeholder="ex.: VIP, Clube do tenista">
+                                    <div class="alert-card small mb-3"><i class="bi bi-info-circle me-2"></i>Tags manuais entram no perfil e na lista de clientes.</div>
+                                    <button class="btn btn-primary btn-sm" type="submit"><i class="bi bi-check-lg me-1"></i>Salvar tags</button>
+                                    <span class="small text-muted ms-2" id="status-salvar"></span>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Compras recentes -->
+                <div class="card section-card mb-4">
+                    <h5 class="card-title mb-3"><i class="bi bi-cart3 text-primary"></i>Compras recentes</h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Produto</th>
+                                    <th class="text-end">Qtd.</th>
+                                    <th class="text-end">Valor</th>
+                                    <th class="text-end">Pontos base</th>
+                                    <th class="text-end">Bônus</th>
+                                    <th class="text-end">Pontos total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% cliente.compras.slice().reverse().slice(0, 8).forEach(function (compra) { %>
+                                    <tr>
+                                        <td class="text-nowrap"><%= fmt.data(compra.data_compra) %></td>
+                                        <td><%= compra.produto %></td>
+                                        <td class="text-end"><%= compra.quantidade %></td>
+                                        <td class="text-end"><%= fmt.moeda(compra.valor_total) %></td>
+                                        <td class="text-end"><%= compra.pontos_base.toLocaleString('pt-BR') %></td>
+                                        <td class="text-end text-primary">+<%= compra.cliente_pontos_bonus.toLocaleString('pt-BR') %></td>
+                                        <td class="text-end fw-bold"><%= compra.pontos_total.toLocaleString('pt-BR') %></td>
+                                    </tr>
+                                    <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Resgates -->
+                <div class="card section-card mb-4">
+                    <h5 class="card-title mb-3"><i class="bi bi-gift text-primary"></i>Resgates</h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th class="text-end">Pontos utilizados</th>
+                                    <th class="text-end">Desconto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% cliente.resgates.slice().reverse().slice(0, 8).forEach(function (resgate) { %>
+                                    <tr>
+                                        <td class="text-nowrap"><%= fmt.data(resgate.data_resgate) %></td>
+                                        <td class="text-end"><%= resgate.pontos_utilizados.toLocaleString('pt-BR') %></td>
+                                        <td class="text-end text-success"><%= fmt.moeda(resgate.valor_desconto) %></td>
+                                    </tr>
+                                    <% }); %>
+                                        <% if (!cliente.resgates.length) { %>
+                                            <tr><td colspan="3" class="text-center text-muted py-3">Nenhum resgate realizado.</td></tr>
+                                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Movimentações -->
+                <div class="card section-card">
+                    <h5 class="card-title mb-3"><i class="bi bi-arrow-left-right text-primary"></i>Movimentações de pontos</h5>
+                    <div class="table-responsive">
+                        <div style="max-height:360px;overflow:auto">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Tipo</th>
+                                        <th class="text-end">Pontos</th>
+                                        <th>Expiração</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% movimentacoes.slice(0, 15).forEach(function (mov) { %>
+                                        <tr>
+                                            <td class="text-nowrap"><%= mov.data %></td>
+                                            <td><span class="badge-tipo <%= mov.tipo %>"><%= mov.tipo.toUpperCase() %></span></td>
+                                            <td class="text-end fw-bold <%= mov.pontos > 0 ? 'text-success' : 'text-danger' %>"><%= mov.pontos > 0 ? '+' : '' %><%= mov.pontos.toLocaleString('pt-BR') %></td>
+                                            <td class="text-nowrap"><%= mov.expiracao %></td>
+                                        </tr>
+                                        <% }); %>
+                                        <% if (!movimentacoes.length) { %>
+                                            <tr><td colspan="4" class="text-center text-muted py-3">Sem movimentações.</td></tr>
+                                            <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <script>
+                document.getElementById('form-tags').addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    const tags = document.getElementById('input-tags').value.split(',').map(s => s.trim()).filter(Boolean);
+                    const status = document.getElementById('status-salvar');
+                    try {
+                        const resp = await fetch('/api/clientes/<%= cliente.id %>', {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ tags })
+                        });
+                        if (!resp.ok) throw new Error('falha');
+                        status.textContent = 'Tags salvas!';
+                        setTimeout(() => location.reload(), 500);
+                    } catch (err) {
+                        status.textContent = 'Erro ao salvar.';
+                    }
+                });
+            </script>
+
+            <%- include('../includes/footer') %>

@@ -5,7 +5,10 @@ const app = express();
 // Importação dos módulos de rotas
 const clientesRoutes = require("./api/clientes");
 const comprasRoutes = require("./api/compras");
-const dashboardRoutes = require("./views/index");
+const pontosRoutes = require("./api/pontos");
+const resgatesRoutes = require("./api/resgates");
+const dashboardRoutes = require("./api/dashboard");
+const dashboardWebRoutes = require("./views/index");
 
 
 // Configuração do motor de visualização (EJS) e pasta das views
@@ -19,7 +22,10 @@ app.use(express.json());
 // Consumo das rotas (Registar apenas O PREFIXO BASE de cada rota)
 app.use("/api/clientes", clientesRoutes);
 app.use("/api/compras", comprasRoutes);
-app.use("/", dashboardRoutes);
+app.use("/api/pontos", pontosRoutes);
+app.use("/api/resgates", resgatesRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/", dashboardWebRoutes);
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000");

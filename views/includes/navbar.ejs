@@ -1,42 +1,154 @@
 <aside class="sidebar" id="sidebar">
-    <a class="brand" href="/">
-        <span class="brand-mark"><i class="bi bi-award"></i></span>
-        <span class="brand-text">FATECalçados<small>Fidelidade</small></span>
-    </a>
 
-    <nav class="sidebar-nav">
-        <span class="nav-section">Menu principal</span>
-        <a class="nav-link <%= rota === '/' ? 'active' : '' %>" href="/"><i
-                class="bi bi-speedometer2"></i><span>Dashboard</span></a>
-        <a class="nav-link <%= rota === '/clientes' ? 'active' : '' %>" href="/clientes"><i
-                class="bi bi-people"></i><span>Clientes</span></a>
-        <a class="nav-link <%= rota === '/compras' ? 'active' : '' %>" href="/compras"><i
-                class="bi bi-cart3"></i><span>Compras</span></a>
-        <a class="nav-link <%= rota === '/resgates' ? 'active' : '' %>" href="/resgates"><i
-                class="bi bi-gift"></i><span>Resgates</span></a>
-        <a class="nav-link <%= rota === '/ranking' ? 'active' : '' %>" href="/ranking"><i
-                class="bi bi-trophy"></i><span>Ranking</span></a>
-        <a class="nav-link <%= rota === '/historico' ? 'active' : '' %>" href="/historico"><i
-                class="bi bi-arrow-left-right"></i><span>Movimentações</span></a>
-        <a class="nav-link <%= rota === '/api' ? 'active' : '' %>" href="/api"><i class="bi bi-braces"></i><span>API
-                docs</span></a>
-    </nav>
+        <a class="brand" href="/">
+                <span class="brand-mark">
+                        <i class="bi bi-award"></i>
+                </span>
 
-    <nav class="sidebar-nav">
-        <span class="nav-section">Cadastros</span>
-        <a class="nav-link <%= rota === '/clientes/add' ? 'active' : '' %>" href="/clientes/add"><i
-                class="bi bi-person-plus"></i><span>Adicionar cliente</span></a>
-    </nav>
+                <span class="brand-text">
+                        FATECalçados
+                        <small>Fidelidade</small>
+                </span>
+        </a>
 
-    <div class="sidebar-foot">
-        <div class="sidebar-note">
-            <i class="bi bi-stars"></i>
-            <div>
-                <strong>100 pontos = R$ 5</strong>
-                <small>de desconto em compras</small>
-            </div>
+        <nav class="sidebar-nav">
+
+                <span class="nav-section">Menu principal</span>
+
+                <!-- Dashboard -->
+                <a class="nav-link <%= rota === '/' ? 'active' : '' %>" href="/">
+                        <i class="bi bi-speedometer2"></i>
+                        <span>Dashboard</span>
+                </a>
+
+                <!-- Clientes -->
+                <li class="nav-item dropdown list-unstyled">
+                        <a class="nav-link dropdown-toggle <%= rota.startsWith('/clientes') ? 'active' : '' %>" href="#"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                <i class="bi bi-people"></i>
+                                <span>Clientes</span>
+                        </a>
+
+                        <ul class="dropdown-menu">
+
+                                <li>
+                                        <a class="dropdown-item" href="/clientes">
+                                                <i class="bi bi-people me-2"></i>
+                                                Ver Clientes
+                                        </a>
+                                </li>
+
+                                <li>
+                                        <a class="dropdown-item" href="/clientes/add">
+                                                <i class="bi bi-person-plus me-2"></i>
+                                                Adicionar Cliente
+                                        </a>
+                                </li>
+
+                        </ul>
+                </li>
+
+
+                <!-- Compras -->
+                <li class="nav-item dropdown list-unstyled">
+                        <a class="nav-link dropdown-toggle <%= rota.startsWith('/compras') ? 'active' : '' %>" href="#"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                <i class="bi bi-cart3"></i>
+                                <span>Compras</span>
+                        </a>
+
+                        <ul class="dropdown-menu">
+
+                                <li>
+                                        <a class="dropdown-item" href="/compras">
+                                                <i class="bi bi-cart3"></i>
+                                                Ver Compras
+                                        </a>
+                                </li>
+
+                                <li>
+                                        <a class="dropdown-item" href="/compras/add">
+                                                <i class="bi bi-cart3"></i>
+                                                Adicionar Compra
+                                        </a>
+                                </li>
+
+                        </ul>
+                </li>
+
+                <!-- Resgates -->
+                <li class="nav-item dropdown list-unstyled">
+                        <a class="nav-link dropdown-toggle <%= rota.startsWith('/resgates') ? 'active' : '' %>" href="#"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                <i class="bi bi-gift"></i>
+                                <span>Resgates</span>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                                <li>
+                                        <a class="dropdown-item" href="/resgates">
+                                                <i class="bi bi-gift"></i>
+                                                Ver Resgates
+                                        </a>
+                                </li>
+
+                                <li>
+                                        <a class="dropdown-item" href="/resgates/add">
+                                                <i class="bi bi-gift"></i>
+                                                Adicionar resgates
+                                        </a>
+                                </li>
+
+                        </ul>
+                </li>
+
+
+                <!-- Ranking -->
+                <a class="nav-link <%= rota === '/ranking' ? 'active' : '' %>" href="/ranking">
+                        <i class="bi bi-trophy"></i>
+                        <span>Ranking</span>
+                </a>
+
+                <!-- Inteligência -->
+                <a class="nav-link <%= rota === '/inteligencia' ? 'active' : '' %>" href="/inteligencia">
+                        <i class="bi bi-stars"></i>
+                        <span>Inteligência</span>
+                </a>
+
+                <!-- Movimentações -->
+                <a class="nav-link <%= rota === '/historico' ? 'active' : '' %>" href="/historico">
+                        <i class="bi bi-arrow-left-right"></i>
+                        <span>Movimentações</span>
+                </a>
+
+                <!-- API -->
+                <a class="nav-link <%= rota === '/api' ? 'active' : '' %>" href="/api">
+                        <i class="bi bi-braces"></i>
+                        <span>API docs</span>
+                </a>
+
+        </nav>
+
+        <div class="sidebar-foot">
+
+                <div class="sidebar-note">
+
+                        <i class="bi bi-stars"></i>
+
+                        <div>
+                                <strong>100 pontos = R$ 5</strong>
+                                <small>de desconto em compras</small>
+                        </div>
+
+                </div>
+
         </div>
-    </div>
+
 </aside>
+
 <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
 <main class="main">

@@ -1,0 +1,149 @@
+<%- include('../includes/header') %>
+    <%- include('../includes/navbar') %>
+        <%- include('../includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Fidelidade</div>
+                        <h1 class="page-title">Todos os resgates</h1>
+                        <div class="page-subtitle">Acompanhe todos os resgates de pontos realizados pelos clientes</div>
+                    </div>
+                    <a href="/resgates/add" class="btn btn-primary"><i class="bi bi-gift me-2"></i>Novo resgate</a>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-xl-3">
+                        <div class="card kpi kpi-tone-1">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-gift"></i></div>
+                            </div>
+                            <div class="kpi-value"><%= resumo.total.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Resgates realizados</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="card kpi kpi-tone-3">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-arrow-down-circle"></i></div>
+                            </div>
+                            <div class="kpi-value"><%= resumo.pontosResgatados.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Pontos resgatados</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="card kpi kpi-tone-4">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-cash-stack"></i></div>
+                            </div>
+                            <div class="kpi-value">R$ <%= resumo.valorDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></div>
+                            <div class="kpi-label">Valor total em descontos</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="card kpi kpi-tone-2">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-calculator"></i></div>
+                            </div>
+                            <div class="kpi-value"><%= resumo.mediaPontos.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Média de pontos por resgate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card section-card">
+                    <div class="row g-2 mb-3">
+                        <div class="col-lg-5">
+                            <div class="position-relative">
+                                <i class="bi bi-search position-absolute text-muted" style="left:14px;top:50%;transform:translateY(-50%)"></i>
+                                <input class="form-control ps-5" id="busca-resgate" placeholder="Pesquisar por cliente ou ID...">
+                            </div>
+                        </div>
+                        <div class="col-lg-2"><input type="date" class="form-control" id="filtro-inicio"></div>
+                        <div class="col-lg-2"><input type="date" class="form-control" id="filtro-fim"></div>
+                        <div class="col-lg-1">
+                            <button class="btn btn-outline-primary w-100" id="btn-limpar" title="Limpar filtros"><i class="bi bi-arrow-counterclockwise"></i></button>
+                        </div>
+                        <div class="col-lg-2 text-lg-end">
+                            <span class="badge-level bronze mb-0 d-inline-flex align-items-center" id="contagem"><%= resgates.length %> resgates</span>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table" id="tab-resgates">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Data</th>
+                                    <th>Cliente</th>
+                                    <th>Pontos utilizados</th>
+                                    <th>Desconto</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% resgates.forEach(function (resgate) { %>
+                                    <tr data-cliente="<%= resgate.cliente_id %>" data-data="<%= resgate.dataIso %>">
+                                        <td><span class="badge-level silver"><%= resgate.id %></span></td>
+                                        <td class="text-nowrap"><%= resgate.data %></td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="avatar avatar-sm"><%= resgate.clienteIniciais %></span>
+                                                <span class="fw-semibold text-nowrap"><%= resgate.cliente %></span>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge-tipo resgate">-<%= resgate.pontos.toLocaleString('pt-BR') %> pts</span></td>
+                                        <td class="fw-bold text-nowrap">R$ <%= resgate.desconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-light btn-action text-danger" title="Excluir"><i class="bi bi-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <script>
+                const inpBusca = document.getElementById('busca-resgate');
+                const inpInicio = document.getElementById('filtro-inicio');
+                const inpFim = document.getElementById('filtro-fim');
+                const contagem = document.getElementById('contagem');
+                const linhas = Array.prototype.slice.call(document.querySelectorAll('#tab-resgates tbody tr'));
+                const totalResgates = linhas.length;
+
+                function filtrar() {
+                    const termo = inpBusca.value.trim().toLowerCase();
+                    const a = inpInicio.value;
+                    const b = inpFim.value;
+                    let visiveis = 0;
+
+                    linhas.forEach(function (linha) {
+                        const okBusca = linha.textContent.toLowerCase().includes(termo);
+                        const data = linha.dataset.data;
+                        const okInicio = !a || data >= a;
+                        const okFim = !b || data <= b;
+                        const ok = okBusca && okInicio && okFim;
+                        linha.style.display = ok ? '' : 'none';
+                        if (ok) visiveis++;
+                    });
+
+                    contagem.textContent = visiveis + ' de ' + totalResgates + ' resgates';
+                }
+
+                function limpar() {
+                    inpBusca.value = '';
+                    inpInicio.value = '';
+                    inpFim.value = '';
+                    filtrar();
+                }
+
+                inpBusca.addEventListener('input', filtrar);
+                inpInicio.addEventListener('change', filtrar);
+                inpFim.addEventListener('change', filtrar);
+                document.getElementById('btn-limpar').addEventListener('click', limpar);
+                filtrar();
+            </script>
+
+            <%- include('../includes/footer') %>

@@ -1,0 +1,163 @@
+<%- include('../includes/header') %>
+    <%- include('../includes/navbar') %>
+        <%- include('../includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Fidelidade</div>
+                        <h1 class="page-title">Todas as compras</h1>
+                        <div class="page-subtitle">Acompanhe todas as compras registradas no programa de fidelidade</div>
+                    </div>
+                    <a href="/compras/add" class="btn btn-primary"><i class="bi bi-cart-plus me-2"></i>Nova compra</a>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-xl-3">
+                        <div class="card kpi kpi-tone-1">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-cart3"></i></div>
+                            </div>
+                            <div class="kpi-value"><%= resumo.total.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Compras registradas</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="card kpi kpi-tone-4">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-cash-stack"></i></div>
+                            </div>
+                            <div class="kpi-value">R$ <%= resumo.valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></div>
+                            <div class="kpi-label">Valor total faturado</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="card kpi kpi-tone-2">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-star"></i></div>
+                            </div>
+                            <div class="kpi-value"><%= resumo.pontosGerados.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Pontos gerados</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="card kpi kpi-tone-3">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-receipt"></i></div>
+                            </div>
+                            <div class="kpi-value">R$ <%= resumo.ticketMedio.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></div>
+                            <div class="kpi-label">Ticket médio</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card section-card">
+                    <div class="row g-2 mb-3">
+                        <div class="col-lg-4">
+                            <div class="position-relative">
+                                <i class="bi bi-search position-absolute text-muted" style="left:14px;top:50%;transform:translateY(-50%)"></i>
+                                <input class="form-control ps-5" id="busca-compra" placeholder="Pesquisar por produto, cliente ou ID...">
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <select class="form-select" id="filtro-cliente">
+                                <option value="">Todos os clientes</option>
+                                <% clientes.forEach(function (cliente) { %>
+                                    <option value="<%= cliente.id %>"><%= cliente.nome %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div class="col-lg-2"><input type="date" class="form-control" id="filtro-inicio"></div>
+                        <div class="col-lg-2"><input type="date" class="form-control" id="filtro-fim"></div>
+                        <div class="col-lg-1">
+                            <button class="btn btn-outline-primary w-100" id="btn-limpar" title="Limpar filtros"><i class="bi bi-arrow-counterclockwise"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="text-end mb-2">
+                        <span class="badge-level bronze" id="contagem"><%= compras.length %> compras</span>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table" id="tab-compras">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Data</th>
+                                    <th>Cliente</th>
+                                    <th>Produto</th>
+                                    <th>Qtd.</th>
+                                    <th>Valor total</th>
+                                    <th>Pontos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% compras.forEach(function (compra) { %>
+                                    <tr data-cliente="<%= compra.cliente_id %>" data-data="<%= compra.dataIso %>">
+                                        <td><span class="badge-level silver"><%= compra.id %></span></td>
+                                        <td class="text-nowrap"><%= compra.data %></td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="avatar avatar-sm"><%= compra.clienteIniciais %></span>
+                                                <span class="fw-semibold text-nowrap"><%= compra.cliente %></span>
+                                            </div>
+                                        </td>
+                                        <td><%= compra.produto %></td>
+                                        <td class="text-center"><%= compra.quantidade %></td>
+                                        <td class="fw-bold text-nowrap">R$ <%= compra.valor_total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
+                                        <td><span class="badge-tipo acumulo">+<%= compra.pontos_total.toLocaleString('pt-BR') %> pts</span></td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <script>
+                const inpBusca = document.getElementById('busca-compra');
+                const selCliente = document.getElementById('filtro-cliente');
+                const inpInicio = document.getElementById('filtro-inicio');
+                const inpFim = document.getElementById('filtro-fim');
+                const contagem = document.getElementById('contagem');
+                const linhas = Array.prototype.slice.call(document.querySelectorAll('#tab-compras tbody tr'));
+                const totalCompras = linhas.length;
+
+                function filtrar() {
+                    const termo = inpBusca.value.trim().toLowerCase();
+                    const cliente = selCliente.value;
+                    const a = inpInicio.value;
+                    const b = inpFim.value;
+                    let visiveis = 0;
+
+                    linhas.forEach(function (linha) {
+                        const okBusca = linha.textContent.toLowerCase().includes(termo);
+                        const okCliente = !cliente || linha.dataset.cliente === cliente;
+                        const data = linha.dataset.data;
+                        const okInicio = !a || data >= a;
+                        const okFim = !b || data <= b;
+                        const ok = okBusca && okCliente && okInicio && okFim;
+                        linha.style.display = ok ? '' : 'none';
+                        if (ok) visiveis++;
+                    });
+
+                    contagem.textContent = visiveis + ' de ' + totalCompras + ' compras';
+                }
+
+                function limpar() {
+                    inpBusca.value = '';
+                    selCliente.value = '';
+                    inpInicio.value = '';
+                    inpFim.value = '';
+                    filtrar();
+                }
+
+                inpBusca.addEventListener('input', filtrar);
+                selCliente.addEventListener('change', filtrar);
+                inpInicio.addEventListener('change', filtrar);
+                inpFim.addEventListener('change', filtrar);
+                document.getElementById('btn-limpar').addEventListener('click', limpar);
+                filtrar();
+            </script>
+
+            <%- include('../includes/footer') %>

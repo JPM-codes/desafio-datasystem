@@ -9,45 +9,144 @@
                         <h1 class="page-title">Editar cliente</h1>
                         <div class="page-subtitle">Atualize os dados cadastrais de <strong><%= cliente.nome %></strong></div>
                     </div>
-                    <a href="/clientes" class="btn btn-light"><i class="bi bi-arrow-left me-2"></i>Voltar</a>
+                    <a href="/clientes/<%= cliente.id %>" class="btn btn-light"><i class="bi bi-arrow-left me-2"></i>Voltar ao perfil</a>
                 </div>
 
                 <div class="row justify-content-center">
-                    <div class="col-xl-8">
-                        <div class="card section-card">
+                    <div class="col-xl-10">
+                        <form id="form-cliente" class="card section-card">
                             <div class="d-flex align-items-center gap-3 mb-4">
                                 <span class="avatar avatar-lg bg-gradient"><%= cliente.iniciais %></span>
                                 <div>
                                     <div class="fw-bold"><%= cliente.nome %></div>
-                                    <div><span class="badge-level <%= cliente.nivel.classe %>"><%= cliente.nivel.nome %></span>
-                                        <span class="text-muted small ms-2"><%= cliente.pontos.toLocaleString('pt-BR') %> pontos</span></div>
+                                    <div>
+                                        <span class="badge-level <%= cliente.nivel.classe %>"><%= cliente.nivel.nome %></span>
+                                        <span class="badge-status <%= cliente.status.classe %>"><%= cliente.status.nome.toLowerCase() %></span>
+                                        <span class="text-muted small ms-2"><%= cliente.pontosDisponiveis.toLocaleString('pt-BR') %> pontos disponíveis</span>
+                                    </div>
                                 </div>
                             </div>
 
-                            <h5 class="card-title mb-4"><i class="bi bi-pencil-square text-primary"></i>Dados do cliente
-                            </h5>
-                            <div class="row g-3">
-                                <div class="col-md-8"><label class="form-label">Nome completo *</label><input
-                                        class="form-control" value="<%= cliente.nome %>"></div>
-                                <div class="col-md-4"><label class="form-label">Tipo de documento</label><select
-                                        class="form-select">
-                                        <option <%= cliente.tipo_documento === 'CPF' ? 'selected' : '' %>>CPF</option>
-                                        <option <%= cliente.tipo_documento === 'CNPJ' ? 'selected' : '' %>>CNPJ</option>
+                            <h5 class="card-title mb-4"><i class="bi bi-pencil-square text-primary"></i>Dados do cliente</h5>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-8"><label class="form-label">Nome completo *</label><input class="form-control" id="input-nome" value="<%= cliente.nome %>" required></div>
+                                <div class="col-md-4"><label class="form-label">Tipo de documento</label>
+                                    <select class="form-select" id="input-tipo">
+                                        <option value="CPF" <%= cliente.tipo_documento === 'CPF' ? 'selected' : '' %>>CPF</option>
+                                        <option value="CNPJ" <%= cliente.tipo_documento === 'CNPJ' ? 'selected' : '' %>>CNPJ</option>
                                     </select></div>
-                                <div class="col-md-8"><label class="form-label">CPF / CNPJ *</label><input
-                                        class="form-control" value="<%= cliente.documento %>"></div>
-                                <div class="col-md-4"><label class="form-label">ID interno</label><input
-                                        class="form-control" value="<%= cliente.id %>" disabled></div>
+                                <div class="col-md-8"><label class="form-label">CPF / CNPJ *</label><input class="form-control" id="input-doc" value="<%= cliente.documento %>" required>
+                                    <div class="form-text text-danger d-none" id="erro-doc"></div>
+                                </div>
+                                <div class="col-md-4"><label class="form-label">Data de nascimento</label>
+                                    <input type="date" class="form-control" id="input-nascimento" value="<%= cliente.data_nascimento ? String(cliente.data_nascimento).slice(0, 10) : '' %>"></div>
+                                <div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control" id="input-email" value="<%= cliente.email || '' %>"></div>
+                                <div class="col-md-6"><label class="form-label">WhatsApp</label><input class="form-control" id="input-whatsapp" value="<%= cliente.whatsapp || '' %>"></div>
+                                <div class="col-md-4"><label class="form-label">Numeração do calçado</label>
+                                    <input type="number" class="form-control" id="input-numeracao" min="30" max="46" value="<%= cliente.numero_calcado || '' %>"></div>
+                                <div class="col-md-4"><label class="form-label">Cidade</label><input class="form-control" id="input-cidade" value="<%= cliente.cidade || '' %>"></div>
+                                <div class="col-md-4"><label class="form-label">Bairro</label><input class="form-control" id="input-bairro" value="<%= cliente.bairro || '' %>"></div>
                             </div>
 
-                            <div class="alert-card my-3"><i class="bi bi-shield-check me-2"></i>O nível e a pontuação são
-                                recalculados automaticamente após cada movimentação.</div>
+                            <h5 class="card-title mb-4"><i class="bi bi-sliders text-primary"></i>Preferências do cliente</h5>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6"><label class="form-label">Categorias de calçado</label>
+                                    <select class="form-select" id="pref-categorias" multiple size="4">
+                                        <% ["Tênis", "Sandália", "Chinelo", "Social", "Conforto", "Clássico", "Bota"].forEach(function (c) { %>
+                                            <option <%= (cliente.preferencias.categorias || []).includes(c) ? 'selected' : '' %>><%= c %></option>
+                                            <% }); %>
+                                    </select></div>
+                                <div class="col-md-6"><label class="form-label">Estilos</label>
+                                    <select class="form-select" id="pref-estilos" multiple size="4">
+                                        <% ["Casual", "Esportivo", "Social", "Conforto", "Básico", "Clássico"].forEach(function (c) { %>
+                                            <option <%= (cliente.preferencias.estilos || []).includes(c) ? 'selected' : '' %>><%= c %></option>
+                                            <% }); %>
+                                    </select></div>
+                                <div class="col-md-6"><label class="form-label">Prioridades de compra</label>
+                                    <select class="form-select" id="pref-prioridades" multiple size="4">
+                                        <% ["Conforto", "Preço", "Qualidade", "Durabilidade", "Design", "Tendência"].forEach(function (c) { %>
+                                            <option <%= (cliente.preferencias.prioridades || []).includes(c) ? 'selected' : '' %>><%= c %></option>
+                                            <% }); %>
+                                    </select></div>
+                                <div class="col-md-6"><label class="form-label">Cores</label>
+                                    <select class="form-select" id="pref-cores" multiple size="4">
+                                        <% ["Preto", "Branco", "Cinza", "Azul", "Bege", "Marinho", "Vermelho", "Rosa"].forEach(function (c) { %>
+                                            <option <%= (cliente.preferencias.cores || []).includes(c) ? 'selected' : '' %>><%= c %></option>
+                                            <% }); %>
+                                    </select></div>
+                                <div class="col-md-6"><label class="form-label">Faixa de preço</label>
+                                    <select class="form-select" id="pref-faixa">
+                                        <option value="">—</option>
+                                        <% ["Até R$ 90", "R$ 90 – R$ 150", "R$ 150 – R$ 250", "Acima de R$ 250"].forEach(function (f) { %>
+                                            <option <%= cliente.preferencias.faixa_preco === f ? 'selected' : '' %>><%= f %></option>
+                                            <% }); %>
+                                    </select></div>
+                                <div class="col-md-6"><label class="form-label">Tags</label>
+                                    <input class="form-control" id="input-tags" value="<%= (cliente.tags || []).join(', ') %>" placeholder="ex.: VIP, Clube do tenista"></div>
+                            </div>
 
-                            <div class="text-end"><button class="btn btn-primary"><i class="bi bi-check-lg me-2"></i>Salvar
-                                    alterações</button></div>
-                        </div>
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="input-consentimento" <%= cliente.consentimento_comunicacao ? 'checked' : '' %>>
+                                <label class="form-check-label small" for="input-consentimento">Cliente autoriza o envio de comunicações (promoções, campanhas e lembretes).</label>
+                            </div>
+
+                            <div class="alert-card my-3" id="feedback" style="display:none"></div>
+
+                            <div class="text-end"><button class="btn btn-primary" type="submit"><i class="bi bi-check-lg me-2"></i>Salvar alterações</button></div>
+                        </form>
                     </div>
                 </div>
             </section>
+
+            <script>
+                const selecionados = (id) => Array.from(document.getElementById(id).selectedOptions).map(o => o.value);
+                const alerta = (msg, ok) => {
+                    const f = document.getElementById('feedback');
+                    f.style.display = 'block';
+                    f.className = 'alert-card my-3 ' + (ok ? '' : 'alert-danger');
+                    f.innerHTML = (ok ? '<i class="bi bi-check-circle me-2"></i>' : '<i class="bi bi-x-circle me-2"></i>') + msg;
+                };
+
+                document.getElementById('form-cliente').addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    const payload = {
+                        nome: document.getElementById('input-nome').value.trim(),
+                        tipo_documento: document.getElementById('input-tipo').value,
+                        documento: document.getElementById('input-doc').value.trim(),
+                        email: document.getElementById('input-email').value.trim(),
+                        whatsapp: document.getElementById('input-whatsapp').value.trim(),
+                        data_nascimento: document.getElementById('input-nascimento').value || null,
+                        numero_calcado: Number(document.getElementById('input-numeracao').value) || null,
+                        cidade: document.getElementById('input-cidade').value.trim(),
+                        bairro: document.getElementById('input-bairro').value.trim(),
+                        consentimento_comunicacao: document.getElementById('input-consentimento').checked,
+                        preferencias: {
+                            categorias: selecionados('pref-categorias'),
+                            estilos: selecionados('pref-estilos'),
+                            prioridades: selecionados('pref-prioridades'),
+                            cores: selecionados('pref-cores'),
+                            faixa_preco: document.getElementById('pref-faixa').value,
+                        },
+                        tags: document.getElementById('input-tags').value.split(',').map(s => s.trim()).filter(Boolean),
+                    };
+
+                    try {
+                        const resp = await fetch('/api/clientes/<%= cliente.id %>', {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload),
+                        });
+                        const json = await resp.json();
+                        if (!resp.ok) {
+                            if (json.message) alerta(json.message, false);
+                            return;
+                        }
+                        alerta('Alterações salvas! Redirecionando...', true);
+                        setTimeout(() => location.href = '/clientes/<%= cliente.id %>', 600);
+                    } catch (err) {
+                        alerta('Falha ao salvar. Verifique sua conexão.', false);
+                    }
+                });
+            </script>
 
             <%- include('../includes/footer') %>

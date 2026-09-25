@@ -13,7 +13,7 @@
                 </div>
 
                 <div class="card section-card">
-                    <div class="row g-2 mb-3">
+                    <div class="row g-2 mb-2">
                         <div class="col-lg-6"><div class="position-relative">
                                 <i class="bi bi-search position-absolute text-muted" style="left:14px;top:50%;transform:translateY(-50%)"></i>
                                 <input class="form-control ps-5" id="busca-cliente" placeholder="Pesquisar por nome, CPF, CNPJ ou ID...">
@@ -24,10 +24,66 @@
                                 <option value="pontos">Maior pontuação</option>
                             </select></div>
                         <div class="col-lg-3 d-flex justify-content-end">
-                            <span class="badge-level bronze mb-0 d-flex align-items-center"><i
-                                    class="bi bi-people me-2"></i><%= clientes.length %> cadastrados</span>
+                            <span class="badge-level bronze mb-0 d-flex align-items-center"><i class="bi bi-people me-2"></i><%= clientes.length %> de <%= totalClientes %> clientes</span>
                         </div>
                     </div>
+
+                    <!-- Filtros avançados -->
+                    <form method="get" action="/clientes" class="row g-2 mb-2">
+                        <div class="col-6 col-md-3 col-xl"><label class="form-label d-block small text-muted mb-1">Status</label>
+                            <select class="form-select form-select-sm" name="status">
+                                <option value="">Todos</option>
+                                <% statusConfig.forEach(function (st) { %>
+                                    <option value="<%= st.nome %>" <%= String(filtrosAtivos.status || '').toUpperCase() === st.nome ? 'selected' : '' %>><%= st.nome === 'ATENCAO' ? 'Atenção' : st.nome.charAt(0) + st.nome.slice(1).toLowerCase() %></option>
+                                    <% }); %>
+                            </select></div>
+                        <div class="col-6 col-md-3 col-xl"><label class="form-label d-block small text-muted mb-1">Nível</label>
+                            <select class="form-select form-select-sm" name="nivel">
+                                <option value="">Todos</option>
+                                <% niveisConfig.forEach(function (n) { %>
+                                    <option value="<%= n.nome %>" <%= filtrosAtivos.nivel === n.nome ? 'selected' : '' %>><%= n.nome %></option>
+                                    <% }); %>
+                            </select></div>
+                        <div class="col-6 col-md-3 col-xl"><label class="form-label d-block small text-muted mb-1">Numeração</label>
+                            <select class="form-select form-select-sm" name="numeracao">
+                                <option value="">Todas</option>
+                                <% opcoes.numeracoes.forEach(function (n) { %>
+                                    <option value="<%= n %>" <%= String(filtrosAtivos.numeracao) === String(n) ? 'selected' : '' %>><%= n %></option>
+                                    <% }); %>
+                            </select></div>
+                        <div class="col-6 col-md-3 col-xl"><label class="form-label d-block small text-muted mb-1">Categoria</label>
+                            <select class="form-select form-select-sm" name="categoria">
+                                <option value="">Todas</option>
+                                <% opcoes.categorias.forEach(function (c) { %>
+                                    <option value="<%= c %>" <%= filtrosAtivos.categoria === c ? 'selected' : '' %>><%= c %></option>
+                                    <% }); %>
+                            </select></div>
+                        <div class="col-6 col-md-3 col-xl"><label class="form-label d-block small text-muted mb-1">Estilo</label>
+                            <select class="form-select form-select-sm" name="estilo">
+                                <option value="">Todos</option>
+                                <% opcoes.estilos.forEach(function (e) { %>
+                                    <option value="<%= e %>" <%= filtrosAtivos.estilo === e ? 'selected' : '' %>><%= e %></option>
+                                    <% }); %>
+                            </select></div>
+                        <div class="col-6 col-md-3 col-xl"><label class="form-label d-block small text-muted mb-1">Faixa de preço</label>
+                            <select class="form-select form-select-sm" name="faixa_preco">
+                                <option value="">Todas</option>
+                                <option value="Até R$ 90">Até R$ 90</option>
+                                <option value="R$ 90 – R$ 150">R$ 90 – R$ 150</option>
+                                <option value="R$ 150 – R$ 250">R$ 150 – R$ 250</option>
+                                <option value="Acima de R$ 250">Acima de R$ 250</option>
+                            </select></div>
+                        <div class="col-6 col-md-3 col-xl"><label class="form-label d-block small text-muted mb-1">Mín. dias sem comprar</label>
+                            <input type="number" class="form-control form-control-sm" name="min_dias" value="<%= filtrosAtivos.min_dias || '' %>" placeholder="ex.: 60"></div>
+                        <div class="col-6 col-md-3 col-xl"><label class="form-label d-block small text-muted mb-1">Mín. compras</label>
+                            <input type="number" class="form-control form-control-sm" name="min_compras" value="<%= filtrosAtivos.min_compras || '' %>" placeholder="ex.: 2"></div>
+                        <div class="col-6 col-md-3 col-xl"><label class="form-label d-block small text-muted mb-1">Mín. pontos disp.</label>
+                            <input type="number" class="form-control form-control-sm" name="min_pontos" value="<%= filtrosAtivos.min_pontos || '' %>" placeholder="ex.: 100"></div>
+                        <div class="col-12 d-flex justify-content-end align-items-end gap-2 mt-1">
+                            <a href="/clientes" class="btn btn-sm btn-light"><i class="bi bi-x-circle me-1"></i>Limpar</a>
+                            <button class="btn btn-sm btn-primary" type="submit"><i class="bi bi-funnel me-1"></i>Filtrar</button>
+                        </div>
+                    </form>
 
                     <div class="table-responsive">
                         <table class="table" id="tab-clientes">
@@ -36,37 +92,46 @@
                                     <th>ID</th>
                                     <th>Cliente</th>
                                     <th>Documento</th>
-                                    <th>Pontos</th>
+                                    <th class="text-end">Compras</th>
+                                    <th class="text-end">Pontos disp.</th>
                                     <th>Nível</th>
+                                    <th>Status</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <% clientes.forEach(function (cliente) { %>
-                                    <tr>
-                                        <td><span class="badge-level silver"><%= cliente.id %></span></td>
-                                        <td>
-                                            <div class="d-flex align-items-center gap-2"><span
-                                                    class="avatar"><%= cliente.iniciais %></span>
-                                                <div>
-                                                    <div class="fw-semibold"><%= cliente.nome %></div>
-                                                    <div class="small text-muted"><%= cliente.tipo_documento %></div>
+                                <% if (clientes.length) { %>
+                                    <% clientes.forEach(function (cliente) { %>
+                                        <tr>
+                                            <td><span class="badge-level silver"><%= cliente.id %></span></td>
+                                            <td>
+                                                <a href="/clientes/<%= cliente.id %>" class="text-decoration-none text-reset">
+                                                    <div class="d-flex align-items-center gap-2"><span class="avatar"><%= cliente.iniciais %></span>
+                                                        <div>
+                                                            <div class="fw-semibold"><%= cliente.nome %></div>
+                                                            <div class="small text-muted"><%= cliente.tipo_documento %> · <%= cliente.cidade || '—' %></div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td><%= cliente.documento %></td>
+                                            <td class="text-end"><%= cliente.totalCompras %></td>
+                                            <td class="fw-bold text-end"><%= cliente.pontosDisponiveis.toLocaleString('pt-BR') %></td>
+                                            <td><span class="badge-level <%= cliente.nivel.classe %>"><%= cliente.nivel.nome %></span></td>
+                                            <td><span class="badge-status <%= cliente.status.classe %>"><%= cliente.status.nome.toLowerCase() %></span></td>
+                                            <td>
+                                                <div class="d-flex gap-1">
+                                                    <a href="/clientes/<%= cliente.id %>" class="btn btn-sm btn-light btn-action" title="Perfil"><i class="bi bi-eye"></i></a>
+                                                    <a href="/clientes/edit/<%= cliente.id %>" class="btn btn-sm btn-light btn-action" title="Editar"><i class="bi bi-pencil"></i></a>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td><%= cliente.documento %></td>
-                                        <td class="fw-bold"><%= cliente.pontos.toLocaleString('pt-BR') %></td>
-                                        <td><span class="badge-level <%= cliente.nivel.classe %>"><%= cliente.nivel.nome %></span></td>
-                                        <td>
-                                            <div class="d-flex gap-1">
-                                                <a href="/clientes/edit/<%= cliente.id %>" class="btn btn-sm btn-light btn-action"
-                                                    title="Editar"><i class="bi bi-pencil"></i></a>
-                                                <button class="btn btn-sm btn-light btn-action text-danger" title="Excluir"><i
-                                                        class="bi bi-trash"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <% }); %>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+                                            <% } else { %>
+                                                <tr>
+                                                    <td colspan="8" class="text-center text-muted py-4">Nenhum cliente corresponde aos filtros.</td>
+                                                </tr>
+                                                <% } %>
                             </tbody>
                         </table>
                     </div>
@@ -79,15 +144,16 @@
                 const tbody = document.querySelector('#tab-clientes tbody');
 
                 function ordenar(alvo, ordem) {
-                    const linhas = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+                    const linhas = Array.prototype.slice.call(alvo.querySelectorAll('tr'));
                     linhas.sort(function (a, b) {
                         const get = (tr) => tr.cells[1].textContent.trim();
-                        const getPontos = (tr) => Number(tr.cells[3].textContent.replace(/\D/g, ''));
+                        const getPontos = (tr) => Number(tr.cells[4].textContent.replace(/\D/g, ''));
+                        const getCompras = (tr) => Number(tr.cells[3].textContent.trim());
                         if (ordem === 'az') return get(a).localeCompare(get(b), 'pt-BR');
                         if (ordem === 'za') return get(b).localeCompare(get(a), 'pt-BR');
-                        return getPontos(b) - getPontos(a);
+                        return getPontos(b) - getPontos(a) || getCompras(b) - getCompras(a);
                     });
-                    linhas.forEach((tr) => tbody.appendChild(tr));
+                    linhas.forEach((tr) => alvo.appendChild(tr));
                 }
 
                 function filtrar() {
@@ -99,7 +165,9 @@
                 }
 
                 inputBusca.addEventListener('input', filtrar);
-                selOrdem.addEventListener('change', function () { ordenar(tbody, selOrdem.value); });
+                selOrdem.addEventListener('change', function () {
+                    if (tbody.querySelectorAll('tr').length) ordenar(tbody, selOrdem.value);
+                });
             </script>
 
             <%- include('../includes/footer') %>

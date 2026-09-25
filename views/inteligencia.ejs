@@ -1,0 +1,162 @@
+<%- include('includes/header') %>
+    <%- include('includes/navbar') %>
+        <%- include('includes/topbar') %>
+
+            <section class="page">
+                <div class="page-head">
+                    <div>
+                        <div class="page-eyebrow">Retenção e gestão</div>
+                        <h1 class="page-title">Inteligência</h1>
+                        <div class="page-subtitle">Análise RFM, clientes em risco e alertas gerenciais</div>
+                    </div>
+                </div>
+
+                <% var emRiscoTotal = dash.status.RISCO + dash.status.INATIVO; %>
+                    <!-- Mini KPIs -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-xl-3">
+                            <div class="card stat-mini">
+                                <div class="label">Clientes em risco</div>
+                                <div class="value text-danger"><%= emRiscoTotal %></div>
+                                <i class="bi bi-exclamation-triangle text-danger"></i>
+                            </div>
+                        </div>
+                        <div class="col-6 col-xl-3">
+                            <div class="card stat-mini">
+                                <div class="label">1ª compra</div>
+                                <div class="value"><%= porRfm.filter(function (c) { return c.totalCompras === 1; }).length %></div>
+                                <i class="bi bi-person-check text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="col-6 col-xl-3">
+                            <div class="card stat-mini">
+                                <div class="label">Taxa de 2ª compra</div>
+                                <div class="value text-primary"><%= dash.retencao.taxaSegundaCompra.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) %>%</div>
+                                <i class="bi bi-repeat text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="col-6 col-xl-3">
+                            <div class="card stat-mini">
+                                <div class="label">Ticket médio</div>
+                                <div class="value text-primary"><%= dash.totais.ticketMedioGlobal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %></div>
+                                <i class="bi bi-receipt text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- O que merece atenção -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-12">
+                            <div class="card section-card">
+                                <h5 class="card-title mb-3"><i class="bi bi-bell text-primary"></i>O que merece atenção hoje?</h5>
+                                <% if (dash.alertas.length) { %>
+                                    <div class="row g-3">
+                                        <% dash.alertas.forEach(function (alerta) { %>
+                                            <div class="col-md-6 col-xl-4">
+                                                <div class="alert-item alert-<%= alerta.tom %>">
+                                                    <i class="bi <%= alerta.icone %>"></i>
+                                                    <div>
+                                                        <div><%= alerta.texto %></div>
+                                                        <a href="<%= alerta.link %>" class="alert-link"><%= alerta.rotulo %> <i class="bi bi-arrow-right"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <% }); %>
+                                    </div>
+                                    <% } else { %>
+                                        <div class="alert-card"><i class="bi bi-check-circle me-2"></i>Nenhum alerta gerado no momento.</div>
+                                        <% } %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clientes em risco -->
+                    <div class="card section-card mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title"><i class="bi bi-exclamation-diamond text-primary"></i>Clientes em risco de churn</h5>
+                            <span class="badge-level bronze">>= 61 dias sem comprar</span>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Cliente</th>
+                                        <th>Última compra</th>
+                                        <th>Dias sem comprar</th>
+                                        <th class="text-end">Compras</th>
+                                        <th class="text-end">Total gasto</th>
+                                        <th class="text-end">Pontos disp.</th>
+                                        <th>Nível</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (emRisco.length) { %>
+                                        <% emRisco.forEach(function (cliente) { %>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-2"><span class="avatar"><%= cliente.iniciais %></span><%= cliente.nome %></div>
+                                                </td>
+                                                <td class="text-nowrap"><%= fmt.data(cliente.ultimaCompra) %></td>
+                                                <td class="fw-bold"><%= cliente.diasSemComprar !== null ? cliente.diasSemComprar + ' dias' : '—' %></td>
+                                                <td class="text-end"><%= cliente.totalCompras %></td>
+                                                <td class="text-end"><%= fmt.moeda(cliente.totalGasto) %></td>
+                                                <td class="text-end fw-bold"><%= cliente.pontosDisponiveis.toLocaleString('pt-BR') %></td>
+                                                <td><span class="badge-level <%= cliente.nivel.classe %>"><%= cliente.nivel.nome %></span></td>
+                                                <td><span class="badge-status <%= cliente.status.classe %>"><%= cliente.status.nome.toLowerCase() %></span></td>
+                                                <td><a href="/clientes/<%= cliente.id %>" class="btn btn-sm btn-light btn-action" title="Ver perfil"><i class="bi bi-eye"></i></a></td>
+                                            </tr>
+                                            <% }); %>
+                                                <% } else { %>
+                                                    <tr><td colspan="9" class="text-center text-muted py-4">Nenhum cliente em risco no momento.</td></tr>
+                                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- RFM -->
+                    <div class="card section-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                            <h5 class="card-title"><i class="bi bi-grid-3x3-gap text-primary"></i>Análise RFM</h5>
+                            <div class="small text-muted">R = recência (dias desde a última compra) · F = frequência (nº de compras) · M = monetário (total gasto)</div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Cliente</th>
+                                        <th>Nível</th>
+                                        <th>Status</th>
+                                        <th class="text-center">R</th>
+                                        <th class="text-center">F</th>
+                                        <th class="text-end">M (total gasto)</th>
+                                        <th class="text-end">Ticket médio</th>
+                                        <th class="text-end">Pontos disp.</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% porRfm.forEach(function (cliente) { %>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2"><span class="avatar"><%= cliente.iniciais %></span><%= cliente.nome %></div>
+                                            </td>
+                                            <td><span class="badge-level <%= cliente.nivel.classe %>"><%= cliente.nivel.nome %></span></td>
+                                            <td><span class="badge-status <%= cliente.status.classe %>"><%= cliente.status.nome.toLowerCase() %></span></td>
+                                            <td class="text-center"><%= cliente.rfm.recencia !== null ? cliente.rfm.recencia + 'd' : '—' %></td>
+                                            <td class="text-center"><%= cliente.rfm.frequencia %></td>
+                                            <td class="text-end"><%= fmt.moeda(cliente.rfm.monetario) %></td>
+                                            <td class="text-end"><%= fmt.moeda(cliente.ticketMedio) %></td>
+                                            <td class="text-end fw-bold"><%= cliente.pontosDisponiveis.toLocaleString('pt-BR') %></td>
+                                            <td><a href="/clientes/<%= cliente.id %>" class="btn btn-sm btn-light btn-action" title="Ver perfil"><i class="bi bi-eye"></i></a></td>
+                                        </tr>
+                                        <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            </section>
+
+            <%- include('includes/footer') %>

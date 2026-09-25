@@ -368,12 +368,14 @@ body {
 .kpi-tone-2 .kpi-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
 .kpi-tone-3 .kpi-icon { background: linear-gradient(135deg, #f43f5e, #e11d48); }
 .kpi-tone-4 .kpi-icon { background: linear-gradient(135deg, #10b981, #059669); }
+.kpi-tone-5 .kpi-icon { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
 
 .kpi-trend {
     font-size: .72rem;
     font-weight: 700;
     padding: 4px 8px;
     border-radius: 999px;
+    text-decoration: none;
 }
 
 .kpi-trend.up { background: #e7f8f0; color: #059669; }
@@ -474,6 +476,202 @@ body {
 .badge-tipo.acumulo { background: #e7f8f0; color: #059669; }
 .badge-tipo.resgate { background: #fdeeee; color: #e11d48; }
 .badge-tipo.expirou { background: #eef1f6; color: #64748b; }
+
+/* ============================================================
+   Status de retenção (saúde da base)
+   ============================================================ */
+.badge-status {
+    padding: 6px 11px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: .68rem;
+    letter-spacing: .04em;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.badge-status.status-ativo { background: #e7f8f0; color: #059669; }
+.badge-status.status-atencao { background: #fff6df; color: #b45309; }
+.badge-status.status-risco { background: #ffe8d6; color: #c2410c; }
+.badge-status.status-inativo { background: #eef1f6; color: #64748b; }
+
+.status-card {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow);
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.status-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.status-card .status-nome { font-weight: 800; font-size: .95rem; }
+.status-card .status-faixa { font-size: .72rem; color: var(--muted); margin-top: 2px; }
+.status-card .status-qtd { font-size: 1.7rem; font-weight: 800; }
+.status-card.status-ativo { border-top: 4px solid #10b981; }
+.status-card.status-ativo .status-qtd { color: #059669; }
+.status-card.status-atencao { border-top: 4px solid #f59e0b; }
+.status-card.status-atencao .status-qtd { color: #b45309; }
+.status-card.status-risco { border-top: 4px solid #f97316; }
+.status-card.status-risco .status-qtd { color: #c2410c; }
+.status-card.status-inativo { border-top: 4px solid #94a3b8; }
+.status-card.status-inativo .status-qtd { color: #64748b; }
+
+/* ============================================================
+   Cards de nível (Dashboard)
+   ============================================================ */
+.nivel-card {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.nivel-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.nivel-card .nivel-nome { font-weight: 800; font-size: 1.05rem; }
+.nivel-card .nivel-min { font-size: .74rem; color: var(--muted); margin-top: 2px; }
+.nivel-card .nivel-qtd { font-size: 1.9rem; font-weight: 800; }
+.nivel-card.bronze { background: linear-gradient(150deg, #fffaf5, #fdf0e7); border-color: #f0d5c0; }
+.nivel-card.bronze .nivel-qtd { color: #9a542d; }
+.nivel-card.silver { background: linear-gradient(150deg, #fafbfe, #eef2f8); border-color: #d9e0ea; }
+.nivel-card.silver .nivel-qtd { color: #5d6a7b; }
+.nivel-card.gold { background: linear-gradient(150deg, #fffdf3, #fbf3d4); border-color: #eadfae; }
+.nivel-card.gold .nivel-qtd { color: #8a6500; }
+
+/* ============================================================
+   Gráfico com séries em grupo / legendas
+   ============================================================ */
+.bar-group {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 100%;
+}
+
+.chart-bar.series-gerados,
+.chart-bar.series-compras {
+    background: linear-gradient(180deg, #60a5fa, #2563eb);
+}
+
+.chart-bar.series-resgatados {
+    background: linear-gradient(180deg, #fb7185, #e11d48);
+}
+
+.chart-bar.series-ativos {
+    background: linear-gradient(180deg, #34d399, #059669);
+}
+
+.legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+.legend-gerados { background: #2563eb; }
+.legend-resgatados { background: #e11d48; }
+.legend-compras { background: #2563eb; }
+.legend-ativos { background: #059669; }
+
+/* ============================================================
+   Alertas gerenciais
+   ============================================================ */
+.alert-item {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    box-shadow: var(--shadow);
+    height: 100%;
+    align-items: flex-start;
+}
+
+.alert-item > i {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.alert-item .alert-link {
+    display: inline-block;
+    margin-top: 6px;
+    font-weight: 700;
+    font-size: .78rem;
+    text-decoration: none;
+}
+
+.alert-danger { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
+.alert-danger > i, .alert-danger .alert-link { color: #dc2626; }
+.alert-warning { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+.alert-warning > i, .alert-warning .alert-link { color: #d97706; }
+.alert-info { background: #eff6ff; border-color: #bfdbfe; color: #1e3a8a; }
+.alert-info > i, .alert-info .alert-link { color: #2563eb; }
+.alert-primary { background: #f4f0ff; border-color: #ddd6fe; color: #4c1d95; }
+.alert-primary > i, .alert-primary .alert-link { color: #7c3aed; }
+
+/* ============================================================
+   Tags e preferências
+   ============================================================ */
+.tag-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 11px;
+    border-radius: 999px;
+    background: #eef2fb;
+    border: 1px solid #e0e7f3;
+    color: #33415c;
+    font-size: .72rem;
+    font-weight: 650;
+}
+
+.pref-block { margin-bottom: 12px; }
+
+.pref-label {
+    display: block;
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+
+.pref-block .tag-chip { margin-right: 6px; margin-bottom: 4px; }
+
+.perfil-list {
+    margin: 0;
+}
+
+.perfil-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px dashed #edf0f6;
+    font-size: .86rem;
+}
+
+.perfil-list li:last-child { border-bottom: 0; }
+
+.perfil-list span { color: var(--muted); }
 
 /* ============================================================
    Avatar

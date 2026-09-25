@@ -9,106 +9,247 @@
                         <h1 class="page-title">Dashboard</h1>
                         <div class="page-subtitle">Panorama do programa de fidelidade FATECalçados</div>
                     </div>
-                    <button class="btn btn-primary"><i class="bi bi-download me-2"></i>Exportar relatório</button>
+                    <a href="/api/dashboard" target="_blank" class="btn btn-primary"><i class="bi bi-download me-2"></i>Dados (JSON)</a>
                 </div>
 
+                <% var t = dash.totais; var valPct = function (v) { return Math.round(v).toLocaleString('pt-BR'); }; %>
+
+                <!-- LINHA 1: KPIs -->
                 <div class="row g-3 mb-4">
-                    <div class="col-6 col-xl-3">
+                    <div class="col-6 col-lg">
                         <div class="card kpi kpi-tone-1">
                             <div class="kpi-top">
                                 <div class="kpi-icon"><i class="bi bi-people"></i></div>
-                                <span class="kpi-trend up"><i class="bi bi-arrow-up"></i> 100%</span>
+                                <a class="kpi-trend up" href="/clientes"><i class="bi bi-arrow-up-right"></i> ver</a>
                             </div>
-                            <div class="kpi-value"><%= kpis.clientes %></div>
+                            <div class="kpi-value"><%= t.clientes %></div>
                             <div class="kpi-label">Clientes cadastrados</div>
                         </div>
                     </div>
-                    <div class="col-6 col-xl-3">
+                    <div class="col-6 col-lg">
                         <div class="card kpi kpi-tone-2">
                             <div class="kpi-top">
-                                <div class="kpi-icon"><i class="bi bi-stars"></i></div>
-                                <span class="kpi-trend up"><i class="bi bi-arrow-up"></i> +12%</span>
+                                <div class="kpi-icon"><i class="bi bi-cart-check"></i></div>
+                                <a class="kpi-trend up" href="/compras"><i class="bi bi-arrow-up-right"></i> ver</a>
                             </div>
-                            <div class="kpi-value"><%= kpis.pontosAcumulados.toLocaleString('pt-BR') %></div>
-                            <div class="kpi-label">Pontos acumulados</div>
+                            <div class="kpi-value"><%= t.compras %></div>
+                            <div class="kpi-label">Compras registradas</div>
                         </div>
                     </div>
-                    <div class="col-6 col-xl-3">
+                    <div class="col-6 col-lg">
                         <div class="card kpi kpi-tone-3">
                             <div class="kpi-top">
-                                <div class="kpi-icon"><i class="bi bi-arrow-down-circle"></i></div>
-                                <span class="kpi-trend down"><i class="bi bi-arrow-down"></i> -8%</span>
+                                <div class="kpi-icon"><i class="bi bi-stars"></i></div>
+                                <span class="kpi-trend up">R$ <%= t.valorPotencial.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }).replace('R$', '') %></span>
                             </div>
-                            <div class="kpi-value"><%= kpis.pontosResgatados.toLocaleString('pt-BR') %></div>
-                            <div class="kpi-label">Pontos resgatados</div>
+                            <div class="kpi-value"><%= t.pontosDisponiveis.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Pontos disponíveis</div>
                         </div>
                     </div>
-                    <div class="col-6 col-xl-3">
+                    <div class="col-6 col-lg">
                         <div class="card kpi kpi-tone-4">
                             <div class="kpi-top">
-                                <div class="kpi-icon"><i class="bi bi-cash-stack"></i></div>
-                                <span class="kpi-trend up"><i class="bi bi-arrow-up"></i> +5%</span>
+                                <div class="kpi-icon"><i class="bi bi-gift"></i></div>
+                                <a class="kpi-trend up" href="/resgates"><i class="bi bi-arrow-up-right"></i> ver</a>
                             </div>
-                            <div class="kpi-value">R$ <%= kpis.valorResgates.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) %></div>
-                            <div class="kpi-label">Valor dos resgates</div>
+                            <div class="kpi-value"><%= t.resgates %></div>
+                            <div class="kpi-label">Resgates realizados</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg">
+                        <div class="card kpi kpi-tone-5">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-cash-stack"></i></div>
+                                <span class="kpi-trend up">custo</span>
+                            </div>
+                            <div class="kpi-value"><%= t.valorResgates.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %></div>
+                            <div class="kpi-label">Descontos concedidos</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row g-3">
+                <!-- LINHA 2: Níveis -->
+                <div class="row g-3 mb-4">
+                    <% regrasCfg.niveis.forEach(function (nivel) { %>
+                        <% var qtde = dash.niveis[nivel.nome] || 0; %>
+                        <div class="col-md-4">
+                            <a href="/clientes?nivel=<%= nivel.nome %>" class="card nivel-card <%= nivel.classe %> text-decoration-none h-100">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="nivel-nome"><%= nivel.nome %></div>
+                                        <div class="nivel-min">a partir de <%= nivel.minimo.toLocaleString('pt-BR') %> pts</div>
+                                    </div>
+                                    <div class="nivel-qtd"><%= qtde %></div>
+                                </div>
+                                <div class="mt-3 small">Bônus de <strong><%= Math.round(nivel.bonus * 100) %>%</strong> nas compras</div>
+                            </a>
+                        </div>
+                        <% }); %>
+                </div>
+
+                <!-- LINHA 3: Saúde da base -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12">
+                        <h5 class="card-title mb-3"><i class="bi bi-heart-pulse text-primary"></i>Saúde da base (última compra)</h5>
+                    </div>
+                    <% regrasCfg.status.forEach(function (st) { %>
+                        <% var qtde = dash.status[st.nome] || 0; %>
+                        <div class="col-6 col-xl-3">
+                            <a href="/clientes?status=<%= st.nome %>" class="card status-card <%= st.classe %> text-decoration-none h-100 p-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <div class="status-nome"><%= st.nome === 'ATENCAO' ? 'Atenção' : st.nome.charAt(0) + st.nome.slice(1).toLowerCase() %></div>
+                                        <div class="status-faixa"><%= st.minimo %>–<%= st.maximo === Infinity ? '+' : st.maximo %> dias</div>
+                                    </div>
+                                    <div class="status-qtd"><%= qtde %></div>
+                                </div>
+                            </a>
+                        </div>
+                        <% }); %>
+                </div>
+
+                <!-- LINHA 4: Retenção -->
+                <div class="row g-3 mb-4">
+                    <div class="col-xl-6">
+                        <div class="card section-card h-100">
+                            <h5 class="card-title mb-2"><i class="bi bi-repeat text-primary"></i>Taxa de segunda compra</h5>
+                            <div class="display-6 fw-bold text-primary"><%= dash.retencao.taxaSegundaCompra.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) %>%</div>
+                            <div class="text-muted mb-3"><%= dash.retencao.clientesComSegunda %> de <%= dash.retencao.clientesComCompra %> clientes comprando voltaram a comprar</div>
+                            <div class="progress" style="height:10px">
+                                <div class="progress-bar" role="progressbar" style="width:<%= dash.retencao.taxaSegundaCompra %>%"></div>
+                            </div>
+                            <div class="alert-card mt-3"><i class="bi bi-lightbulb me-2"></i>Clientes com apenas 1 compra são o foco de recompra:
+                                <a href="/clientes?min_compras=1&max_compras=1">ver segmento</a>.</div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card section-card h-100">
+                            <h5 class="card-title mb-2"><i class="bi bi-hourglass-split text-primary"></i>Tempo médio até a 2ª compra</h5>
+                            <div class="display-6 fw-bold text-primary"><%= dash.retencao.tempoMedioSegundaCompra !== null ? dash.retencao.tempoMedioSegundaCompra + ' dias' : '—' %></div>
+                            <div class="text-muted mb-3">Média de dias entre a 1ª e a 2ª compra dos clientes que voltaram</div>
+                            <div class="alert-card"><i class="bi bi-stars me-2"></i>Estratégias de recompra: notificar no aniversário, ofertar bônus de pontos para clientes de 1ª compra.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LINHA 5: Evolução de pontos -->
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-8">
+                        <div class="card section-card h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title"><i class="bi bi-graph-up-arrow text-primary"></i>Evolução de pontos</h5>
+                                <div class="d-flex gap-3 small">
+                                    <span><span class="legend-dot legend-gerados"></span> gerados</span>
+                                    <span><span class="legend-dot legend-resgatados"></span> resgatados</span>
+                                </div>
+                            </div>
+                            <% var maxGer = Math.max.apply(null, dash.evolucaoPontos.map(function (m) { return m.gerados; })) || 1; %>
+                                <% var maxRes = Math.max.apply(null, dash.evolucaoPontos.map(function (m) { return m.resgatados; })) || 1; %>
+                                    <% var hg = function (v) { return Math.max(6, Math.round(v / maxGer * 100)); }; %>
+                                        <% var hr = function (v) { return Math.max(4, Math.round(v / maxRes * 100)); }; %>
+                                            <div class="chart" style="height:250px">
+                                                <div class="chart-bars">
+                                                    <% dash.evolucaoPontos.forEach(function (mes) { %>
+                                                        <div class="col-tipo">
+                                                            <div class="bar-group">
+                                                                <div class="chart-bar series-gerados" style="height:<%= hg(mes.gerados) %>%"></div>
+                                                                <div class="chart-bar series-resgatados" style="height:<%= hr(mes.resgatados) %>%"></div>
+                                                            </div>
+                                                            <div class="small text-muted mt-2"><%= mes.label %></div>
+                                                        </div>
+                                                        <% }); %>
+                                                </div>
+                                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card section-card h-100">
+                            <h5 class="card-title mb-3"><i class="bi bi-tag text-primary"></i>Valor potencial em descontos</h5>
+                            <div class="display-6 fw-bold mt-2 text-primary"><%= t.valorPotencial.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %></div>
+                            <div class="text-muted"><%= t.pontosDisponiveis.toLocaleString('pt-BR') %> pontos disponíveis</div>
+                            <div class="stat-grid my-4">
+                                <div class="stat-mini">
+                                    <div class="label">Conversão</div>
+                                    <div class="value">R$ <%= regrasCfg.conversao.valorReal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %> / <%= regrasCfg.conversao.pontos %> pts</div>
+                                </div>
+                                <div class="stat-mini">
+                                    <div class="label">Validade</div>
+                                    <div class="value"><%= regrasCfg.validadeMeses %> meses</div>
+                                </div>
+                            </div>
+                            <div class="alert-card"><i class="bi bi-stars me-2"></i><%= regrasCfg.conversao.pontos %> pontos = <%= regrasCfg.conversao.valorReal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %> de desconto.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LINHA 6: Evolução/retenção de clientes -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12">
+                        <div class="card section-card">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title"><i class="bi bi-people text-primary"></i>Evolução de clientes ativos</h5>
+                                <div class="d-flex gap-3 small">
+                                    <span><span class="legend-dot legend-compras"></span> compras</span>
+                                    <span><span class="legend-dot legend-ativos"></span> clientes ativos</span>
+                                </div>
+                            </div>
+                            <% var maxCompras = Math.max.apply(null, dash.evolucaoClientes.map(function (m) { return m.compras; })) || 1; %>
+                                <% var maxAtivos = Math.max.apply(null, dash.evolucaoClientes.map(function (m) { return m.ativos; })) || 1; %>
+                                    <% var hc = function (v) { return Math.max(6, Math.round(v / maxCompras * 100)); }; %>
+                                        <% var ha = function (v) { return Math.max(4, Math.round(v / maxAtivos * 100)); }; %>
+                                            <div class="chart" style="height:230px">
+                                                <div class="chart-bars">
+                                                    <% dash.evolucaoClientes.forEach(function (mes) { %>
+                                                        <div class="col-tipo">
+                                                            <div class="bar-group">
+                                                                <div class="chart-bar series-compras" style="height:<%= hc(mes.compras) %>%"></div>
+                                                                <div class="chart-bar series-ativos" style="height:<%= ha(mes.ativos) %>%"></div>
+                                                            </div>
+                                                            <div class="small text-muted mt-2"><%= mes.label %></div>
+                                                        </div>
+                                                        <% }); %>
+                                                </div>
+                                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LINHA 7: Distribuição e ranking -->
+                <div class="row g-3 mb-4">
                     <div class="col-lg-5">
                         <div class="card section-card h-100">
-                            <h5 class="card-title mb-3"><i class="bi bi-pie-chart text-primary"></i>Distribuição por nível
-                            </h5>
-                            <% var bronzePct = distribuicao.total ? Math.round(distribuicao.bronze / distribuicao.total * 100) : 0; %>
-                                <% var prataPct = distribuicao.total ? Math.round(distribuicao.prata / distribuicao.total * 100) : 0; %>
-                                    <% var ouroPct = distribuicao.total ? Math.round(distribuicao.ouro / distribuicao.total * 100) : 0; %>
-                                        <div class="d-flex align-items-center justify-content-center gap-4 my-4 flex-wrap">
-                                            <div class="donut"
-                                                style="background: conic-gradient(#f59e0b 0 <%= bronzePct %>% , #94a3b8 <%= bronzePct %>% <%= bronzePct + prataPct %>% , #fbbf24 <%= bronzePct + prataPct %>% 100%)">
-                                                <div class="donut-hole"><%= distribuicao.total %></div>
-                                            </div>
-                                            <div>
-                                                <div class="mb-2"><span class="badge-level bronze">Bronze</span> <strong
-                                                        class="ms-1"><%= distribuicao.bronze %></strong></div>
-                                                <div class="mb-2"><span class="badge-level silver">Prata</span> <strong
-                                                        class="ms-1"><%= distribuicao.prata %></strong></div>
-                                                <div><span class="badge-level gold">Ouro</span> <strong class="ms-1"><%=
-                                                        distribuicao.ouro %></strong></div>
-                                            </div>
+                            <h5 class="card-title mb-3"><i class="bi bi-pie-chart text-primary"></i>Distribuição por nível</h5>
+                            <% var pct = function (n) { return dash.niveis.total ? Math.round(n / dash.niveis.total * 100) : 0; }; %>
+                                <% var pB = pct(dash.niveis.bronze), pP = pct(dash.niveis.prata), pO = pct(dash.niveis.ouro); %>
+                                    <div class="d-flex align-items-center justify-content-center gap-4 my-4 flex-wrap">
+                                        <div class="donut"
+                                            style="background: conic-gradient(#f59e0b 0 <%= pB %>% , #94a3b8 <%= pB %>% <%= pB + pP %>% , #fbbf24 <%= pB + pP %>% 100%)">
+                                            <div class="donut-hole"><%= dash.niveis.total %></div>
                                         </div>
-
+                                        <div>
+                                            <div class="mb-2"><span class="badge-level bronze">Bronze</span> <strong class="ms-1"><%= dash.niveis.bronze %></strong></div>
+                                            <div class="mb-2"><span class="badge-level silver">Prata</span> <strong class="ms-1"><%= dash.niveis.prata %></strong></div>
+                                            <div><span class="badge-level gold">Ouro</span> <strong class="ms-1"><%= dash.niveis.ouro %></strong></div>
+                                        </div>
+                                    </div>
+                                    <% if (dash.niveis.total) { %>
                                         <div class="d-flex flex-column gap-2 mt-3">
-                                            <div class="d-flex justify-content-between small"><span>Bronze</span><span
-                                                    class="fw-bold"><%= bronzePct %>%</span></div>
-                                            <div class="progress" style="height:8px">
-                                                <div class="progress-bar" role="progressbar"
-                                                    style="width:<%= bronzePct %>% ;background:#e8a87c"></div>
-                                            </div>
-                                            <div class="d-flex justify-content-between small"><span>Prata</span><span
-                                                    class="fw-bold"><%= prataPct %>%</span></div>
-                                            <div class="progress" style="height:8px">
-                                                <div class="progress-bar" role="progressbar"
-                                                    style="width:<%= prataPct %>% ;background:#94a3b8"></div>
-                                            </div>
-                                            <div class="d-flex justify-content-between small"><span>Ouro</span><span
-                                                    class="fw-bold"><%= ouroPct %>%</span></div>
-                                            <div class="progress" style="height:8px">
-                                                <div class="progress-bar" role="progressbar"
-                                                    style="width:<%= ouroPct %>% ;background:#fbbf24"></div>
-                                            </div>
+                                            <div class="d-flex justify-content-between small"><span>Bronze</span><span class="fw-bold"><%= pB %>%</span></div>
+                                            <div class="progress" style="height:8px"><div class="progress-bar" role="progressbar" style="width:<%= pB %>% ;background:#e8a87c"></div></div>
+                                            <div class="d-flex justify-content-between small"><span>Prata</span><span class="fw-bold"><%= pP %>%</span></div>
+                                            <div class="progress" style="height:8px"><div class="progress-bar" role="progressbar" style="width:<%= pP %>% ;background:#94a3b8"></div></div>
+                                            <div class="d-flex justify-content-between small"><span>Ouro</span><span class="fw-bold"><%= pO %>%</span></div>
+                                            <div class="progress" style="height:8px"><div class="progress-bar" role="progressbar" style="width:<%= pO %>% ;background:#fbbf24"></div></div>
                                         </div>
+                                        <% } %>
                         </div>
                     </div>
 
                     <div class="col-lg-7">
                         <div class="card section-card h-100">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="card-title"><i class="bi bi-trophy text-primary"></i>Maiores pontuações</h5>
-                                <select class="form-select form-select-sm w-auto">
-                                    <option>Maior pontuação</option>
-                                    <option>Menor pontuação</option>
-                                </select>
+                                <h5 class="card-title"><i class="bi bi-trophy text-primary"></i>Maiores saldos</h5>
+                                <a href="/ranking" class="small">ver ranking completo</a>
                             </div>
                             <div class="table-responsive">
                                 <table class="table">
@@ -117,19 +258,22 @@
                                             <th>Pos.</th>
                                             <th>Cliente</th>
                                             <th>Nível</th>
-                                            <th class="text-end">Pontos</th>
+                                            <th>Status</th>
+                                            <th class="text-end">Pontos disp.</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% topos.forEach(function (cliente, index) { %>
+                                        <% dash.ranking.forEach(function (cliente, index) { %>
                                             <tr>
                                                 <td><span class="rank-pos <%= 'top-' + (index + 1) %>"><%= index + 1 %>º</span></td>
                                                 <td>
-                                                    <div class="d-flex align-items-center gap-2"><span
-                                                            class="avatar"><%= cliente.iniciais %></span><%= cliente.nome %></div>
+                                                    <a href="/clientes/<%= cliente.id %>" class="text-decoration-none text-reset">
+                                                        <div class="d-flex align-items-center gap-2"><span class="avatar"><%= cliente.iniciais %></span><%= cliente.nome %></div>
+                                                    </a>
                                                 </td>
                                                 <td><span class="badge-level <%= cliente.nivel.classe %>"><%= cliente.nivel.nome %></span></td>
-                                                <td class="text-end fw-bold"><%= cliente.pontos.toLocaleString('pt-BR') %></td>
+                                                <td><span class="badge-status <%= cliente.status.classe %>"><%= cliente.status.nome.toLowerCase() %></span></td>
+                                                <td class="text-end fw-bold"><%= cliente.pontosDisponiveis.toLocaleString('pt-BR') %></td>
                                             </tr>
                                             <% }); %>
                                     </tbody>
@@ -137,49 +281,30 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-lg-8">
+                <!-- LINHA 8: O que merece atenção hoje -->
+                <div class="row g-3">
+                    <div class="col-12">
                         <div class="card section-card">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h5 class="card-title"><i class="bi bi-graph-up-arrow text-primary"></i>Evolução da
-                                    pontuação</h5>
-                                <span class="badge-level silver">2026</span>
-                            </div>
-                            <% var maxPts = Math.max.apply(null, evolucaoMensal.map(function (m) { return m.pontos; })) || 1; %>
-                                <div class="chart">
-                                    <div class="chart-bars">
-                                        <% evolucaoMensal.forEach(function (mes) { %>
-                                            <% var h = Math.max(6, Math.round(mes.pontos / maxPts * 100)); %>
-                                                <div class="col-tipo">
-                                                    <div class="bar-value"><%= mes.pontos.toLocaleString('pt-BR') %></div>
-                                                    <div class="chart-bar" style="height:<%= h %>%"></div>
-                                                    <div class="small text-muted mt-2"><%= mes.label %></div>
+                            <h5 class="card-title mb-3"><i class="bi bi-bell text-primary"></i>O que merece atenção hoje?</h5>
+                            <% if (dash.alertas.length) { %>
+                                <div class="row g-3">
+                                    <% dash.alertas.forEach(function (alerta) { %>
+                                        <div class="col-md-6 col-xl-4">
+                                            <div class="alert-item alert-<%= alerta.tom %>">
+                                                <i class="bi <%= alerta.icone %>"></i>
+                                                <div>
+                                                    <div><%= alerta.texto %></div>
+                                                    <a href="<%= alerta.link %>" class="alert-link"><%= alerta.rotulo %> <i class="bi bi-arrow-right"></i></a>
                                                 </div>
-                                                <% }); %>
-                                    </div>
+                                            </div>
+                                        </div>
+                                        <% }); %>
                                 </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <div class="card section-card h-100">
-                            <h5 class="card-title mb-3"><i class="bi bi-tag text-primary"></i>Valor potencial em descontos
-                            </h5>
-                            <div class="display-6 fw-bold mt-4 text-primary">R$ <%= valorPotencial.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) %></div>
-                            <div class="text-muted"><%= pontosDisponiveis.toLocaleString('pt-BR') %> pontos disponíveis</div>
-
-                            <div class="stat-grid my-4">
-                                <div class="stat-mini">
-                                    <div class="label">Taxa de conversão</div>
-                                    <div class="value">R$ 5 / 100 pts</div>
-                                </div>
-                                <div class="stat-mini">
-                                    <div class="label">KPI meta</div>
-                                    <div class="value">R$ 2.500</div>
-                                </div>
-                            </div>
-
-                            <div class="alert-card"><i class="bi bi-stars me-2"></i>100 pontos = R$ 5,00 de desconto.</div>
+                                <% } else { %>
+                                    <div class="alert-card"><i class="bi bi-check-circle me-2"></i>Nenhum alerta gerado no momento.</div>
+                                    <% } %>
                         </div>
                     </div>
                 </div>

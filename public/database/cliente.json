@@ -1,162 +1,1005 @@
 [
     {
         "id": 1,
-        "nome": "João da Silva",
+        "nome": "Ana Beatriz Souza",
         "tipo_documento": "CPF",
-        "documento": "123.456.789-00",
-        "create_at": "2024-06-01T10:00:00Z",
-        "update_at": "2024-06-01T10:00:00Z"
+        "documento": "568.322.142-00",
+        "email": "ana.beatriz.souza@fatecalcados.com.br",
+        "whatsapp": "(11) 99013-2608",
+        "data_nascimento": "1978-09-16T00:00:00.000Z",
+        "numero_calcado": 37,
+        "cidade": "Osasco",
+        "bairro": "Freguesia do Ó",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Bota",
+                "Chinelo",
+                "Social"
+            ],
+            "estilos": [
+                "Conforto"
+            ],
+            "prioridades": [
+                "Tendência"
+            ],
+            "cores": [
+                "Rosa",
+                "Cinza"
+            ],
+            "faixa_preco": "R$ 90 – R$ 150"
+        },
+        "tags": [],
+        "create_at": "2026-01-04T00:00:00.000Z",
+        "update_at": "2026-09-18T14:11:00.000Z"
     },
     {
         "id": 2,
-        "nome": "Maria Oliveira",
+        "nome": "Bruno Carvalho",
         "tipo_documento": "CPF",
-        "documento": "234.567.890-11",
-        "create_at": "2024-06-02T10:00:00Z",
-        "update_at": "2024-06-02T10:00:00Z"
+        "documento": "161.788.128-76",
+        "email": "bruno.carvalho@fatecalcados.com.br",
+        "whatsapp": "(11) 97806-1569",
+        "data_nascimento": "1981-11-14T00:00:00.000Z",
+        "numero_calcado": 42,
+        "cidade": "São Bernardo do Campo",
+        "bairro": "Freguesia do Ó",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Clássico",
+                "Conforto"
+            ],
+            "estilos": [
+                "Esportivo"
+            ],
+            "prioridades": [
+                "Durabilidade",
+                "Tendência"
+            ],
+            "cores": [
+                "Rosa"
+            ],
+            "faixa_preco": "R$ 150 – R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-01-05T18:47:00.000Z",
+        "update_at": "2026-09-12T17:12:00.000Z"
     },
     {
         "id": 3,
-        "nome": "Pedro Santos",
+        "nome": "Camila Ferreira",
         "tipo_documento": "CPF",
-        "documento": "12",
-        "create_at": "2024-06-03T10:00:00Z",
-        "update_at": "2024-06-03T10:00:00Z"
+        "documento": "823.356.316-16",
+        "email": "camila.ferreira@fatecalcados.com.br",
+        "whatsapp": "(11) 96986-5934",
+        "data_nascimento": "1988-06-19T00:00:00.000Z",
+        "numero_calcado": 36,
+        "cidade": "São Bernardo do Campo",
+        "bairro": "Vila Mariana",
+        "consentimento_comunicacao": false,
+        "preferencias": {
+            "categorias": [
+                "Sandália",
+                "Chinelo",
+                "Tênis"
+            ],
+            "estilos": [
+                "Conforto"
+            ],
+            "prioridades": [
+                "Tendência"
+            ],
+            "cores": [
+                "Branco",
+                "Rosa"
+            ],
+            "faixa_preco": "Acima de R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-01-04T00:00:00.000Z",
+        "update_at": "2026-09-18T12:23:00.000Z"
     },
     {
         "id": 4,
-        "nome": "Ana Costa",
+        "nome": "Diego Almeida",
         "tipo_documento": "CPF",
-        "documento": "456.789.012-33",
-        "create_at": "2024-06-04T10:00:00Z",
-        "update_at": "2024-06-04T10:00:00Z"
+        "documento": "620.024.552-52",
+        "email": "diego.almeida@fatecalcados.com.br",
+        "whatsapp": "(11) 96654-7870",
+        "data_nascimento": "1986-10-13T00:00:00.000Z",
+        "numero_calcado": 39,
+        "cidade": "Campinas",
+        "bairro": "Tatuapé",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Social",
+                "Bota"
+            ],
+            "estilos": [
+                "Social"
+            ],
+            "prioridades": [
+                "Durabilidade"
+            ],
+            "cores": [
+                "Cinza"
+            ],
+            "faixa_preco": "R$ 90 – R$ 150"
+        },
+        "tags": [],
+        "create_at": "2026-01-04T00:00:00.000Z",
+        "update_at": "2026-09-02T17:11:00.000Z"
     },
     {
         "id": 5,
-        "nome": "Lucas Almeida",
+        "nome": "Elisa Martins",
         "tipo_documento": "CPF",
-        "documento": "567.890.123-44",
-        "create_at": "2024-06-05T10:00:00Z",
-        "update_at": "2024-06-05T10:00:00Z"
+        "documento": "746.016.025-30",
+        "email": "elisa.martins@fatecalcados.com.br",
+        "whatsapp": "(11) 96556-9737",
+        "data_nascimento": "1996-12-06T00:00:00.000Z",
+        "numero_calcado": 36,
+        "cidade": "Guarulhos",
+        "bairro": "Centro",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Bota",
+                "Chinelo"
+            ],
+            "estilos": [
+                "Esportivo"
+            ],
+            "prioridades": [
+                "Qualidade",
+                "Preço"
+            ],
+            "cores": [
+                "Azul"
+            ],
+            "faixa_preco": "R$ 150 – R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-05-22T21:02:00.000Z",
+        "update_at": "2026-07-02T21:02:00.000Z"
     },
     {
         "id": 6,
-        "nome": "Juliana Lima",
+        "nome": "Felipe Rocha",
         "tipo_documento": "CPF",
-        "documento": "678.901.234-55",
-        "create_at": "2024-06-06T10:00:00Z",
-        "update_at": "2024-06-06T10:00:00Z"
+        "documento": "362.664.568-18",
+        "email": "felipe.rocha@fatecalcados.com.br",
+        "whatsapp": "(11) 92334-9441",
+        "data_nascimento": "1991-10-02T00:00:00.000Z",
+        "numero_calcado": 43,
+        "cidade": "Santo André",
+        "bairro": "Tatuapé",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Conforto",
+                "Social"
+            ],
+            "estilos": [
+                "Esportivo"
+            ],
+            "prioridades": [
+                "Tendência",
+                "Durabilidade"
+            ],
+            "cores": [
+                "Preto",
+                "Cinza"
+            ],
+            "faixa_preco": "R$ 90 – R$ 150"
+        },
+        "tags": [],
+        "create_at": "2026-03-11T12:09:00.000Z",
+        "update_at": "2026-04-07T12:09:00.000Z"
     },
     {
         "id": 7,
-        "nome": "Carlos Souza",
+        "nome": "Gabriela Nunes",
         "tipo_documento": "CPF",
-        "documento": "789.012.345-66",
-        "create_at": "2024-06-07T10:00:00Z",
-        "update_at": "2024-06-07T10:00:00Z"
+        "documento": "816.806.472-02",
+        "email": "gabriela.nunes@fatecalcados.com.br",
+        "whatsapp": "(11) 94360-8847",
+        "data_nascimento": "1988-09-20T00:00:00.000Z",
+        "numero_calcado": 34,
+        "cidade": "São Paulo",
+        "bairro": "Santana",
+        "consentimento_comunicacao": false,
+        "preferencias": {
+            "categorias": [
+                "Conforto",
+                "Chinelo"
+            ],
+            "estilos": [
+                "Esportivo",
+                "Social"
+            ],
+            "prioridades": [
+                "Conforto"
+            ],
+            "cores": [
+                "Preto"
+            ],
+            "faixa_preco": "Acima de R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-07-14T20:57:00.000Z",
+        "update_at": "2026-07-29T20:57:00.000Z"
     },
     {
         "id": 8,
-        "nome": "Beatriz Rocha",
+        "nome": "Henrique Pires",
         "tipo_documento": "CPF",
-        "documento": "890.123.456-77",
-        "create_at": "2024-06-08T10:00:00Z",
-        "update_at": "2024-06-08T10:00:00Z"
+        "documento": "361.104.259-58",
+        "email": "henrique.pires@fatecalcados.com.br",
+        "whatsapp": "(11) 98559-9109",
+        "data_nascimento": "1966-10-28T00:00:00.000Z",
+        "numero_calcado": 39,
+        "cidade": "São Paulo",
+        "bairro": "Vila Mariana",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Sandália"
+            ],
+            "estilos": [
+                "Social"
+            ],
+            "prioridades": [
+                "Preço"
+            ],
+            "cores": [
+                "Marinho"
+            ],
+            "faixa_preco": "Acima de R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-04-04T19:00:00.000Z",
+        "update_at": "2026-05-07T19:00:00.000Z"
     },
     {
         "id": 9,
-        "nome": "Marcos Pereira",
+        "nome": "Isabela Costa",
         "tipo_documento": "CPF",
-        "documento": "901.234.567-88",
-        "create_at": "2024-06-09T10:00:00Z",
-        "update_at": "2024-06-09T10:00:00Z"
+        "documento": "669.179.281-51",
+        "email": "isabela.costa@fatecalcados.com.br",
+        "whatsapp": "(11) 97027-5026",
+        "data_nascimento": "1990-06-14T00:00:00.000Z",
+        "numero_calcado": 39,
+        "cidade": "Guarulhos",
+        "bairro": "Santana",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Social"
+            ],
+            "estilos": [
+                "Casual"
+            ],
+            "prioridades": [
+                "Conforto",
+                "Durabilidade"
+            ],
+            "cores": [
+                "Cinza",
+                "Rosa"
+            ],
+            "faixa_preco": "R$ 90 – R$ 150"
+        },
+        "tags": [],
+        "create_at": "2026-02-24T15:51:00.000Z",
+        "update_at": "2026-07-08T12:12:00.000Z"
     },
     {
         "id": 10,
-        "nome": "Fernanda Ribeiro",
+        "nome": "João Henrique Ramos",
         "tipo_documento": "CPF",
-        "documento": "012.345.678-99",
-        "create_at": "2024-06-10T10:00:00Z",
-        "update_at": "2024-06-10T10:00:00Z"
+        "documento": "133.997.267-08",
+        "email": "joo.henrique.ramos@fatecalcados.com.br",
+        "whatsapp": "(11) 99978-5838",
+        "data_nascimento": "1990-09-05T00:00:00.000Z",
+        "numero_calcado": 38,
+        "cidade": "Osasco",
+        "bairro": "Santana",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Bota",
+                "Conforto"
+            ],
+            "estilos": [
+                "Clássico",
+                "Básico"
+            ],
+            "prioridades": [
+                "Tendência",
+                "Qualidade"
+            ],
+            "cores": [
+                "Preto",
+                "Branco"
+            ],
+            "faixa_preco": "Acima de R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-02-15T17:33:00.000Z",
+        "update_at": "2026-07-23T13:21:00.000Z"
     },
     {
         "id": 11,
-        "nome": "Gabriel Carvalho",
+        "nome": "Karen Dias",
         "tipo_documento": "CPF",
-        "documento": "111.222.333-44",
-        "create_at": "2024-06-11T10:00:00Z",
-        "update_at": "2024-06-11T10:00:00Z"
+        "documento": "205.212.969-35",
+        "email": "karen.dias@fatecalcados.com.br",
+        "whatsapp": "(11) 93705-6917",
+        "data_nascimento": "1984-05-23T00:00:00.000Z",
+        "numero_calcado": 40,
+        "cidade": "São Paulo",
+        "bairro": "Freguesia do Ó",
+        "consentimento_comunicacao": false,
+        "preferencias": {
+            "categorias": [
+                "Tênis",
+                "Social"
+            ],
+            "estilos": [
+                "Esportivo",
+                "Básico"
+            ],
+            "prioridades": [
+                "Qualidade"
+            ],
+            "cores": [
+                "Cinza",
+                "Preto"
+            ],
+            "faixa_preco": "Acima de R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-02-21T19:26:00.000Z",
+        "update_at": "2026-06-29T16:07:00.000Z"
     },
     {
         "id": 12,
-        "nome": "Amanda Teixeira",
+        "nome": "Leonardo Moura",
         "tipo_documento": "CPF",
-        "documento": "222.333.444-55",
-        "create_at": "2024-06-12T10:00:00Z",
-        "update_at": "2024-06-12T10:00:00Z"
+        "documento": "732.496.989-54",
+        "email": "leonardo.moura@fatecalcados.com.br",
+        "whatsapp": "(11) 99128-2411",
+        "data_nascimento": "1996-09-20T00:00:00.000Z",
+        "numero_calcado": 37,
+        "cidade": "São Paulo",
+        "bairro": "Saúde",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Tênis"
+            ],
+            "estilos": [
+                "Básico",
+                "Conforto"
+            ],
+            "prioridades": [
+                "Conforto"
+            ],
+            "cores": [
+                "Marinho",
+                "Azul"
+            ],
+            "faixa_preco": "Acima de R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-02-14T19:37:00.000Z",
+        "update_at": "2026-06-30T13:06:00.000Z"
     },
     {
         "id": 13,
-        "nome": "Rodrigo Martins",
+        "nome": "Mariana Castro",
         "tipo_documento": "CPF",
-        "documento": "333.444.555-66",
-        "create_at": "2024-06-13T10:00:00Z",
-        "update_at": "2024-06-13T10:00:00Z"
+        "documento": "818.955.616-98",
+        "email": "mariana.castro@fatecalcados.com.br",
+        "whatsapp": "(11) 94625-5309",
+        "data_nascimento": "1979-12-14T00:00:00.000Z",
+        "numero_calcado": 39,
+        "cidade": "São Paulo",
+        "bairro": "Centro",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Conforto",
+                "Bota"
+            ],
+            "estilos": [
+                "Clássico",
+                "Social"
+            ],
+            "prioridades": [
+                "Design"
+            ],
+            "cores": [
+                "Marinho",
+                "Vermelho"
+            ],
+            "faixa_preco": "Acima de R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-01-06T16:23:00.000Z",
+        "update_at": "2026-04-26T14:05:00.000Z"
     },
     {
         "id": 14,
-        "nome": "Camila Barbosa",
+        "nome": "Nicolas Barbosa",
         "tipo_documento": "CPF",
-        "documento": "444.555.666-77",
-        "create_at": "2024-06-14T10:00:00Z",
-        "update_at": "2024-06-14T10:00:00Z"
+        "documento": "117.516.449-60",
+        "email": "nicolas.barbosa@fatecalcados.com.br",
+        "whatsapp": "(11) 92574-1222",
+        "data_nascimento": "1975-09-26T00:00:00.000Z",
+        "numero_calcado": 42,
+        "cidade": "Santo André",
+        "bairro": "Moema",
+        "consentimento_comunicacao": false,
+        "preferencias": {
+            "categorias": [
+                "Chinelo",
+                "Conforto"
+            ],
+            "estilos": [
+                "Conforto"
+            ],
+            "prioridades": [
+                "Qualidade",
+                "Tendência"
+            ],
+            "cores": [
+                "Rosa",
+                "Branco"
+            ],
+            "faixa_preco": "R$ 150 – R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-01-02T18:17:00.000Z",
+        "update_at": "2026-05-01T14:13:00.000Z"
     },
     {
         "id": 15,
-        "nome": "Bruno Azevedo",
-        "tipo_documento": "CPF",
-        "documento": "555.666.777-88",
-        "create_at": "2024-06-15T10:00:00Z",
-        "update_at": "2024-06-15T10:00:00Z"
+        "nome": "Olívia Teixeira",
+        "tipo_documento": "CNPJ",
+        "documento": "12.000.000/0020-55",
+        "email": "olvia.teixeira@fatecalcados.com.br",
+        "whatsapp": "(11) 92153-5614",
+        "data_nascimento": "1983-03-06T00:00:00.000Z",
+        "numero_calcado": 42,
+        "cidade": "Campinas",
+        "bairro": "Saúde",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Tênis",
+                "Sandália",
+                "Social"
+            ],
+            "estilos": [
+                "Básico"
+            ],
+            "prioridades": [
+                "Durabilidade"
+            ],
+            "cores": [
+                "Cinza",
+                "Marinho"
+            ],
+            "faixa_preco": "Acima de R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-01-07T16:57:00.000Z",
+        "update_at": "2026-05-14T17:55:00.000Z"
     },
     {
         "id": 16,
-        "nome": "Larissa Cavalcanti",
+        "nome": "Paulo Henrique Lopes",
         "tipo_documento": "CPF",
-        "documento": "666.777.888-99",
-        "create_at": "2024-06-16T10:00:00Z",
-        "update_at": "2024-06-16T10:00:00Z"
+        "documento": "045.921.338-54",
+        "email": "paulo.henrique.lopes@fatecalcados.com.br",
+        "whatsapp": "(11) 94310-3758",
+        "data_nascimento": "1983-09-03T00:00:00.000Z",
+        "numero_calcado": 38,
+        "cidade": "Campinas",
+        "bairro": "Vila Mariana",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Chinelo",
+                "Bota"
+            ],
+            "estilos": [
+                "Social",
+                "Casual"
+            ],
+            "prioridades": [
+                "Design"
+            ],
+            "cores": [
+                "Bege",
+                "Azul"
+            ],
+            "faixa_preco": "R$ 150 – R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-01-18T13:38:00.000Z",
+        "update_at": "2026-05-19T14:12:00.000Z"
     },
     {
         "id": 17,
-        "nome": "Felipe Mendes",
+        "nome": "Raquel Monteiro",
         "tipo_documento": "CPF",
-        "documento": "777.888.999-00",
-        "create_at": "2024-06-17T10:00:00Z",
-        "update_at": "2024-06-17T10:00:00Z"
+        "documento": "999.620.072-83",
+        "email": "raquel.monteiro@fatecalcados.com.br",
+        "whatsapp": "(11) 91082-8629",
+        "data_nascimento": "1993-05-20T00:00:00.000Z",
+        "numero_calcado": 38,
+        "cidade": "São Bernardo do Campo",
+        "bairro": "Freguesia do Ó",
+        "consentimento_comunicacao": false,
+        "preferencias": {
+            "categorias": [
+                "Sandália"
+            ],
+            "estilos": [
+                "Básico"
+            ],
+            "prioridades": [
+                "Design",
+                "Qualidade"
+            ],
+            "cores": [
+                "Bege"
+            ],
+            "faixa_preco": "Acima de R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-01-17T17:13:00.000Z",
+        "update_at": "2026-04-30T20:07:00.000Z"
     },
     {
         "id": 18,
-        "nome": "Patrícia Gomes",
+        "nome": "Samuel Andrade",
         "tipo_documento": "CPF",
-        "documento": "888.999.000-11",
-        "create_at": "2024-06-18T10:00:00Z",
-        "update_at": "2024-06-18T10:00:00Z"
+        "documento": "364.948.872-87",
+        "email": "samuel.andrade@fatecalcados.com.br",
+        "whatsapp": "(11) 97481-2642",
+        "data_nascimento": "2004-04-28T00:00:00.000Z",
+        "numero_calcado": 42,
+        "cidade": "São Bernardo do Campo",
+        "bairro": "Ipiranga",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Chinelo",
+                "Social"
+            ],
+            "estilos": [
+                "Conforto",
+                "Básico"
+            ],
+            "prioridades": [
+                "Design",
+                "Tendência"
+            ],
+            "cores": [
+                "Marinho"
+            ],
+            "faixa_preco": "R$ 150 – R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-01-19T14:23:00.000Z",
+        "update_at": "2026-06-04T18:01:00.000Z"
     },
     {
         "id": 19,
-        "nome": "Thiago Araujo",
+        "nome": "Tatiane Freitas",
         "tipo_documento": "CPF",
-        "documento": "999.000.111-22",
-        "create_at": "2024-06-19T10:00:00Z",
-        "update_at": "2024-06-19T10:00:00Z"
+        "documento": "268.176.156-58",
+        "email": "tatiane.freitas@fatecalcados.com.br",
+        "whatsapp": "(11) 91371-6434",
+        "data_nascimento": "1964-11-27T00:00:00.000Z",
+        "numero_calcado": 42,
+        "cidade": "São Paulo",
+        "bairro": "Ipiranga",
+        "consentimento_comunicacao": false,
+        "preferencias": {
+            "categorias": [
+                "Clássico",
+                "Sandália"
+            ],
+            "estilos": [
+                "Social",
+                "Esportivo"
+            ],
+            "prioridades": [
+                "Design"
+            ],
+            "cores": [
+                "Cinza"
+            ],
+            "faixa_preco": "R$ 150 – R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-02-13T18:49:00.000Z",
+        "update_at": "2026-06-28T20:05:00.000Z"
     },
     {
         "id": 20,
-        "nome": "Letícia Cardoso",
+        "nome": "Ubiratan Cardoso",
         "tipo_documento": "CPF",
-        "documento": "000.111.222-33",
-        "create_at": "2024-06-20T10:00:00Z",
-        "update_at": "2024-06-20T10:00:00Z"
+        "documento": "297.312.783-11",
+        "email": "ubiratan.cardoso@fatecalcados.com.br",
+        "whatsapp": "(11) 96008-6887",
+        "data_nascimento": "1971-05-02T00:00:00.000Z",
+        "numero_calcado": 38,
+        "cidade": "Santo André",
+        "bairro": "Tatuapé",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Chinelo",
+                "Social"
+            ],
+            "estilos": [
+                "Casual",
+                "Social"
+            ],
+            "prioridades": [
+                "Conforto"
+            ],
+            "cores": [
+                "Azul"
+            ],
+            "faixa_preco": "R$ 150 – R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-01-29T20:35:00.000Z",
+        "update_at": "2026-06-08T20:55:00.000Z"
+    },
+    {
+        "id": 21,
+        "nome": "Vitória Santana",
+        "tipo_documento": "CPF",
+        "documento": "757.288.940-97",
+        "email": "vitria.santana@fatecalcados.com.br",
+        "whatsapp": "(11) 94830-8581",
+        "data_nascimento": "2004-02-23T00:00:00.000Z",
+        "numero_calcado": 37,
+        "cidade": "Osasco",
+        "bairro": "Moema",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Conforto",
+                "Sandália"
+            ],
+            "estilos": [
+                "Clássico",
+                "Casual"
+            ],
+            "prioridades": [
+                "Qualidade"
+            ],
+            "cores": [
+                "Branco",
+                "Bege"
+            ],
+            "faixa_preco": "R$ 150 – R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-01-21T16:12:00.000Z",
+        "update_at": "2026-05-31T13:31:00.000Z"
+    },
+    {
+        "id": 22,
+        "nome": "Wesley Pinto",
+        "tipo_documento": "CPF",
+        "documento": "845.646.420-14",
+        "email": "wesley.pinto@fatecalcados.com.br",
+        "whatsapp": "(11) 91281-9366",
+        "data_nascimento": "1981-12-18T00:00:00.000Z",
+        "numero_calcado": 39,
+        "cidade": "Campinas",
+        "bairro": "Centro",
+        "consentimento_comunicacao": false,
+        "preferencias": {
+            "categorias": [
+                "Sandália",
+                "Conforto"
+            ],
+            "estilos": [
+                "Esportivo",
+                "Casual"
+            ],
+            "prioridades": [
+                "Tendência",
+                "Durabilidade"
+            ],
+            "cores": [
+                "Rosa"
+            ],
+            "faixa_preco": "Até R$ 90"
+        },
+        "tags": [],
+        "create_at": "2026-02-08T15:22:00.000Z",
+        "update_at": "2026-06-02T15:49:00.000Z"
+    },
+    {
+        "id": 23,
+        "nome": "Yasmin Moraes",
+        "tipo_documento": "CPF",
+        "documento": "407.393.723-51",
+        "email": "yasmin.moraes@fatecalcados.com.br",
+        "whatsapp": "(11) 95865-3622",
+        "data_nascimento": "1991-04-17T00:00:00.000Z",
+        "numero_calcado": 38,
+        "cidade": "Guarulhos",
+        "bairro": "Tatuapé",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Conforto",
+                "Chinelo"
+            ],
+            "estilos": [
+                "Casual"
+            ],
+            "prioridades": [
+                "Preço",
+                "Conforto"
+            ],
+            "cores": [
+                "Rosa",
+                "Vermelho"
+            ],
+            "faixa_preco": "Até R$ 90"
+        },
+        "tags": [],
+        "create_at": "2026-01-04T00:00:00.000Z",
+        "update_at": "2026-09-17T16:02:00.000Z"
+    },
+    {
+        "id": 24,
+        "nome": "Zeca Ribeiro",
+        "tipo_documento": "CPF",
+        "documento": "586.012.035-40",
+        "email": "zeca.ribeiro@fatecalcados.com.br",
+        "whatsapp": "(11) 98983-4944",
+        "data_nascimento": "1965-08-06T00:00:00.000Z",
+        "numero_calcado": 41,
+        "cidade": "Santo André",
+        "bairro": "Moema",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Clássico",
+                "Sandália",
+                "Social"
+            ],
+            "estilos": [
+                "Esportivo"
+            ],
+            "prioridades": [
+                "Durabilidade",
+                "Conforto"
+            ],
+            "cores": [
+                "Marinho"
+            ],
+            "faixa_preco": "Acima de R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-01-04T00:00:00.000Z",
+        "update_at": "2026-09-12T14:56:00.000Z"
+    },
+    {
+        "id": 25,
+        "nome": "Alice Duarte",
+        "tipo_documento": "CPF",
+        "documento": "212.612.427-42",
+        "email": "alice.duarte@fatecalcados.com.br",
+        "whatsapp": "(11) 97381-3990",
+        "data_nascimento": "1976-04-19T00:00:00.000Z",
+        "numero_calcado": 37,
+        "cidade": "São Bernardo do Campo",
+        "bairro": "Centro",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Chinelo",
+                "Tênis"
+            ],
+            "estilos": [
+                "Conforto"
+            ],
+            "prioridades": [
+                "Tendência"
+            ],
+            "cores": [
+                "Bege",
+                "Azul"
+            ],
+            "faixa_preco": "Acima de R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-01-04T00:00:00.000Z",
+        "update_at": "2026-09-17T13:45:00.000Z"
+    },
+    {
+        "id": 26,
+        "nome": "Breno Fontes",
+        "tipo_documento": "CPF",
+        "documento": "227.861.838-55",
+        "email": "breno.fontes@fatecalcados.com.br",
+        "whatsapp": "(11) 97926-5118",
+        "data_nascimento": "2002-04-15T00:00:00.000Z",
+        "numero_calcado": 41,
+        "cidade": "São Paulo",
+        "bairro": "Jabaquara",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Sandália",
+                "Chinelo"
+            ],
+            "estilos": [
+                "Casual"
+            ],
+            "prioridades": [
+                "Design"
+            ],
+            "cores": [
+                "Vermelho",
+                "Azul"
+            ],
+            "faixa_preco": "R$ 90 – R$ 150"
+        },
+        "tags": [],
+        "create_at": "2026-01-04T00:00:00.000Z",
+        "update_at": "2026-09-15T17:49:00.000Z"
+    },
+    {
+        "id": 27,
+        "nome": "Carla Menezes",
+        "tipo_documento": "CPF",
+        "documento": "753.979.390-21",
+        "email": "carla.menezes@fatecalcados.com.br",
+        "whatsapp": "(11) 96174-9654",
+        "data_nascimento": "1967-11-04T00:00:00.000Z",
+        "numero_calcado": 36,
+        "cidade": "São Bernardo do Campo",
+        "bairro": "Jabaquara",
+        "consentimento_comunicacao": false,
+        "preferencias": {
+            "categorias": [
+                "Conforto",
+                "Sandália"
+            ],
+            "estilos": [
+                "Conforto"
+            ],
+            "prioridades": [
+                "Qualidade"
+            ],
+            "cores": [
+                "Preto",
+                "Vermelho"
+            ],
+            "faixa_preco": "Acima de R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-01-04T00:00:00.000Z",
+        "update_at": "2026-09-10T20:23:00.000Z"
+    },
+    {
+        "id": 28,
+        "nome": "Daniela Siqueira",
+        "tipo_documento": "CPF",
+        "documento": "783.344.263-13",
+        "email": "daniela.siqueira@fatecalcados.com.br",
+        "whatsapp": "(11) 99326-8752",
+        "data_nascimento": "1999-01-08T00:00:00.000Z",
+        "numero_calcado": 42,
+        "cidade": "São Paulo",
+        "bairro": "Ipiranga",
+        "consentimento_comunicacao": false,
+        "preferencias": {
+            "categorias": [
+                "Social",
+                "Chinelo"
+            ],
+            "estilos": [
+                "Social",
+                "Básico"
+            ],
+            "prioridades": [
+                "Preço",
+                "Conforto"
+            ],
+            "cores": [
+                "Cinza",
+                "Vermelho"
+            ],
+            "faixa_preco": "R$ 150 – R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-01-12T13:41:00.000Z",
+        "update_at": "2026-09-17T14:38:00.000Z"
+    },
+    {
+        "id": 29,
+        "nome": "Eduardo Vasconcelos",
+        "tipo_documento": "CPF",
+        "documento": "316.167.899-05",
+        "email": "eduardo.vasconcelos@fatecalcados.com.br",
+        "whatsapp": "(11) 95040-6191",
+        "data_nascimento": "1987-06-17T00:00:00.000Z",
+        "numero_calcado": 40,
+        "cidade": "São Bernardo do Campo",
+        "bairro": "Santana",
+        "consentimento_comunicacao": false,
+        "preferencias": {
+            "categorias": [
+                "Social"
+            ],
+            "estilos": [
+                "Clássico"
+            ],
+            "prioridades": [
+                "Durabilidade",
+                "Conforto"
+            ],
+            "cores": [
+                "Vermelho"
+            ],
+            "faixa_preco": "Até R$ 90"
+        },
+        "tags": [],
+        "create_at": "2026-01-04T00:00:00.000Z",
+        "update_at": "2026-09-18T13:20:00.000Z"
+    },
+    {
+        "id": 30,
+        "nome": "Fernanda Goulart",
+        "tipo_documento": "CNPJ",
+        "documento": "12.000.000/0041-10",
+        "email": "fernanda.goulart@fatecalcados.com.br",
+        "whatsapp": "(11) 96950-4947",
+        "data_nascimento": "1988-04-19T00:00:00.000Z",
+        "numero_calcado": 38,
+        "cidade": "Santo André",
+        "bairro": "Moema",
+        "consentimento_comunicacao": false,
+        "preferencias": {
+            "categorias": [
+                "Sandália",
+                "Tênis",
+                "Social"
+            ],
+            "estilos": [
+                "Conforto",
+                "Casual"
+            ],
+            "prioridades": [
+                "Design"
+            ],
+            "cores": [
+                "Cinza"
+            ],
+            "faixa_preco": "Acima de R$ 250"
+        },
+        "tags": [],
+        "create_at": "2026-01-12T15:21:00.000Z",
+        "update_at": "2026-09-19T12:15:00.000Z"
     }
 ]

@@ -13,34 +13,123 @@
                 </div>
 
                 <div class="row justify-content-center">
-                    <div class="col-xl-8">
-                        <div class="card section-card">
-                            <h5 class="card-title mb-4"><i class="bi bi-person-plus text-primary"></i>Dados do cliente
-                            </h5>
-                            <div class="row g-3">
-                                <div class="col-md-8"><label class="form-label">Nome completo *</label><input
-                                        class="form-control" id="input-nome" placeholder="Ex.: Maria Oliveira"></div>
-                                <div class="col-md-4"><label class="form-label">Tipo de documento</label><select
-                                        class="form-select" id="input-tipo">
+                    <div class="col-xl-10">
+                        <form id="form-cliente" class="card section-card">
+                            <h5 class="card-title mb-4"><i class="bi bi-person-plus text-primary"></i>Dados do cliente</h5>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-8"><label class="form-label">Nome completo *</label><input class="form-control" id="input-nome" required placeholder="Ex.: Maria Oliveira"></div>
+                                <div class="col-md-4"><label class="form-label">Tipo de documento</label><select class="form-select" id="input-tipo">
                                         <option value="CPF">CPF</option>
                                         <option value="CNPJ">CNPJ</option>
                                     </select></div>
-                                <div class="col-md-8"><label class="form-label">CPF / CNPJ *</label><input
-                                        class="form-control" id="input-doc" placeholder="000.000.000-00"></div>
-                                <div class="col-md-4"><label class="form-label">ID interno</label><input
-                                        class="form-control" id="input-id" value="Automático" disabled></div>
+                                <div class="col-md-8"><label class="form-label">CPF / CNPJ *</label><input class="form-control" id="input-doc" required placeholder="000.000.000-00">
+                                    <div class="form-text text-danger d-none" id="erro-doc"></div>
+                                </div>
+                                <div class="col-md-4"><label class="form-label">Data de nascimento</label><input type="date" class="form-control" id="input-nascimento"></div>
+                                <div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control" id="input-email" placeholder="cliente@email.com"></div>
+                                <div class="col-md-6"><label class="form-label">WhatsApp</label><input class="form-control" id="input-whatsapp" placeholder="(11) 99999-9999"></div>
+                                <div class="col-md-4"><label class="form-label">Numeração do calçado</label><input type="number" class="form-control" id="input-numeracao" min="30" max="46" placeholder="37"></div>
+                                <div class="col-md-4"><label class="form-label">Cidade</label><input class="form-control" id="input-cidade" placeholder="São Paulo"></div>
+                                <div class="col-md-4"><label class="form-label">Bairro</label><input class="form-control" id="input-bairro" placeholder="Centro"></div>
                             </div>
 
-                            <div class="alert-card my-3"><i class="bi bi-stars me-2"></i>O nível é calculado
-                                automaticamente conforme a pontuação.<br class="d-none d-md-inline">
-                                <strong>Bronze</strong> até 999 pts · <strong>Prata</strong> até 4.999 pts ·
-                                <strong>Ouro</strong> 5.000+ pts.</div>
+                            <h5 class="card-title mb-4"><i class="bi bi-sliders text-primary"></i>Preferências do cliente</h5>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6"><label class="form-label">Categorias de calçado</label>
+                                    <select class="form-select" id="pref-categorias" multiple size="4">
+                                        <option>Tênis</option><option>Sandália</option><option>Chinelo</option>
+                                        <option>Social</option><option>Conforto</option><option>Clássico</option><option>Bota</option>
+                                    </select></div>
+                                <div class="col-md-6"><label class="form-label">Estilos</label>
+                                    <select class="form-select" id="pref-estilos" multiple size="4">
+                                        <option>Casual</option><option>Esportivo</option><option>Social</option>
+                                        <option>Conforto</option><option>Básico</option><option>Clássico</option>
+                                    </select></div>
+                                <div class="col-md-6"><label class="form-label">Prioridades de compra</label>
+                                    <select class="form-select" id="pref-prioridades" multiple size="4">
+                                        <option>Conforto</option><option>Preço</option><option>Qualidade</option>
+                                        <option>Durabilidade</option><option>Design</option><option>Tendência</option>
+                                    </select></div>
+                                <div class="col-md-6"><label class="form-label">Cores</label>
+                                    <select class="form-select" id="pref-cores" multiple size="4">
+                                        <option>Preto</option><option>Branco</option><option>Cinza</option><option>Azul</option>
+                                        <option>Bege</option><option>Marinho</option><option>Vermelho</option><option>Rosa</option>
+                                    </select></div>
+                                <div class="col-md-6"><label class="form-label">Faixa de preço</label>
+                                    <select class="form-select" id="pref-faixa">
+                                        <option value="">—</option>
+                                        <option>Até R$ 90</option><option>R$ 90 – R$ 150</option>
+                                        <option>R$ 150 – R$ 250</option><option>Acima de R$ 250</option>
+                                    </select></div>
+                                <div class="col-md-6"><label class="form-label">Tags</label><input class="form-control" id="input-tags" placeholder="ex.: VIP, Clube do tenista"></div>
+                            </div>
 
-                            <div class="text-end"><button class="btn btn-primary"><i class="bi bi-check-lg me-2"></i>Salvar
-                                    cliente</button></div>
-                        </div>
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="input-consentimento" checked>
+                                <label class="form-check-label small" for="input-consentimento">Cliente autoriza o envio de comunicações (promoções, campanhas e lembretes).</label>
+                            </div>
+
+                            <div class="alert-card my-3" id="feedback" style="display:none"></div>
+
+                            <div class="text-end"><button class="btn btn-primary" type="submit"><i class="bi bi-check-lg me-2"></i>Salvar cliente</button></div>
+                        </form>
                     </div>
                 </div>
             </section>
+
+            <script>
+                const selecionados = (id) => Array.from(document.getElementById(id).selectedOptions).map(o => o.value);
+                const alerta = (msg, ok) => {
+                    const f = document.getElementById('feedback');
+                    f.style.display = 'block';
+                    f.className = 'alert-card my-3 ' + (ok ? '' : 'alert-danger');
+                    f.innerHTML = (ok ? '<i class="bi bi-check-circle me-2"></i>' : '<i class="bi bi-x-circle me-2"></i>') + msg;
+                };
+
+                document.getElementById('input-tipo').addEventListener('change', function () {
+                    document.getElementById('input-doc').placeholder = this.value === 'CPF' ? '000.000.000-00' : '00.000.000/0000-00';
+                });
+
+                document.getElementById('form-cliente').addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    const payload = {
+                        nome: document.getElementById('input-nome').value.trim(),
+                        tipo_documento: document.getElementById('input-tipo').value,
+                        documento: document.getElementById('input-doc').value.trim(),
+                        email: document.getElementById('input-email').value.trim(),
+                        whatsapp: document.getElementById('input-whatsapp').value.trim(),
+                        data_nascimento: document.getElementById('input-nascimento').value || null,
+                        numero_calcado: Number(document.getElementById('input-numeracao').value) || null,
+                        cidade: document.getElementById('input-cidade').value.trim(),
+                        bairro: document.getElementById('input-bairro').value.trim(),
+                        consentimento_comunicacao: document.getElementById('input-consentimento').checked,
+                        preferencias: {
+                            categorias: selecionados('pref-categorias'),
+                            estilos: selecionados('pref-estilos'),
+                            prioridades: selecionados('pref-prioridades'),
+                            cores: selecionados('pref-cores'),
+                            faixa_preco: document.getElementById('pref-faixa').value,
+                        },
+                        tags: document.getElementById('input-tags').value.split(',').map(s => s.trim()).filter(Boolean),
+                    };
+
+                    try {
+                        const resp = await fetch('/api/clientes', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload),
+                        });
+                        const json = await resp.json();
+                        if (!resp.ok) {
+                            if (json.message) alerta(json.message, false);
+                            return;
+                        }
+                        alerta('Cliente cadastrado com sucesso! Redirecionando...', true);
+                        setTimeout(() => location.href = '/clientes/' + json.id, 600);
+                    } catch (err) {
+                        alerta('Falha ao salvar. Verifique sua conexão.', false);
+                    }
+                });
+            </script>
 
             <%- include('../includes/footer') %>
