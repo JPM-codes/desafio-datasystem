@@ -1,0 +1,81 @@
+<script>
+    (function () {
+        const MASCARAS_DOCUMENTO = {
+            CPF: { digitos: 11, tamanho: 14, exemplo: '000.000.000-00' },
+            CNPJ: { digitos: 14, tamanho: 18, exemplo: '00.000.000/0000-00' },
+        };
+
+        function configDocumento(tipo) {
+            return MASCARAS_DOCUMENTO[String(tipo || '').toUpperCase()] || MASCARAS_DOCUMENTO.CPF;
+        }
+
+        function formatarDocumento(valor, tipo) {
+            const cfg = configDocumento(tipo);
+            const digitos = String(valor || '').replace(/\D/g, '').slice(0, cfg.digitos);
+            if (cfg === MASCARAS_DOCUMENTO.CNPJ) {
+                return digitos
+                    .replace(/^(\d{2})(\d)/, '$1.$2')
+                    .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+                    .replace(/\.(\d{3})(\d)/, '.$1/$2')
+                    .replace(/(\d{4})(\d)/, '$1-$2');
+            }
+            return digitos
+                .replace(/^(\d{3})(\d)/, '$1.$2')
+                .replace(/\.(\d{3})(\d)/, '.$1.$2')
+                .replace(/\.(\d{3})(\d)/, '.$1-$2');
+        }
+
+        window.formatarDocumento = formatarDocumento;
+        window.mascaraDocumento = { config: configDocumento, formatar: formatarDocumento };
+
+        function iniciarMascaraDocumento() {
+            const selTipo = document.getElementById('input-tipo');
+            const inpDoc = document.getElementById('input-doc');
+            if (!selTipo || !inpDoc) return;
+
+            const aplicarConfig = () => {
+                const cfg = configDocumento(selTipo.value);
+                inpDoc.placeholder = cfg.exemplo;
+                inpDoc.maxLength = cfg.tamanho;
+                inpDoc.setAttribute('inputmode', 'numeric');
+            };
+
+            inpDoc.addEventListener('input', function () {
+                const digitosAntes = (inpDoc.value.slice(0, inpDoc.selectionStart || 0).match(/\d/g) || []).length;
+                inpDoc.value = formatarDocumento(inpDoc.value, selTipo.value);
+
+                let restante = digitosAntes;
+                let posicao = 0;
+                while (restante > 0 && posicao < inpDoc.value.length) {
+                    if (/\d/.test(inpDoc.value[posicao])) restante--;
+                    posicao++;
+                }
+                inpDoc.setSelectionRange(posicao, posicao);
+            });
+
+            inpDoc.addEventListener('blur', function () {
+                inpDoc.value = formatarDocumento(inpDoc.value, selTipo.value);
+            });
+
+            inpDoc.addEventListener('paste', function () {
+                setTimeout(function () {
+                    inpDoc.value = formatarDocumento(inpDoc.value, selTipo.value);
+                }, 0);
+            });
+
+            selTipo.addEventListener('change', function () {
+                inpDoc.value = formatarDocumento(inpDoc.value, selTipo.value);
+                aplicarConfig();
+            });
+
+            aplicarConfig();
+            inpDoc.value = formatarDocumento(inpDoc.value, selTipo.value);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', iniciarMascaraDocumento);
+        } else {
+            iniciarMascaraDocumento();
+        }
+    })();
+</script>

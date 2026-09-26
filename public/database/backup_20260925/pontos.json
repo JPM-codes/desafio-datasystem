@@ -4583,29 +4583,5 @@
         "origem": "BONUS_DOACAO",
         "origem_id": 36,
         "create_at": "2026-06-15T14:59:00.000Z"
-    },
-    {
-        "id": 381,
-        "cliente_id": 31,
-        "tipo": "acumulo",
-        "pontos": 150,
-        "data_movimentacao": "2026-09-25T00:00:00.000Z",
-        "data_expiracao": "2027-09-25T00:00:00.000Z",
-        "compras_id": 313,
-        "resgates_id": 0,
-        "origem": "COMPRA",
-        "create_at": "2026-09-25T23:49:03.500Z"
-    },
-    {
-        "id": 382,
-        "cliente_id": 31,
-        "tipo": "acumulo",
-        "pontos": 250,
-        "data_movimentacao": "2026-09-25T00:00:00.000Z",
-        "data_expiracao": "2027-09-25T00:00:00.000Z",
-        "compras_id": 314,
-        "resgates_id": 0,
-        "origem": "COMPRA",
-        "create_at": "2026-09-25T23:49:54.142Z"
     }
 ]

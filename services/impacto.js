@@ -5,10 +5,29 @@
  * Complementa services/regras.js SEM alterar as regras de compra/fidelidade.
  * Todos os bônus e limites ficam centralizados em CONFIG.
  */
+/**
+ * Parâmetros nomeados exigidos pelo projeto (configuráveis).
+ *   bonus_doacao_calcado = 50
+ *   bonus_devolucao_caixa = 20
+ *   modo_bonus_calcado / modo_bonus_caixa = POR_ACAO | POR_UNIDADE
+ *
+ * No MVP adota-se POR_ACAO: 50 pontos por AÇÃO de doação aprovada
+ * (independentemente da quantidade entregue) e 20 pontos por AÇÃO de
+ * devolução aprovada. A regra visual exibida na interface é gerada a
+ * partir daqui, portanto banco e tela nunca divergem.
+ */
+const MODOS = {
+    POR_ACAO: "POR_ACAO",
+    POR_UNIDADE: "POR_UNIDADE",
+};
+
 const CONFIG = {
     // Pontos concedidos por tipo de ação (configuráveis)
     bonusDoacao: 50,      // DOACAO_CALCADO
     bonusCaixa: 20,       // DEVOLUCAO_CAIXA
+    // Modo de apuração do bônus
+    modoBonusCalcado: MODOS.POR_ACAO,
+    modoBonusCaixa: MODOS.POR_ACAO,
     // Limite mensal de ações bonificadas por cliente.
     // null significa "sem limite rígido" até ser configurado.
     limiteDoacaoMes: null, // ex.: 2 → máx 2 doações bonificadas/mês
@@ -57,10 +76,47 @@ function origemDe(tipo) {
     return t ? t.origem : null;
 }
 
-function bonusDe(tipo) {
+function modoDe(tipo) {
+    if (tipo === "DOACAO_CALCADO") return CONFIG.modoBonusCalcado;
+    if (tipo === "DEVOLUCAO_CAIXA") return CONFIG.modoBonusCaixa;
+    return MODOS.POR_ACAO;
+}
+
+function bonusBaseDe(tipo) {
     if (tipo === "DOACAO_CALCADO") return CONFIG.bonusDoacao;
     if (tipo === "DEVOLUCAO_CAIXA") return CONFIG.bonusCaixa;
     return 0;
+}
+
+/**
+ * Pontos de uma ação de impacto.
+ *  - POR_ACAO    → 50 pts por ação aprovada (independentemente da quantidade)
+ *  - POR_UNIDADE → 50 pts por calçado / 20 pts por caixa (quantidade × base)
+ */
+function bonusDe(tipo, quantidade) {
+    const base = bonusBaseDe(tipo);
+    if (modoDe(tipo) === MODOS.POR_UNIDADE) {
+        const qtd = Math.max(1, Math.round(Number(quantidade) || 1));
+        return base * qtd;
+    }
+    return base;
+}
+
+/** Texto exibido na interface — sempre coerente com o cálculo do banco. */
+function regraTextoDe(tipo) {
+    const base = bonusBaseDe(tipo);
+    const porUnidade = modoDe(tipo) === MODOS.POR_UNIDADE;
+    if (tipo === "DOACAO_CALCADO") {
+        return porUnidade
+            ? `+${base} pontos por calçado doado`
+            : `+${base} pontos por ação de doação de calçados aprovada`;
+    }
+    if (tipo === "DEVOLUCAO_CAIXA") {
+        return porUnidade
+            ? `+${base} pontos por caixa devolvida`
+            : `+${base} pontos por ação de devolução de caixas aprovada`;
+    }
+    return "";
 }
 
 function limiteDe(tipo) {
@@ -100,18 +156,26 @@ function config() {
     return {
         bonusDoacao: CONFIG.bonusDoacao,
         bonusCaixa: CONFIG.bonusCaixa,
+        modoBonusCalcado: CONFIG.modoBonusCalcado,
+        modoBonusCaixa: CONFIG.modoBonusCaixa,
         limiteDoacaoMes: CONFIG.limiteDoacaoMes,
         limiteCaixaMes: CONFIG.limiteCaixaMes,
+        textos: {
+            DOACAO_CALCADO: regraTextoDe("DOACAO_CALCADO"),
+            DEVOLUCAO_CAIXA: regraTextoDe("DEVOLUCAO_CAIXA"),
+        },
         regras: {
             bonusConfiguravel: true,
             saldoIntegrado: true,
             expiracaoMeses: 12,
+            idempotencia: true,
         },
     };
 }
 
 module.exports = {
     CONFIG,
+    MODOS,
     TIPOS,
     VALIDACAO_STATUSES,
     DESTINACAO_STATUSES,
@@ -119,7 +183,10 @@ module.exports = {
     ORIGENS_PONTOS,
     tipoValido,
     origemDe,
+    bonusBaseDe,
     bonusDe,
+    modoDe,
+    regraTextoDe,
     limiteDe,
     rotuloTipo,
     rotuloOrigem,

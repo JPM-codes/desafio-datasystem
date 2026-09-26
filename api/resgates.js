@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const store = require("../services/store");
 const regras = require("../services/regras");
+const indicadores = require("../services/indicadores");
 
 router.get("/", (req, res) => {
     const base = store.carregar();
@@ -23,10 +24,22 @@ router.post("/", (req, res) => {
     const cliente = base.clientes.find((c) => c.id === id);
     if (!cliente) return res.status(404).json({ message: "Cliente não encontrado." });
 
-    const saldo = store.pontosDisponiveisCliente(base.pontos, id);
-    const naoMultiplo = quantidade % regras.REGRAS.conversao.pontos !== 0;
+    const ref = new Date();
+    // O saldo já desconta os pontos vencidos (validade de 12 meses), portanto
+    // um resgate de valor maior que o saldo também impede resgatar pontos expirados.
+    const totais = indicadores.totaisDeMovimentos(
+        store.movimentacoesDoCliente(base.pontos, id),
+        ref
+    );
+    const saldo = totais.disponiveis;
+
     if (quantidade > saldo) {
-        return res.status(422).json({ message: "Resgate excede o saldo disponível do cliente.", saldo });
+        return res.status(422).json({
+            message: "Resgate excede o saldo disponível do cliente.",
+            saldo,
+            saldoResgatavel: saldo,
+            detalhe: `Saldo livre de pontos vencidos: ${saldo} pts. Pontos expirados (${totais.expiradosEfetivos}) não podem ser resgatados.`,
+        });
     }
 
     const agora = store.agoraIso();
@@ -48,6 +61,7 @@ router.post("/", (req, res) => {
         data_expiracao: null,
         compras_id: 0,
         resgates_id: resgate.id,
+        origem: "RESGATE",
         create_at: agora,
     };
 
@@ -56,9 +70,19 @@ router.post("/", (req, res) => {
     store.salvar("resgate", base.resgates);
     store.salvar("pontos", base.pontos);
 
+    const saldoDepois = indicadores.totaisDeMovimentos(
+        store.movimentacoesDoCliente(base.pontos, id),
+        ref
+    ).disponiveis;
+
     return res.status(201).json({
         ...resgate,
-        aviso: naoMultiplo ? "Os pontos foram convertidos pela regra 100 pts = R$ 5,00." : null,
+        saldoAntes: saldo,
+        saldoDepois,
+        conversao: `${regras.REGRAS.conversao.pontos} pontos = R$ ${regras.REGRAS.conversao.valorReal}`,
+        aviso: quantidade % regras.REGRAS.conversao.pontos !== 0
+            ? "Os pontos foram convertidos pela regra 100 pts = R$ 5,00."
+            : null,
     });
 });
 

@@ -5,29 +5,31 @@
             <section class="page">
                 <div class="page-head">
                     <div>
-                        <div class="page-eyebrow">Fidelidade</div>
-                        <h1 class="page-title">Registrar compra</h1>
-                        <div class="page-subtitle">Informe os dados da compra para gerar os pontos do cliente</div>
+                        <div class="page-eyebrow">Vendas</div>
+                        <h1 class="page-title">Registrar venda</h1>
+                        <div class="page-subtitle">Informe os dados da venda para gerar os pontos do cliente</div>
                     </div>
+                    <a href="/compras" class="btn btn-light"><i class="bi bi-arrow-left me-2"></i>Voltar para vendas</a>
                 </div>
 
                 <div class="row g-3">
                     <div class="col-xl-7">
                         <form id="form-compra" class="card section-card">
-                            <h5 class="card-title mb-3"><i class="bi bi-cart3 text-primary"></i>Dados da compra</h5>
+                            <h5 class="card-title mb-3"><i class="bi bi-cart3 text-primary"></i>Dados da venda</h5>
 
-                            <div class="mb-3"><label class="form-label">Cliente *</label><select class="form-select" id="cliente-select" required>
-                                    <% if ((typeof clientes !== 'undefined') && clientes.length) { %>
-                                        <% clientes.forEach(function (cliente) { %>
-                                            <option value="<%= cliente.id %>" data-pontos="<%= cliente.pontos %>">
-                                                <%= cliente.nome %> — <%= cliente.pontos.toLocaleString('pt-BR') %> pontos —
-                                                    <%= cliente.nivel.nome %>
-                                            </option>
-                                            <% }); %>
-                                                <% } else { %>
-                                                    <option>Nenhum cliente cadastrado</option>
-                                                    <% } %>
-                            </select></div>
+                            <div class="mb-3">
+                                <label class="form-label" for="cliente-busca">Cliente *</label>
+                                <div class="position-relative">
+                                    <i class="bi bi-search position-absolute text-muted" style="left:14px;top:50%;transform:translateY(-50%)"></i>
+                                    <input type="search" id="cliente-busca" class="form-control form-control-lg ps-5"
+                                        placeholder="Pesquisar por nome, CPF ou ID..." autocomplete="off"
+                                        aria-describedby="cliente-busca-ajuda" aria-expanded="false" role="combobox">
+                                    <div id="cliente-lista" class="cliente-sugestoes" role="listbox" hidden></div>
+                                </div>
+                                <div class="form-text" id="cliente-busca-ajuda">Digite ao menos 2 caracteres. A lista mostra os clientes encontrados; se não houver resultado, ela fica vazia.</div>
+                                <input type="hidden" id="cliente-id" name="cliente_id">
+                                <div class="alert-card mt-2" id="cliente-escolhido" style="display:none"></div>
+                            </div>
 
                             <div class="row g-3 mb-3">
                                 <div class="col-md-6"><label class="form-label">Produto</label>
@@ -40,15 +42,19 @@
                                     </select></div>
                                 <div class="col-md-6"><label class="form-label">Quantidade</label>
                                     <input type="number" min="1" value="1" class="form-control" id="input-qtd"></div>
-                                <div class="col-md-6"><label class="form-label">Valor total da compra (R$) *</label>
-                                    <input type="number" step="0.01" min="0" class="form-control form-control-lg" id="valor-compra" placeholder="0,00" required></div>
-                                <div class="col-md-6"><label class="form-label">Data da compra</label>
+                                <div class="col-md-6"><label class="form-label">Valor unitário do produto (R$) *</label>
+                                    <input type="number" step="0.01" min="0" class="form-control form-control-lg" id="valor-unitario" placeholder="0,00" required></div>
+                                <div class="col-md-6"><label class="form-label">Data da venda</label>
                                     <input type="date" class="form-control form-control-lg" id="data-compra" value="<%= new Date().toISOString().slice(0, 10) %>"></div>
+                                <div class="col-md-6"><label class="form-label" for="valor-total">Valor total da venda (R$)</label>
+                                    <input type="text" id="valor-total" class="form-control form-control-lg" value="0,00" readonly tabindex="-1">
+                                    <div class="form-text">Calculado automaticamente: quantidade &times; valor unitário.</div>
+                                </div>
                             </div>
 
                             <div class="alert-card mb-3" id="feedback" style="display:none"></div>
 
-                            <div class="text-end"><button class="btn btn-primary btn-lg px-4" type="submit"><i class="bi bi-check-lg me-2"></i>Registrar compra</button></div>
+                            <div class="text-end"><button class="btn btn-primary btn-lg px-4" type="submit"><i class="bi bi-check-lg me-2"></i>Registrar venda</button></div>
                         </form>
                     </div>
 
@@ -58,7 +64,7 @@
                             <div class="d-flex align-items-center gap-3 mb-3">
                                 <span class="avatar avatar-lg bg-gradient"><i class="bi bi-person"></i></span>
                                 <div>
-                                    <div class="fw-bold" id="resumo-nome">Selecione um cliente</div>
+                                    <div class="fw-bold" id="resumo-nome">Pesquise e selecione um cliente</div>
                                     <div class="small text-muted" id="resumo-nivel">—</div>
                                 </div>
                             </div>
@@ -89,35 +95,210 @@
                 <% regrasCfg.niveis.forEach(function (n) { %>
                     bonusNivel['<%= n.nome %>'] = <%= n.bonus * 100 %>;
                     <% }); %>
-                const sel = document.getElementById('cliente-select');
-                const valCompra = document.getElementById('valor-compra');
+
+                const CLIENTES = <%- JSON.stringify(buscaClientes).replace(/</g, '\\u003c') %>;
+
+                const inpBusca = document.getElementById('cliente-busca');
+                const listaSugestoes = document.getElementById('cliente-lista');
+                const inpClienteId = document.getElementById('cliente-id');
+                const blocoEscolhido = document.getElementById('cliente-escolhido');
+                const inpUnitario = document.getElementById('valor-unitario');
+                const inpQtd = document.getElementById('input-qtd');
+                const elValorTotal = document.getElementById('valor-total');
                 const elNome = document.getElementById('resumo-nome');
                 const elNivel = document.getElementById('resumo-nivel');
                 const elBase = document.getElementById('resumo-base');
                 const elBonus = document.getElementById('resumo-bonus');
                 const elTotal = document.getElementById('resumo-total');
 
-                function atualizar() {
-                    const opt = sel.options[sel.selectedIndex];
-                    if (!opt) return;
-                    const pontos = Number(opt.dataset.pontos || 0);
-                    const nivel = opt.textContent.split(' — ')[2] || 'Bronze';
-                    const nome = opt.textContent.split(' — ')[0];
+                let selecionado = null;
+                let resultados = [];
+                let posicaoAtiva = -1;
 
-                    const valor = Math.max(0, Number(valCompra.value.replace(',', '.')) || 0);
-                    const base = Math.round(valor);
+                function semAcento(texto) {
+                    return String(texto || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+                }
+
+                function somenteDigitos(texto) {
+                    return String(texto || '').replace(/\D/g, '');
+                }
+
+                function classeNivel(nivel) {
+                    return nivel === 'Ouro' ? 'gold' : nivel === 'Prata' ? 'silver' : 'bronze';
+                }
+
+                function numeroCampo(campo) {
+                    return Math.max(0, Number(String(campo.value || '').replace(',', '.')) || 0);
+                }
+
+                function quantidade() {
+                    return Math.max(1, Math.round(numeroCampo(inpQtd)) || 1);
+                }
+
+                function valorUnitario() {
+                    return Math.round(numeroCampo(inpUnitario) * 100) / 100;
+                }
+
+                function valorTotal() {
+                    return Math.round(valorUnitario() * quantidade() * 100) / 100;
+                }
+
+                function moeda(valor) {
+                    return valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                }
+
+                function filtrarClientes(termo) {
+                    const alvo = semAcento(termo);
+                    const digitos = somenteDigitos(termo);
+                    if (!alvo) return [];
+
+                    return CLIENTES
+                        .map(function (cliente) {
+                            const nome = semAcento(cliente.nome);
+                            const doc = somenteDigitos(cliente.documento);
+                            const idTexto = String(cliente.id);
+
+                            let peso = null;
+                            if (nome === alvo) peso = 0;
+                            else if (nome.startsWith(alvo)) peso = 1;
+                            else if (nome.split(/\s+/).some(function (parte) { return parte.startsWith(alvo); })) peso = 2;
+                            else if (nome.includes(alvo)) peso = 3;
+                            else if (digitos && doc.includes(digitos)) peso = 4;
+                            else if (idTexto === digitos) peso = 0;
+                            else if (idTexto.startsWith(digitos) && digitos) peso = 1;
+                            return peso === null ? null : { cliente: cliente, peso: peso };
+                        })
+                        .filter(Boolean)
+                        .sort(function (a, b) { return a.peso - b.peso || a.cliente.nome.localeCompare(b.cliente.nome, 'pt-BR'); })
+                        .slice(0, 8)
+                        .map(function (item) { return item.cliente; });
+                }
+
+                function fecharSugestoes() {
+                    listaSugestoes.hidden = true;
+                    listaSugestoes.innerHTML = '';
+                    inpBusca.setAttribute('aria-expanded', 'false');
+                    posicaoAtiva = -1;
+                }
+
+                function renderSugestoes() {
+                    posicaoAtiva = -1;
+                    if (!resultados.length) {
+                        listaSugestoes.innerHTML = '<div class="cliente-sugestoes__vazio">Nenhum cliente encontrado</div>';
+                    } else {
+                        listaSugestoes.innerHTML = resultados.map(function (cliente, indice) {
+                            return '<button type="button" class="cliente-sugestao" role="option" data-indice="' + indice + '">' +
+                                '<span class="avatar avatar-sm">' + String(cliente.nome).trim().charAt(0).toUpperCase() + '</span>' +
+                                '<span class="cliente-sugestao__texto">' +
+                                '<span class="cliente-sugestao__nome">' + cliente.nome + '</span>' +
+                                '<span class="cliente-sugestao__meta">' + (cliente.tipo_documento || 'CPF') +
+                                (cliente.documento ? ' ' + cliente.documento : '') + ' · ID ' + cliente.id +
+                                ' · ' + Number(cliente.pontos).toLocaleString('pt-BR') + ' pts</span>' +
+                                '</span></button>';
+                        }).join('');
+                    }
+                    listaSugestoes.hidden = false;
+                    inpBusca.setAttribute('aria-expanded', 'true');
+                }
+
+                function marcarAtiva() {
+                    const botoes = listaSugestoes.querySelectorAll('.cliente-sugestao');
+                    botoes.forEach(function (botao, i) { botao.classList.toggle('is-ativo', i === posicaoAtiva); });
+                    if (posicaoAtiva >= 0 && botoes[posicaoAtiva]) {
+                        botoes[posicaoAtiva].scrollIntoView({ block: 'nearest' });
+                    }
+                }
+
+                function selecionarCliente(cliente) {
+                    selecionado = cliente;
+                    inpClienteId.value = cliente.id;
+                    inpBusca.value = cliente.nome + ' — ' + (cliente.documento || ('ID ' + cliente.id));
+                    blocoEscolhido.style.display = 'block';
+                    blocoEscolhido.innerHTML = '<i class="bi bi-person-check me-2"></i><strong>' + cliente.nome + '</strong> · ' +
+                        (cliente.tipo_documento || 'CPF') + ' ' + (cliente.documento || '—') + ' · ID <strong>' + cliente.id + '</strong>' +
+                        ' <button type="button" class="btn btn-sm btn-link p-0 ms-1" id="trocar-cliente">trocar</button>';
+                    document.getElementById('trocar-cliente').addEventListener('click', limparCliente);
+                    fecharSugestoes();
+                    atualizar();
+                    inpUnitario.focus();
+                }
+
+                function limparCliente() {
+                    selecionado = null;
+                    inpClienteId.value = '';
+                    inpBusca.value = '';
+                    blocoEscolhido.style.display = 'none';
+                    blocoEscolhido.innerHTML = '';
+                    atualizar();
+                    inpBusca.focus();
+                }
+
+                function atualizar() {
+                    const totalVenda = valorTotal();
+                    const base = Math.round(totalVenda);
+
+                    elValorTotal.value = moeda(totalVenda);
+
+                    if (!selecionado) {
+                        elNome.textContent = 'Pesquise e selecione um cliente';
+                        elNivel.textContent = '—';
+                        elBase.textContent = '0';
+                        elBonus.textContent = '0%';
+                        elTotal.textContent = '0';
+                        return;
+                    }
+
+                    const nivel = selecionado.nivel;
                     const bonus = Math.round(base * ((bonusNivel[nivel] || 0) / 100));
                     const total = base + bonus;
+                    const pontos = Number(selecionado.pontos) || 0;
 
-                    elNome.textContent = nome;
-                    elNivel.innerHTML = 'Nível: <span class="badge-level ' + (nivel === 'Ouro' ? 'gold' : nivel === 'Prata' ? 'silver' : 'bronze') + '">' + nivel + '</span> · Saldo: ' + pontos.toLocaleString('pt-BR') + ' pts';
+                    elNome.textContent = selecionado.nome;
+                    elNivel.innerHTML = 'Nível: <span class="badge-level ' + classeNivel(nivel) + '">' + nivel +
+                        '</span> · Saldo: ' + pontos.toLocaleString('pt-BR') + ' pts';
                     elBase.textContent = base.toLocaleString('pt-BR');
-                    elBonus.textContent = (bonusNivel[nivel] || 0) + '%  (+' + bonus + ')';
+                    elBonus.textContent = (bonusNivel[nivel] || 0) + '%  (+' + bonus.toLocaleString('pt-BR') + ')';
                     elTotal.textContent = total.toLocaleString('pt-BR');
                 }
 
-                sel.addEventListener('change', atualizar);
-                valCompra.addEventListener('input', atualizar);
+                inpBusca.addEventListener('input', function () {
+                    if (selecionado) limparCliente();
+                    const termo = inpBusca.value.trim();
+                    if (termo.length < 2) {
+                        resultados = [];
+                        fecharSugestoes();
+                        return;
+                    }
+                    resultados = filtrarClientes(termo);
+                    renderSugestoes();
+                });
+
+                inpBusca.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') { fecharSugestoes(); return; }
+                    if (listaSugestoes.hidden || !resultados.length) return;
+
+                    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const passo = e.key === 'ArrowDown' ? 1 : -1;
+                        const total = resultados.length;
+                        posicaoAtiva = (posicaoAtiva + passo + total) % total;
+                        marcarAtiva();
+                    } else if (e.key === 'Enter' && posicaoAtiva >= 0) {
+                        e.preventDefault();
+                        selecionarCliente(resultados[posicaoAtiva]);
+                    }
+                });
+
+                listaSugestoes.addEventListener('mousedown', function (e) {
+                    const botao = e.target.closest('.cliente-sugestao');
+                    if (!botao) return;
+                    e.preventDefault();
+                    selecionarCliente(resultados[Number(botao.dataset.indice)]);
+                });
+
+                inpBusca.addEventListener('blur', function () { setTimeout(fecharSugestoes, 120); });
+                inpUnitario.addEventListener('input', atualizar);
+                inpQtd.addEventListener('input', atualizar);
                 document.getElementById('data-compra').value = new Date().toISOString().slice(0, 10);
                 atualizar();
 
@@ -130,11 +311,16 @@
 
                 document.getElementById('form-compra').addEventListener('submit', async function (e) {
                     e.preventDefault();
+                    if (!selecionado) {
+                        alerta('Pesquise e selecione um cliente pelo nome, CPF ou ID.', false);
+                        inpBusca.focus();
+                        return;
+                    }
                     const payload = {
-                        cliente_id: Number(sel.value),
+                        cliente_id: Number(selecionado.id),
                         produto: document.getElementById('input-produto').value,
-                        quantidade: Number(document.getElementById('input-qtd').value) || 1,
-                        valor: Number(document.getElementById('valor-compra').value.replace(',', '.')) || 0,
+                        quantidade: quantidade(),
+                        valor_unitario: valorUnitario(),
                         data_compra: document.getElementById('data-compra').value || null,
                     };
                     try {
@@ -151,7 +337,7 @@
                         alerta(json.mensagem, true);
                         setTimeout(() => location.href = '/compras', 700);
                     } catch (err) {
-                        alerta('Falha ao registrar a compra.', false);
+                        alerta('Falha ao registrar a venda.', false);
                     }
                 });
             </script>

@@ -44,12 +44,16 @@ router.post("/", (req, res) => {
     if (!nome) return res.status(422).json({ message: "Informe o nome completo." });
     if (!documento) return res.status(422).json({ message: "Informe o CPF/CNPJ." });
 
+    const digitos = regras.soDigitos(documento);
+
     if (tipo === "CPF" && !regras.validarCPF(documento)) {
         return res.status(422).json({ message: "CPF inválido." });
     }
+    if (tipo === "CNPJ" && digitos.length !== 14) {
+        return res.status(422).json({ message: "CNPJ deve ter 14 dígitos." });
+    }
 
     const base = store.carregar();
-    const digitos = regras.soDigitos(documento);
     const duplicado = base.clientes.find(
         (c) => c.tipo_documento === tipo && regras.soDigitos(c.documento) === digitos
     );
@@ -88,19 +92,38 @@ router.put("/:id", (req, res) => {
     if (!cliente) return res.status(404).json({ message: "Cliente não encontrado." });
 
     const body = req.body || {};
+
+    const novoTipo = body.tipo_documento !== undefined && body.tipo_documento !== null
+        ? String(body.tipo_documento)
+        : cliente.tipo_documento;
+    const novoDocumento = body.documento !== undefined && body.documento !== null
+        ? String(body.documento).trim()
+        : cliente.documento;
+
+    if (novoDocumento) {
+        if (novoTipo === "CPF" && !regras.validarCPF(novoDocumento)) {
+            return res.status(422).json({ message: "CPF inválido." });
+        }
+        if (novoTipo === "CNPJ" && regras.soDigitos(novoDocumento).length !== 14) {
+            return res.status(422).json({ message: "CNPJ deve ter 14 dígitos." });
+        }
+
+        const digitos = regras.soDigitos(novoDocumento);
+        const duplicado = base.clientes.find(
+            (c) => c.id !== id && c.tipo_documento === novoTipo && regras.soDigitos(c.documento) === digitos
+        );
+        if (duplicado) {
+            return res.status(409).json({ message: "Já existe um cliente cadastrado com esse documento.", cliente: duplicado });
+        }
+    }
+
     CAMPOS_EDITAVEIS.forEach((campo) => {
         if (campo === "preferencias") {
-            cliente.preferencias = limparPreferencias(body.preferencias);
+            if (body.preferencias !== undefined) cliente.preferencias = limparPreferencias(body.preferencias);
         } else if (campo === "tags") {
             if (Array.isArray(body.tags)) cliente.tags = body.tags;
         } else if (campo === "documento") {
-            const documento = String(body.documento || "").trim();
-            if (documento) {
-                if (cliente.tipo_documento === "CPF" && !regras.validarCPF(documento)) {
-                    return res.status(422).json({ message: "CPF inválido." });
-                }
-                cliente.documento = documento;
-            }
+            if (novoDocumento) cliente.documento = novoDocumento;
         } else if (campo === "nome") {
             const nome = String(body.nome || "").trim();
             if (nome) cliente.nome = nome;

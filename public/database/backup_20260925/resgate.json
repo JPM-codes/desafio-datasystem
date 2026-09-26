@@ -1,0 +1,346 @@
+[
+    {
+        "id": 1,
+        "cliente_id": 1,
+        "pontos_utilizados": 300,
+        "valor_desconto": 15,
+        "data_resgate": "2026-02-13T15:57:00.000Z",
+        "create_at": "2026-02-13T15:57:00.000Z"
+    },
+    {
+        "id": 2,
+        "cliente_id": 1,
+        "pontos_utilizados": 400,
+        "valor_desconto": 20,
+        "data_resgate": "2026-02-26T16:34:00.000Z",
+        "create_at": "2026-02-26T16:34:00.000Z"
+    },
+    {
+        "id": 3,
+        "cliente_id": 2,
+        "pontos_utilizados": 200,
+        "valor_desconto": 10,
+        "data_resgate": "2026-02-10T15:05:00.000Z",
+        "create_at": "2026-02-10T15:05:00.000Z"
+    },
+    {
+        "id": 4,
+        "cliente_id": 2,
+        "pontos_utilizados": 200,
+        "valor_desconto": 10,
+        "data_resgate": "2026-02-27T21:05:00.000Z",
+        "create_at": "2026-02-27T21:05:00.000Z"
+    },
+    {
+        "id": 5,
+        "cliente_id": 3,
+        "pontos_utilizados": 300,
+        "valor_desconto": 15,
+        "data_resgate": "2026-02-12T21:04:00.000Z",
+        "create_at": "2026-02-12T21:04:00.000Z"
+    },
+    {
+        "id": 6,
+        "cliente_id": 3,
+        "pontos_utilizados": 200,
+        "valor_desconto": 10,
+        "data_resgate": "2026-02-27T15:53:00.000Z",
+        "create_at": "2026-02-27T15:53:00.000Z"
+    },
+    {
+        "id": 7,
+        "cliente_id": 3,
+        "pontos_utilizados": 300,
+        "valor_desconto": 15,
+        "data_resgate": "2026-03-14T19:38:00.000Z",
+        "create_at": "2026-03-14T19:38:00.000Z"
+    },
+    {
+        "id": 8,
+        "cliente_id": 4,
+        "pontos_utilizados": 400,
+        "valor_desconto": 20,
+        "data_resgate": "2026-02-24T19:34:00.000Z",
+        "create_at": "2026-02-24T19:34:00.000Z"
+    },
+    {
+        "id": 9,
+        "cliente_id": 4,
+        "pontos_utilizados": 200,
+        "valor_desconto": 10,
+        "data_resgate": "2026-03-25T20:49:00.000Z",
+        "create_at": "2026-03-25T20:49:00.000Z"
+    },
+    {
+        "id": 10,
+        "cliente_id": 4,
+        "pontos_utilizados": 500,
+        "valor_desconto": 25,
+        "data_resgate": "2026-04-10T20:25:00.000Z",
+        "create_at": "2026-04-10T20:25:00.000Z"
+    },
+    {
+        "id": 11,
+        "cliente_id": 9,
+        "pontos_utilizados": 600,
+        "valor_desconto": 30,
+        "data_resgate": "2026-04-26T13:05:00.000Z",
+        "create_at": "2026-04-26T13:05:00.000Z"
+    },
+    {
+        "id": 12,
+        "cliente_id": 10,
+        "pontos_utilizados": 700,
+        "valor_desconto": 35,
+        "data_resgate": "2026-05-01T21:08:00.000Z",
+        "create_at": "2026-05-01T21:08:00.000Z"
+    },
+    {
+        "id": 13,
+        "cliente_id": 10,
+        "pontos_utilizados": 500,
+        "valor_desconto": 25,
+        "data_resgate": "2026-05-18T15:59:00.000Z",
+        "create_at": "2026-05-18T15:59:00.000Z"
+    },
+    {
+        "id": 14,
+        "cliente_id": 10,
+        "pontos_utilizados": 300,
+        "valor_desconto": 15,
+        "data_resgate": "2026-06-02T16:33:00.000Z",
+        "create_at": "2026-06-02T16:33:00.000Z"
+    },
+    {
+        "id": 15,
+        "cliente_id": 11,
+        "pontos_utilizados": 200,
+        "valor_desconto": 10,
+        "data_resgate": "2026-03-26T20:04:00.000Z",
+        "create_at": "2026-03-26T20:04:00.000Z"
+    },
+    {
+        "id": 16,
+        "cliente_id": 11,
+        "pontos_utilizados": 400,
+        "valor_desconto": 20,
+        "data_resgate": "2026-05-06T20:01:00.000Z",
+        "create_at": "2026-05-06T20:01:00.000Z"
+    },
+    {
+        "id": 17,
+        "cliente_id": 12,
+        "pontos_utilizados": 100,
+        "valor_desconto": 5,
+        "data_resgate": "2026-03-28T16:41:00.000Z",
+        "create_at": "2026-03-28T16:41:00.000Z"
+    },
+    {
+        "id": 18,
+        "cliente_id": 12,
+        "pontos_utilizados": 300,
+        "valor_desconto": 15,
+        "data_resgate": "2026-04-10T21:21:00.000Z",
+        "create_at": "2026-04-10T21:21:00.000Z"
+    },
+    {
+        "id": 19,
+        "cliente_id": 13,
+        "pontos_utilizados": 200,
+        "valor_desconto": 10,
+        "data_resgate": "2026-03-02T16:19:00.000Z",
+        "create_at": "2026-03-02T16:19:00.000Z"
+    },
+    {
+        "id": 20,
+        "cliente_id": 13,
+        "pontos_utilizados": 400,
+        "valor_desconto": 20,
+        "data_resgate": "2026-03-29T15:39:00.000Z",
+        "create_at": "2026-03-29T15:39:00.000Z"
+    },
+    {
+        "id": 21,
+        "cliente_id": 14,
+        "pontos_utilizados": 100,
+        "valor_desconto": 5,
+        "data_resgate": "2026-03-17T15:11:00.000Z",
+        "create_at": "2026-03-17T15:11:00.000Z"
+    },
+    {
+        "id": 22,
+        "cliente_id": 14,
+        "pontos_utilizados": 700,
+        "valor_desconto": 35,
+        "data_resgate": "2026-04-16T13:03:00.000Z",
+        "create_at": "2026-04-16T13:03:00.000Z"
+    },
+    {
+        "id": 23,
+        "cliente_id": 15,
+        "pontos_utilizados": 300,
+        "valor_desconto": 15,
+        "data_resgate": "2026-03-05T12:51:00.000Z",
+        "create_at": "2026-03-05T12:51:00.000Z"
+    },
+    {
+        "id": 24,
+        "cliente_id": 15,
+        "pontos_utilizados": 100,
+        "valor_desconto": 5,
+        "data_resgate": "2026-03-21T15:53:00.000Z",
+        "create_at": "2026-03-21T15:53:00.000Z"
+    },
+    {
+        "id": 25,
+        "cliente_id": 16,
+        "pontos_utilizados": 300,
+        "valor_desconto": 15,
+        "data_resgate": "2026-03-25T13:06:00.000Z",
+        "create_at": "2026-03-25T13:06:00.000Z"
+    },
+    {
+        "id": 26,
+        "cliente_id": 17,
+        "pontos_utilizados": 200,
+        "valor_desconto": 10,
+        "data_resgate": "2026-03-03T16:45:00.000Z",
+        "create_at": "2026-03-03T16:45:00.000Z"
+    },
+    {
+        "id": 27,
+        "cliente_id": 17,
+        "pontos_utilizados": 400,
+        "valor_desconto": 20,
+        "data_resgate": "2026-03-18T17:54:00.000Z",
+        "create_at": "2026-03-18T17:54:00.000Z"
+    },
+    {
+        "id": 28,
+        "cliente_id": 17,
+        "pontos_utilizados": 600,
+        "valor_desconto": 30,
+        "data_resgate": "2026-04-16T18:51:00.000Z",
+        "create_at": "2026-04-16T18:51:00.000Z"
+    },
+    {
+        "id": 29,
+        "cliente_id": 18,
+        "pontos_utilizados": 200,
+        "valor_desconto": 10,
+        "data_resgate": "2026-03-09T12:47:00.000Z",
+        "create_at": "2026-03-09T12:47:00.000Z"
+    },
+    {
+        "id": 30,
+        "cliente_id": 18,
+        "pontos_utilizados": 200,
+        "valor_desconto": 10,
+        "data_resgate": "2026-03-31T20:26:00.000Z",
+        "create_at": "2026-03-31T20:26:00.000Z"
+    },
+    {
+        "id": 31,
+        "cliente_id": 18,
+        "pontos_utilizados": 400,
+        "valor_desconto": 20,
+        "data_resgate": "2026-04-21T12:11:00.000Z",
+        "create_at": "2026-04-21T12:11:00.000Z"
+    },
+    {
+        "id": 32,
+        "cliente_id": 23,
+        "pontos_utilizados": 300,
+        "valor_desconto": 15,
+        "data_resgate": "2026-02-12T13:33:00.000Z",
+        "create_at": "2026-02-12T13:33:00.000Z"
+    },
+    {
+        "id": 33,
+        "cliente_id": 23,
+        "pontos_utilizados": 600,
+        "valor_desconto": 30,
+        "data_resgate": "2026-03-08T20:57:00.000Z",
+        "create_at": "2026-03-08T20:57:00.000Z"
+    },
+    {
+        "id": 34,
+        "cliente_id": 23,
+        "pontos_utilizados": 600,
+        "valor_desconto": 30,
+        "data_resgate": "2026-03-28T15:44:00.000Z",
+        "create_at": "2026-03-28T15:44:00.000Z"
+    },
+    {
+        "id": 35,
+        "cliente_id": 23,
+        "pontos_utilizados": 400,
+        "valor_desconto": 20,
+        "data_resgate": "2026-04-20T15:21:00.000Z",
+        "create_at": "2026-04-20T15:21:00.000Z"
+    },
+    {
+        "id": 36,
+        "cliente_id": 25,
+        "pontos_utilizados": 200,
+        "valor_desconto": 10,
+        "data_resgate": "2026-02-12T14:36:00.000Z",
+        "create_at": "2026-02-12T14:36:00.000Z"
+    },
+    {
+        "id": 37,
+        "cliente_id": 25,
+        "pontos_utilizados": 200,
+        "valor_desconto": 10,
+        "data_resgate": "2026-02-23T18:24:00.000Z",
+        "create_at": "2026-02-23T18:24:00.000Z"
+    },
+    {
+        "id": 38,
+        "cliente_id": 26,
+        "pontos_utilizados": 400,
+        "valor_desconto": 20,
+        "data_resgate": "2026-02-22T13:57:00.000Z",
+        "create_at": "2026-02-22T13:57:00.000Z"
+    },
+    {
+        "id": 39,
+        "cliente_id": 26,
+        "pontos_utilizados": 200,
+        "valor_desconto": 10,
+        "data_resgate": "2026-03-06T18:56:00.000Z",
+        "create_at": "2026-03-06T18:56:00.000Z"
+    },
+    {
+        "id": 40,
+        "cliente_id": 28,
+        "pontos_utilizados": 200,
+        "valor_desconto": 10,
+        "data_resgate": "2026-02-28T19:19:00.000Z",
+        "create_at": "2026-02-28T19:19:00.000Z"
+    },
+    {
+        "id": 41,
+        "cliente_id": 28,
+        "pontos_utilizados": 200,
+        "valor_desconto": 10,
+        "data_resgate": "2026-03-23T16:01:00.000Z",
+        "create_at": "2026-03-23T16:01:00.000Z"
+    },
+    {
+        "id": 42,
+        "cliente_id": 30,
+        "pontos_utilizados": 300,
+        "valor_desconto": 15,
+        "data_resgate": "2026-03-23T16:36:00.000Z",
+        "create_at": "2026-03-23T16:36:00.000Z"
+    },
+    {
+        "id": 43,
+        "cliente_id": 30,
+        "pontos_utilizados": 700,
+        "valor_desconto": 35,
+        "data_resgate": "2026-07-03T21:22:00.000Z",
+        "create_at": "2026-07-03T21:22:00.000Z"
+    }
+]

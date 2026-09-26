@@ -8,6 +8,8 @@ const fs = require("fs");
 const path = require("path");
 const regras = require("./regras");
 const impacto = require("./impacto");
+const indicadores = require("./indicadores");
+const expiracao = require("./expiracao");
 
 const DIR = path.join(__dirname, "..", "public", "database");
 
@@ -52,28 +54,15 @@ function movimentacoesDoCliente(pontos, clienteId) {
     return pontos.filter((m) => m.cliente_id === clienteId);
 }
 
-function totaisPontos(pontos) {
-    return pontos.reduce(
-        (acc, m) => {
-            const valor = m.pontos || 0;
-            if (m.tipo === "acumulo") acc.acumulado += valor;
-            else if (m.tipo === "resgate") acc.resgatado += Math.abs(valor);
-            else if (m.tipo === "expiracao") acc.expirado += Math.abs(valor);
-            return acc;
-        },
-        { acumulado: 0, resgatado: 0, expirado: 0 }
-    );
+function totaisPontos(pontos, dataRef) {
+    return indicadores.totaisDeMovimentos(pontos, dataRef);
 }
 
-function pontosDisponiveisCliente(pontos, clienteId) {
-    let saldo = 0;
-    pontos.forEach((m) => {
-        if (m.cliente_id !== clienteId) return;
-        if (m.tipo === "acumulo") saldo += m.pontos;
-        else if (m.tipo === "resgate" || m.tipo === "expiracao") saldo -= Math.abs(m.pontos || 0);
-        else if (m.tipo === "ajuste") saldo += m.pontos;
-    });
-    return Math.max(0, saldo);
+function pontosDisponiveisCliente(pontos, clienteId, dataRef) {
+    return indicadores.saldoDisponivelDeMovimentos(
+        pontos.filter((m) => m.cliente_id === clienteId),
+        dataRef
+    );
 }
 
 function resgatesDoCliente(resgates, clienteId) {
@@ -99,6 +88,7 @@ function iniciaisDoNome(nome) {
 // Enriquecimento (cliente + indicadores)
 // ============================================================
 function enriquecerCliente(cliente, base, dataRef) {
+    if (!cliente) return null;
     const ref = dataRef || new Date();
     const comprasC = comprasDoCliente(base.compras, cliente.id);
     const totalCompras = comprasC.length;
@@ -106,13 +96,14 @@ function enriquecerCliente(cliente, base, dataRef) {
     const primeiraCompra = totalCompras ? comprasC[0].data_compra : null;
     const ultimaCompra = totalCompras ? comprasC[totalCompras - 1].data_compra : null;
 
-    const pontosAcumulados = base.pontos
-        .filter((m) => m.cliente_id === cliente.id && m.tipo === "acumulo")
-        .reduce((s, m) => s + m.pontos, 0);
-    const pontosResgatados = base.pontos
-        .filter((m) => m.cliente_id === cliente.id && m.tipo === "resgate")
-        .reduce((s, m) => s + Math.abs(m.pontos), 0);
-    const pontosDisponiveis = pontosDisponiveisCliente(base.pontos, cliente.id);
+    const movs = movimentacoesDoCliente(base.pontos, cliente.id);
+    const tot = indicadores.totaisDeMovimentos(movs, ref);
+
+    const pontosAcumulados = tot.acumulados;
+    const pontosResgatados = tot.resgatados;
+    const pontosExpirados = tot.expiradosEfetivos;
+    const pontosDisponiveis = tot.disponiveis;
+    const pontosImpacto = tot.geradosImpacto;
 
     const nivel = regras.calcularNivel(pontosAcumulados);
     const proximo = regras.proximoNivel(pontosAcumulados);
@@ -120,6 +111,7 @@ function enriquecerCliente(cliente, base, dataRef) {
     const status = regras.calcularStatusCliente(diasSemComprar);
     const ticketMedio = regras.calcularTicketMedio(totalGasto, totalCompras);
     const rfm = regras.calcularRFM({ totalCompras, totalGasto, ultimaCompra, dataRef: ref });
+    const impactoCliente = resumoImpactoDoCliente(base, cliente.id);
 
     const infosPorTags = { totalCompras, status: status.nome, pontosDisponiveis, proximoNivel: proximo };
     const tags = regras.gerarTags(cliente, infosPorTags);
@@ -134,15 +126,22 @@ function enriquecerCliente(cliente, base, dataRef) {
         diasSemComprar,
         status,
         nivel,
+        nivelBase: "PONTOS_ACUMULADOS",
         proximoNivel: proximo,
         ticketMedio,
         rfm,
         pontosAcumulados,
         pontosResgatados,
+        pontosExpirados,
         pontosDisponiveis,
+        pontosImpacto,
         pontos: pontosDisponiveis,
         valorPotencial: regras.calcularDesconto(pontosDisponiveis),
         resgates: resgatesDoCliente(base.resgates, cliente.id),
+        impacto: impactoCliente,
+        calcadosDoados: impactoCliente.calcados,
+        caixasDevolvidas: impactoCliente.caixas,
+        acoesImpacto: impactoCliente.totalAcoes,
         iniciais: iniciaisDoNome(cliente.nome),
         cpf: regras.soDigitos(cliente.documento),
         tags,
@@ -157,110 +156,71 @@ function enriquecerClientes(base, dataRef) {
 // ============================================================
 // Agregações do Dashboard
 // ============================================================
+/**
+ * Dashboard principal. Todos os números vêm de services/indicadores.js
+ * (fonte única de verdade). Nenhum valor é fixado aqui.
+ */
 function dashboard(base, dataRef) {
     const ref = dataRef || new Date();
+    const ind = indicadores.calcular(base, ref);
     const clientes = enriquecerClientes(base, ref);
 
-    const totais = totaisPontos(base.pontos);
-    const totalValorResgates = base.resgates.reduce((s, r) => s + r.valor_desconto, 0);
-    const totalGasto = base.compras.reduce((s, c) => s + c.valor_total, 0);
-    const pontosDisponiveis = Math.max(0, totais.acumulado - totais.resgatado - totais.expirado);
+    // Ranking: ordenado por PONTOS ACUMULADOS (conceito diferente de saldo disponível)
+    const rankingAcumulados = [...clientes].sort(
+        (a, b) => b.pontosAcumulados - a.pontosAcumulados || b.pontosDisponiveis - a.pontosDisponiveis
+    );
+    const rankingSaldo = [...clientes].sort(
+        (a, b) => b.pontosDisponiveis - a.pontosDisponiveis || b.pontosAcumulados - a.pontosAcumulados
+    );
 
-    const porStatus = (nome) => clientes.filter((c) => c.status.nome === nome).length;
-    const porNivel = (nome) => clientes.filter((c) => c.nivel.nome === nome).length;
-
-    const quantidades = clientes.map((c) => c.totalCompras);
-    const datasPorCliente = clientes.map((c) => (c.compras || []).map((c2) => c2.data_compra));
-
-    const mesesEvolucao = mesesComMovimentacao(base.compras, base.resgates, 6);
-
-    const evolucaoPontos = mesesEvolucao.map((mes) => ({
-        label: mes.label,
-        chave: mes.chave,
-        gerados: base.pontos
-            .filter((p) => p.tipo === "acumulo" && String(p.data_movimentacao).startsWith(mes.chave))
-            .reduce((s, p) => s + p.pontos, 0),
-        resgatados: base.pontos
-            .filter((p) => p.tipo === "resgate" && String(p.data_movimentacao).startsWith(mes.chave))
-            .reduce((s, p) => s + Math.abs(p.pontos), 0),
-    }));
-
-    const evolucaoClientes = mesesEvolucao.map((mes) => {
-        const comprasMes = base.compras.filter((c) => String(c.data_compra).startsWith(mes.chave));
-        const clientesAtivos = new Set(comprasMes.map((c) => c.cliente_id)).size;
-        return {
-            label: mes.label,
-            chave: mes.chave,
-            compras: comprasMes.length,
-            ativos: clientesAtivos,
-        };
-    });
-
-    const ranking = [...clientes].sort((a, b) => b.pontosDisponiveis - a.pontosDisponiveis);
-
-    const alertas = gerarAlertas(clientes, base, ref, pontosDisponiveis);
+    const alertas = gerarAlertas(clientes, base, ref, ind.pontos.disponiveis);
 
     return {
         dataAtual: ref.toISOString(),
+        indicadores: ind,
         totais: {
-            clientes: base.clientes.length,
-            compras: base.compras.length,
-            resgates: base.resgates.length,
-            pontosAcumulados: totais.acumulado,
-            pontosResgatados: totais.resgatado,
-            pontosExpirados: totais.expirado,
-            pontosDisponiveis,
-            valorResgates: totalValorResgates,
-            valorPotencial: regras.calcularDesconto(pontosDisponiveis),
-            totalGasto,
-            ticketMedioGlobal: base.compras.length ? totalGasto / base.compras.length : 0,
+            clientes: ind.base.clientes,
+            compras: ind.base.compras,
+            resgates: ind.base.resgates,
+            acoesImpacto: ind.base.acoesImpacto,
+            movimentacoes: ind.base.movimentacoes,
+
+            faturamento: ind.compras.faturamento,
+            ticketMedioGlobal: ind.compras.ticketMedio,
+
+            pontosGeradosCompras: ind.pontos.geradosCompras,
+            bonusCompras: ind.pontos.bonusCompras,
+            pontosImpacto: ind.pontos.geradosImpacto,
+            pontosAcumulados: ind.pontos.acumulados,
+            pontosResgatados: ind.pontos.resgatados,
+            pontosExpirados: ind.pontos.expirados,
+            pontosDisponiveis: ind.pontos.disponiveis,
+            pontosAExpirar: expiracao
+                .calcularLancamentos(base, ref).totalPontos,
+
+            valorResgates: ind.resgates.valorDescontos,
+            custoPrograma: ind.resgates.custoPrograma,
+            valorPotencial: regras.calcularDesconto(ind.pontos.disponiveis),
         },
-        niveis: {
-            total: clientes.length,
-            bronze: porNivel("Bronze"),
-            prata: porNivel("Prata"),
-            ouro: porNivel("Ouro"),
-        },
-        status: {
-            ATIVO: porStatus("ATIVO"),
-            ATENCAO: porStatus("ATENCAO"),
-            RISCO: porStatus("RISCO"),
-            INATIVO: porStatus("INATIVO"),
-        },
-        retencao: {
-            taxaSegundaCompra: regras.calcularTaxaSegundaCompra(quantidades),
-            tempoMedioSegundaCompra: regras.calcularTempoMedioSegundaCompra(datasPorCliente),
-            clientesComCompra: quantidades.filter((n) => n >= 1).length,
-            clientesComSegunda: quantidades.filter((n) => n >= 2).length,
-        },
-        evolucaoPontos,
-        evolucaoClientes,
-        ranking: ranking.slice(0, 5),
+        niveis: ind.niveis,
+        status: ind.status,
+        retencao: ind.retencao,
+        reconciliacao: ind.reconciliacao,
+        evolucaoPontos: ind.evolucao.pontos,
+        evolucaoClientes: ind.evolucao.clientes,
+        ranking: rankingAcumulados.slice(0, 5),
+        rankingSaldo: rankingSaldo.slice(0, 5),
         alertas,
     };
 }
 
+/** Mantido por compatibilidade: meses com movimentação (compras/resgates). */
 function mesesComMovimentacao(compras, resgates, quantidade) {
-    const chaves = new Set();
-    compras.forEach((c) => chaves.add(String(c.data_compra).slice(0, 7)));
-    resgates.forEach((r) => chaves.add(String(r.data_resgate).slice(0, 7)));
-    const ordenadas = [...chaves].sort();
-    const ultimas = ordenadas.slice(-quantidade);
-    if (ultimas.length < quantidade && ordenadas.length < quantidade) {
-        const inicio = ordenadas[0];
-        const base = inicio ? new Date(`${inicio}-01T00:00:00`) : new Date();
-        for (let i = 0; i < quantidade; i++) {
-            const d = new Date(base.getTime());
-            d.setMonth(d.getMonth() + i);
-            const chave = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-            if (!ultimas.includes(chave)) ultimas.push(chave);
-        }
-        ultimas.sort();
-    }
-    return ultimas.slice(-quantidade).map((chave) => ({
-        chave,
-        label: new Date(`${chave}-01T00:00:00`).toLocaleDateString("pt-BR", { month: "short" }).replace(".", ""),
-    }));
+    const movimentos = [
+        ...compras.map((c) => ({ data_movimentacao: c.data_compra })),
+        ...resgates.map((r) => ({ data_movimentacao: r.data_resgate })),
+    ];
+    return indicadores.mesesComMovimentacaoPontos(movimentos, quantidade);
 }
 
 function gerarAlertas(clientes, base, dataRef, pontosDisponiveis) {
@@ -335,7 +295,8 @@ function movimentosImpactoDoCliente(base, clienteId) {
     );
 }
 
-function resumoImpactoDoCliente(base, clienteId) {
+function resumoImpactoDoCliente(base, clienteId, dataRef) {
+    const ref = dataRef || new Date();
     const acoes = acoesDoCliente(base, clienteId);
     const calcados = acoes
         .filter((a) => a.tipo_acao === "DOACAO_CALCADO")
@@ -343,47 +304,40 @@ function resumoImpactoDoCliente(base, clienteId) {
     const caixas = acoes
         .filter((a) => a.tipo_acao === "DEVOLUCAO_CAIXA")
         .reduce((s, a) => s + (Number(a.quantidade) || 0), 0);
-    const pontosBonus = movimentosImpactoDoCliente(base, clienteId).reduce(
-        (s, m) => s + (m.pontos || 0),
-        0
-    );
+    const movimentos = movimentosImpactoDoCliente(base, clienteId);
+    const pontosBonus = movimentos
+        .filter((m) => indicadores.totaisDeMovimentos([m], ref).gerados > 0)
+        .reduce((s, m) => s + (Number(m.pontos) || 0), 0);
+    const acoesPontuadas = new Set(movimentos.map((m) => m.origem_id));
     const ultimaParticipacao = acoes.length
         ? [...acoes].sort(
               (a, b) => new Date(b.data_recebimento) - new Date(a.data_recebimento)
           )[0].data_recebimento
         : null;
-    return { acoes, calcados, caixas, totalAcoes: acoes.length, pontosBonus, ultimaParticipacao };
+    return {
+        acoes,
+        calcados,
+        caixas,
+        totalAcoes: acoes.length,
+        pontosBonus,
+        acoesPontuadas: acoesPontuadas.size,
+        ultimaParticipacao,
+    };
 }
 
 function mesesDeAcoes(acoes, quantidade) {
-    const chaves = new Set();
-    acoes.forEach((a) => chaves.add(String(a.data_recebimento).slice(0, 7)));
-    const ordenadas = [...chaves].sort();
-    const ultimas = ordenadas.slice(-quantidade);
-    if (ultimas.length < quantidade && ordenadas.length < quantidade) {
-        const inicio = ordenadas[0] ? new Date(`${ordenadas[0]}-01T00:00:00`) : new Date();
-        for (let i = 0; i < quantidade; i++) {
-            const d = new Date(inicio.getTime());
-            d.setMonth(d.getMonth() + i);
-            const chave = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-            if (!ultimas.includes(chave)) ultimas.push(chave);
-        }
-        ultimas.sort();
-    }
-    return ultimas.slice(-quantidade).map((chave) => ({
-        chave,
-        label: new Date(`${chave}-01T00:00:00`)
-            .toLocaleDateString("pt-BR", { month: "short" })
-            .replace(".", ""),
-    }));
+    return indicadores.mesesComMovimentacaoPontos(
+        acoes.map((a) => ({ data_movimentacao: a.data_recebimento })),
+        quantidade
+    );
 }
 
 function dashboardImpacto(base, dataRef) {
     const acoes = base.acoes_impacto || [];
     const ref = dataRef || new Date();
     const qtde = (lista) => lista.reduce((s, a) => s + (Number(a.quantidade) || 0), 0);
-    const doacoes = acoes.filter((a) => a.tipo_acao === "DOACAO_CALCADO");
-    const caixas = acoes.filter((a) => a.tipo_acao === "DEVOLUCAO_CAIXA");
+    const acoesCalcado = acoes.filter((a) => a.tipo_acao === "DOACAO_CALCADO");
+    const acoesCaixa = acoes.filter((a) => a.tipo_acao === "DEVOLUCAO_CAIXA");
     const participantesSet = new Set(acoes.map((a) => a.cliente_id));
     const participantes = participantesSet.size;
     const pontosBonus = (base.pontos || [])
@@ -394,6 +348,20 @@ function dashboardImpacto(base, dataRef) {
     const porDest = (nome) => acoes.filter((a) => a.status_destinacao === nome);
     const destinados = acoes.filter((a) => a.status_destinacao === "DESTINADO");
     const entregues = acoes.filter((a) => a.status_destinacao === "ENTREGUE");
+    const comDestinacao = [...destinados, ...entregues];
+
+    // Semântica dos indicadores (Prioridade 7):
+    //  ITENS ARRECADADOS        = todos os itens recebidos (qualquer status)
+    //  ITENS DESTINADOS         = itens que já possuem destinação registrada (DESTINADO/ENTREGUE)
+    //  AGUARDANDO DESTINAÇÃO    = itens aprovados e ainda não destinados (recorte operacional)
+    //  AGUARDANDO SEM REGISTRO  = itens recebidos/em triagem que ainda não tiveram destinação
+    //  SEM DESTINAÇÃO           = soma dos dois anteriores (fecha com ARRECADADOS)
+    const pendentesDest = acoes.filter((a) => a.status_destinacao === "PENDENTE");
+    const aguardandoAcoes = pendentesDest.filter((a) => a.status_validacao === "APROVADO");
+    const semRegistroAcoes = pendentesDest.filter((a) => a.status_validacao !== "APROVADO");
+    const aguardandoItens = qtde(aguardandoAcoes);
+    const semRegistroItens = qtde(semRegistroAcoes);
+    const naoAprovadosItens = qtde(acoes.filter((a) => a.status_validacao !== "APROVADO"));
 
     const porTipo = (tipo, lista) => {
         const daquele = lista.filter((a) => a.tipo_acao === tipo);
@@ -401,11 +369,12 @@ function dashboardImpacto(base, dataRef) {
             acoes: daquele.length,
             quantidade: qtde(daquele),
             aprovadas: daquele.filter((a) => a.status_validacao === "APROVADO").length,
+            aprovadasQuantidade: qtde(daquele.filter((a) => a.status_validacao === "APROVADO")),
         };
     };
 
     const evolucao = mesesDeAcoes(acoes, 6).map((mes) => {
-        const doMes = acoes.filter((a) => String(a.data_recebimento).startsWith(mes.chave));
+        const doMes = acoes.filter((a) => indicadores.chaveMes(a.data_recebimento) === mes.chave);
         return {
             label: mes.label,
             chave: mes.chave,
@@ -420,13 +389,12 @@ function dashboardImpacto(base, dataRef) {
     return {
         dataAtual: ref.toISOString(),
         totais: {
-            calcados: qtde(doacoes),
-            caixas: qtde(caixas),
+            calcados: qtde(acoesCalcado),
+            caixas: qtde(acoesCaixa),
             itens: qtde(acoes),
             clientesParticipantes: participantes,
-            taxaParticipacao: base.clientes.length
-                ? (participantes / base.clientes.length) * 100
-                : 0,
+            totalClientes: base.clientes.length,
+            taxaParticipacao: base.clientes.length ? (participantes / base.clientes.length) * 100 : 0,
             pontosBonusConcedidos: pontosBonus,
             acoesTotal: acoes.length,
         },
@@ -437,12 +405,29 @@ function dashboardImpacto(base, dataRef) {
             RECUSADO: porStatus("RECUSADO").length,
             aguardandoTriagem: porStatus("RECEBIDO").length,
         },
+        itens: {
+            arrecadados: qtde(acoes),
+            destinados: qtde(comDestinacao),
+            aguardandoDestinacao: aguardandoItens,
+            aguardandoAprovados: aguardandoItens,
+            aguardandoSemRegistro: semRegistroItens,
+            aguardandoTotal: aguardandoItens + semRegistroItens,
+            semDestinacao: aguardandoItens + semRegistroItens,
+            itensNaoAprovados: naoAprovadosItens,
+            acoesDestinadas: comDestinacao.length,
+            acoesAguardandoDestinacao: aguardandoAcoes.length,
+            acoesSemDestinacao: pendentesDest.length,
+            fecha: qtde(acoes) === qtde(comDestinacao) + aguardandoItens + semRegistroItens,
+        },
         destinacao: {
-            PENDENTE: porDest("PENDENTE").length,
+            PENDENTE: pendentesDest.length,
             DESTINADO: destinados.length,
             ENTREGUE: entregues.length,
-            itensDestinados: qtde([...destinados, ...entregues]),
-            aguardandoDestinacao: qtde(porDest("PENDENTE")),
+            itensDestinados: qtde(comDestinacao),
+            itensArrecadados: qtde(acoes),
+            aguardandoDestinacao: aguardandoItens,
+            aguardandoSemRegistro: semRegistroItens,
+            aguardandoTotal: aguardandoItens + semRegistroItens,
         },
         porTipo: {
             DOACAO_CALCADO: porTipo("DOACAO_CALCADO", acoes),
@@ -453,15 +438,20 @@ function dashboardImpacto(base, dataRef) {
         configuraveis: {
             bonusDoacao: impacto.CONFIG.bonusDoacao,
             bonusCaixa: impacto.CONFIG.bonusCaixa,
+            modoBonusCalcado: impacto.CONFIG.modoBonusCalcado,
+            modoBonusCaixa: impacto.CONFIG.modoBonusCaixa,
             limiteDoacaoMes: impacto.CONFIG.limiteDoacaoMes,
             limiteCaixaMes: impacto.CONFIG.limiteCaixaMes,
+            textoCalcado: impacto.regraTextoDe("DOACAO_CALCADO"),
+            textoCaixa: impacto.regraTextoDe("DEVOLUCAO_CAIXA"),
         },
     };
 }
 
 function rankingImpacto(base, dataRef, limite) {
+    const ref = dataRef || new Date();
     const resumos = base.clientes.map((cliente) => {
-        const r = resumoImpactoDoCliente(base, cliente.id);
+        const r = resumoImpactoDoCliente(base, cliente.id, ref);
         return {
             cliente_id: cliente.id,
             nome: cliente.nome,
@@ -477,6 +467,55 @@ function rankingImpacto(base, dataRef, limite) {
         .filter((r) => r.acoes > 0)
         .sort((a, b) => b.pontosBonus - a.pontosBonus || b.acoes - a.acoes);
     return limite ? participantes.slice(0, limite) : participantes;
+}
+
+/**
+ * PROTEÇÃO DE IDEMPOTÊNCIA DA CAMPANHA DE IMPACTO.
+ * Uma ação aprovada gera pontos UMA única vez. A verificação é feita por
+ * origem_id (movimentação vinculada à ação) e pelo marcador
+ * pontuacao_processada na própria ação.
+ */
+function movimentoDeBonusDaAcao(base, acaoId) {
+    return (base.pontos || []).find(
+        (m) => m.origem_id === acaoId && (m.origem === "BONUS_DOACAO" || m.origem === "BONUS_CAIXA")
+    );
+}
+
+function acaoJaPontuada(base, acao) {
+    if (acao.pontuacao_processada === true) return true;
+    if (acao.pontuacao_processada_at) return true;
+    return Boolean(movimentoDeBonusDaAcao(base, acao.id));
+}
+
+/**
+ * Concede o bônus de uma ação de impacto exatamente uma vez.
+ * Retorna { concedido, movimento, motivo }.
+ */
+function concederBonusImpacto(base, acao, bonus, dataRef) {
+    if (acaoJaPontuada(base, acao)) {
+        return { concedido: false, motivo: "JA_PONTUADA", movimento: movimentoDeBonusDaAcao(base, acao.id) };
+    }
+    const ref = dataRef || new Date();
+    const agora = ref.toISOString();
+    const expiracao = regras.calcularDataExpiracao(agora, regras.REGRAS.validadeMeses);
+    const movimento = {
+        id: proximoId(base.pontos),
+        cliente_id: acao.cliente_id,
+        tipo: "acumulo",
+        pontos: bonus,
+        data_movimentacao: agora,
+        data_expiracao: expiracao ? expiracao.toISOString() : null,
+        compras_id: 0,
+        resgates_id: 0,
+        origem: impacto.origemDe(acao.tipo_acao),
+        origem_id: acao.id,
+        create_at: agora,
+    };
+    base.pontos.push(movimento);
+    acao.pontuacao_processada = true;
+    acao.pontuacao_processada_at = agora;
+    acao.pontos_bonus = bonus;
+    return { concedido: true, movimento, motivo: null };
 }
 
 function limiteMensalDoCliente(base, clienteId, tipo, dataRef) {
@@ -555,4 +594,9 @@ module.exports = {
     rankingImpacto,
     limiteMensalDoCliente,
     relatorioImpacto,
+    movimentoDeBonusDaAcao,
+    acaoJaPontuada,
+    concederBonusImpacto,
+    indicadores,
+    expiracao,
 };

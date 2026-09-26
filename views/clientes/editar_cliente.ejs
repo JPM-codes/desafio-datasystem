@@ -35,7 +35,7 @@
                                         <option value="CPF" <%= cliente.tipo_documento === 'CPF' ? 'selected' : '' %>>CPF</option>
                                         <option value="CNPJ" <%= cliente.tipo_documento === 'CNPJ' ? 'selected' : '' %>>CNPJ</option>
                                     </select></div>
-                                <div class="col-md-8"><label class="form-label">CPF / CNPJ *</label><input class="form-control" id="input-doc" value="<%= cliente.documento %>" required>
+                                <div class="col-md-8"><label class="form-label">CPF / CNPJ *</label><input class="form-control" id="input-doc" inputmode="numeric" autocomplete="off" value="<%= cliente.documento %>" required>
                                     <div class="form-text text-danger d-none" id="erro-doc"></div>
                                 </div>
                                 <div class="col-md-4"><label class="form-label">Data de nascimento</label>
@@ -97,6 +97,8 @@
                     </div>
                 </div>
             </section>
+
+            <%- include('../includes/mascara-documento') %>
 
             <script>
                 const selecionados = (id) => Array.from(document.getElementById(id).selectedOptions).map(o => o.value);

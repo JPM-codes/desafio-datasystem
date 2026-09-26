@@ -22,7 +22,7 @@
                                         <option value="CPF">CPF</option>
                                         <option value="CNPJ">CNPJ</option>
                                     </select></div>
-                                <div class="col-md-8"><label class="form-label">CPF / CNPJ *</label><input class="form-control" id="input-doc" required placeholder="000.000.000-00">
+                                <div class="col-md-8"><label class="form-label">CPF / CNPJ *</label><input class="form-control" id="input-doc" inputmode="numeric" autocomplete="off" required placeholder="000.000.000-00">
                                     <div class="form-text text-danger d-none" id="erro-doc"></div>
                                 </div>
                                 <div class="col-md-4"><label class="form-label">Data de nascimento</label><input type="date" class="form-control" id="input-nascimento"></div>
@@ -77,6 +77,8 @@
                 </div>
             </section>
 
+            <%- include('../includes/mascara-documento') %>
+
             <script>
                 const selecionados = (id) => Array.from(document.getElementById(id).selectedOptions).map(o => o.value);
                 const alerta = (msg, ok) => {
@@ -85,10 +87,6 @@
                     f.className = 'alert-card my-3 ' + (ok ? '' : 'alert-danger');
                     f.innerHTML = (ok ? '<i class="bi bi-check-circle me-2"></i>' : '<i class="bi bi-x-circle me-2"></i>') + msg;
                 };
-
-                document.getElementById('input-tipo').addEventListener('change', function () {
-                    document.getElementById('input-doc').placeholder = this.value === 'CPF' ? '000.000.000-00' : '00.000.000/0000-00';
-                });
 
                 document.getElementById('form-cliente').addEventListener('submit', async function (e) {
                     e.preventDefault();

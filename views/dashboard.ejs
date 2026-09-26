@@ -22,7 +22,7 @@
                                 <div class="kpi-icon"><i class="bi bi-people"></i></div>
                                 <a class="kpi-trend up" href="/clientes"><i class="bi bi-arrow-up-right"></i> ver</a>
                             </div>
-                            <div class="kpi-value"><%= t.clientes %></div>
+                            <div class="kpi-value"><%= t.clientes.toLocaleString('pt-BR') %></div>
                             <div class="kpi-label">Clientes cadastrados</div>
                         </div>
                     </div>
@@ -32,39 +32,122 @@
                                 <div class="kpi-icon"><i class="bi bi-cart-check"></i></div>
                                 <a class="kpi-trend up" href="/compras"><i class="bi bi-arrow-up-right"></i> ver</a>
                             </div>
-                            <div class="kpi-value"><%= t.compras %></div>
-                            <div class="kpi-label">Compras registradas</div>
+                            <div class="kpi-value"><%= t.compras.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Vendas registradas</div>
                         </div>
                     </div>
                     <div class="col-6 col-lg">
                         <div class="card kpi kpi-tone-3">
                             <div class="kpi-top">
-                                <div class="kpi-icon"><i class="bi bi-stars"></i></div>
-                                <span class="kpi-trend up">R$ <%= t.valorPotencial.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }).replace('R$', '') %></span>
+                                <div class="kpi-icon"><i class="bi bi-cash-stack"></i></div>
+                                <span class="kpi-trend up">ticket <%= t.ticketMedioGlobal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %></span>
                             </div>
-                            <div class="kpi-value"><%= t.pontosDisponiveis.toLocaleString('pt-BR') %></div>
-                            <div class="kpi-label">Pontos disponíveis</div>
+                            <div class="kpi-value"><%= t.faturamento.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %></div>
+                            <div class="kpi-label">Faturamento total</div>
                         </div>
                     </div>
                     <div class="col-6 col-lg">
                         <div class="card kpi kpi-tone-4">
                             <div class="kpi-top">
-                                <div class="kpi-icon"><i class="bi bi-gift"></i></div>
-                                <a class="kpi-trend up" href="/resgates"><i class="bi bi-arrow-up-right"></i> ver</a>
+                                <div class="kpi-icon"><i class="bi bi-stars"></i></div>
+                                <a class="kpi-trend up" href="/historico"><i class="bi bi-arrow-up-right"></i> ver</a>
                             </div>
-                            <div class="kpi-value"><%= t.resgates %></div>
-                            <div class="kpi-label">Resgates realizados</div>
+                            <div class="kpi-value"><%= t.pontosAcumulados.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Pontos acumulados</div>
+                            <div class="kpi-sub">
+                                vendas <%= t.pontosGeradosCompras.toLocaleString('pt-BR') %> · impacto <%= t.pontosImpacto.toLocaleString('pt-BR') %>
+                            </div>
                         </div>
                     </div>
                     <div class="col-6 col-lg">
                         <div class="card kpi kpi-tone-5">
                             <div class="kpi-top">
-                                <div class="kpi-icon"><i class="bi bi-cash-stack"></i></div>
-                                <span class="kpi-trend up">custo</span>
+                                <div class="kpi-icon"><i class="bi bi-wallet2"></i></div>
+                                <span class="kpi-trend up">≈ <%= t.valorPotencial.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %></span>
                             </div>
-                            <div class="kpi-value"><%= t.valorResgates.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %></div>
+                            <div class="kpi-value"><%= t.pontosDisponiveis.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Pontos disponíveis</div>
+                            <div class="kpi-sub">
+                                <%= t.pontosResgatados.toLocaleString('pt-BR') %> resgatados · <%= t.pontosExpirados.toLocaleString('pt-BR') %> expirados
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg">
+                        <div class="card kpi kpi-tone-1">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-gift"></i></div>
+                                <a class="kpi-trend up" href="/resgates"><i class="bi bi-arrow-up-right"></i> ver</a>
+                            </div>
+                            <div class="kpi-value"><%= t.resgates.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Resgates realizados</div>
+                            <div class="kpi-sub"><%= t.pontosResgatados.toLocaleString('pt-BR') %> pts utilizados</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg">
+                        <div class="card kpi kpi-tone-2">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-cash-coin"></i></div>
+                                <span class="kpi-trend up">custo do programa</span>
+                            </div>
+                            <div class="kpi-value"><%= t.custoPrograma.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %></div>
                             <div class="kpi-label">Descontos concedidos</div>
                         </div>
+                    </div>
+                    <div class="col-6 col-lg">
+                        <div class="card kpi kpi-tone-3">
+                            <div class="kpi-top">
+                                <div class="kpi-icon"><i class="bi bi-box2-heart"></i></div>
+                                <a class="kpi-trend up" href="/impacto"><i class="bi bi-arrow-up-right"></i> ver</a>
+                            </div>
+                            <div class="kpi-value"><%= t.pontosImpacto.toLocaleString('pt-BR') %></div>
+                            <div class="kpi-label">Pontos de impacto</div>
+                            <div class="kpi-sub"><%= t.acoesImpacto.toLocaleString('pt-BR') %> ações na campanha</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LINHA 1b: Conference contábil dos pontos -->
+                <% var rec = dash.reconciliacao; %>
+                <div class="card section-card mb-4">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                        <h5 class="card-title mb-0"><i class="bi bi-calculator text-primary"></i>Conferência da carteira de pontos</h5>
+                        <span class="badge-level <%= rec.coerente ? 'gold' : 'bronze' %>">
+                            <%= rec.coerente ? 'Saldo conferido' : 'Divergência encontrada' %>
+                        </span>
+                    </div>
+                    <div class="stat-grid">
+                        <div class="stat-mini">
+                            <div class="label">Pontos gerados</div>
+                            <div class="value"><%= rec.pontosGerados.toLocaleString('pt-BR') %></div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="label">Bônus de nível válidos</div>
+                            <div class="value">+<%= rec.bonusValidos.toLocaleString('pt-BR') %></div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="label">Pontos resgatados</div>
+                            <div class="value text-danger">−<%= rec.pontosResgatados.toLocaleString('pt-BR') %></div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="label">Pontos expirados</div>
+                            <div class="value text-danger">−<%= rec.pontosExpirados.toLocaleString('pt-BR') %></div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="label">Ajustes</div>
+                            <div class="value"><%= rec.ajustes >= 0 ? '+' : '' %><%= rec.ajustes.toLocaleString('pt-BR') %></div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="label">Saldo disponível</div>
+                            <div class="value text-primary"><%= rec.disponivel.toLocaleString('pt-BR') %></div>
+                        </div>
+                    </div>
+                    <div class="alert-card mt-3 mb-0">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>Regra contábil:</strong> saldo = pontos gerados + bônus válidos − resgatados − expirados ± ajustes
+                        (= <%= rec.esperado.toLocaleString('pt-BR') %>). Soma dos saldos individuais dos clientes:
+                        <strong><%= rec.saldoPorCliente.toLocaleString('pt-BR') %></strong>.
+                        Diferença: <strong><%= rec.diferenca.toLocaleString('pt-BR') %></strong> pts.
+                        Nenhum saldo negativo.
                     </div>
                 </div>
 
@@ -189,7 +272,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="card-title"><i class="bi bi-people text-primary"></i>Evolução de clientes ativos</h5>
                                 <div class="d-flex gap-3 small">
-                                    <span><span class="legend-dot legend-compras"></span> compras</span>
+                                    <span><span class="legend-dot legend-compras"></span> vendas</span>
                                     <span><span class="legend-dot legend-ativos"></span> clientes ativos</span>
                                 </div>
                             </div>

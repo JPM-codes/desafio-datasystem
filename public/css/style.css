@@ -394,6 +394,13 @@ body {
     margin-top: 2px;
 }
 
+.kpi-sub {
+    font-size: .72rem;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.3;
+}
+
 /* ============================================================
    Tables
    ============================================================ */
@@ -729,6 +736,68 @@ body {
 .form-select:focus {
     border-color: var(--blue);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
+
+/* ============================================================
+   Busca de clientes (autocomplete)
+   ============================================================ */
+.cliente-sugestoes {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    max-height: 320px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, .16);
+}
+
+.cliente-sugestao {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #eef1f6;
+    text-align: left;
+    cursor: pointer;
+}
+
+.cliente-sugestao:last-child {
+    border-bottom: 0;
+}
+
+.cliente-sugestao:hover,
+.cliente-sugestao.is-ativo {
+    background: #f4f6fb;
+}
+
+.cliente-sugestao__texto {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.cliente-sugestao__nome {
+    font-size: .88rem;
+    font-weight: 650;
+    color: var(--text);
+}
+
+.cliente-sugestao__meta {
+    font-size: .74rem;
+    color: var(--muted);
+}
+
+.cliente-sugestoes__vazio {
+    padding: 12px;
+    font-size: .82rem;
+    color: var(--muted);
 }
 
 .btn {

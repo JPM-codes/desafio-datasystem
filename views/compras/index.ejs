@@ -6,10 +6,10 @@
                 <div class="page-head">
                     <div>
                         <div class="page-eyebrow">Fidelidade</div>
-                        <h1 class="page-title">Todas as compras</h1>
-                        <div class="page-subtitle">Acompanhe todas as compras registradas no programa de fidelidade</div>
+                        <h1 class="page-title">Todas as vendas</h1>
+                        <div class="page-subtitle">Acompanhe todas as vendas registradas no programa de fidelidade</div>
                     </div>
-                    <a href="/compras/add" class="btn btn-primary"><i class="bi bi-cart-plus me-2"></i>Nova compra</a>
+                    <a href="/compras/add" class="btn btn-primary"><i class="bi bi-cart-plus me-2"></i>Nova venda</a>
                 </div>
 
                 <div class="row g-3 mb-4">
@@ -19,7 +19,7 @@
                                 <div class="kpi-icon"><i class="bi bi-cart3"></i></div>
                             </div>
                             <div class="kpi-value"><%= resumo.total.toLocaleString('pt-BR') %></div>
-                            <div class="kpi-label">Compras registradas</div>
+                            <div class="kpi-label">Vendas registradas</div>
                         </div>
                     </div>
                     <div class="col-6 col-xl-3">
@@ -75,7 +75,7 @@
                     </div>
 
                     <div class="text-end mb-2">
-                        <span class="badge-level bronze" id="contagem"><%= compras.length %> compras</span>
+                        <span class="badge-level bronze" id="contagem"><%= compras.length %> vendas</span>
                     </div>
 
                     <div class="table-responsive">
@@ -141,7 +141,7 @@
                         if (ok) visiveis++;
                     });
 
-                    contagem.textContent = visiveis + ' de ' + totalCompras + ' compras';
+                    contagem.textContent = visiveis + ' de ' + totalCompras + ' vendas';
                 }
 
                 function limpar() {

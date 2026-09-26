@@ -29,6 +29,14 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/impacto", impactoRoutes);
 app.use("/", dashboardWebRoutes);
 
-app.listen(3000, () => {
-    console.log("Server is running on port 3000");
-});
+const PORTA = process.env.PORT || 3000;
+
+// Exporta o app para permitir testes de integração (scripts/testes-e2e.js).
+// O servidor só sobe quando este arquivo é executado diretamente.
+if (require.main === module) {
+    app.listen(PORTA, () => {
+        console.log("Server is running on port " + PORTA);
+    });
+}
+
+module.exports = app;

@@ -26,6 +26,8 @@ function enriquecerAcao(base, acao) {
         status_validacao_rotulo: impacto.statusValidacao(acao.status_validacao).rotulo,
         status_destinacao_rotulo: impacto.statusDestinacao(acao.status_destinacao).rotulo,
         destino_rotulo: impacto.rotuloDestino(acao.destino),
+        regraBonus: impacto.regraTextoDe(acao.tipo_acao),
+        pontuacao_processada: store.acaoJaPontuada(base, acao),
     };
 }
 
@@ -47,9 +49,7 @@ function findCliente(base, body) {
 }
 
 function movimentoDeAcao(base, acao) {
-    return base.pontos.find(
-        (m) => m.origem_id === acao.id && (m.origem === "BONUS_DOACAO" || m.origem === "BONUS_CAIXA")
-    );
+    return store.movimentoDeBonusDaAcao(base, acao.id);
 }
 
 // ============================================================
@@ -109,6 +109,21 @@ router.get("/relatorio", (req, res) => {
     );
 });
 
+/** GET /api/impacto/regras — parâmetros configuráveis dos bônus da campanha. */
+router.get("/regras", (req, res) => {
+    return res.json({
+        bonus_doacao_calcado: impacto.CONFIG.bonusDoacao,
+        bonus_devolucao_caixa: impacto.CONFIG.bonusCaixa,
+        modo_bonus_calcado: impacto.CONFIG.modoBonusCalcado,
+        modo_bonus_caixa: impacto.CONFIG.modoBonusCaixa,
+        limite_doacao_mes: impacto.CONFIG.limiteDoacaoMes,
+        limite_caixa_mes: impacto.CONFIG.limiteCaixaMes,
+        modos: impacto.MODOS,
+        textos: impacto.config().textos,
+        idempotencia: "Uma ação aprovada concede pontos uma única vez (marcador pontuacao_processada + vínculo origem_id).",
+    });
+});
+
 // ============================================================
 // Detalhe
 // ============================================================
@@ -163,13 +178,15 @@ router.post("/", (req, res) => {
         quantidade,
         data_recebimento: body.data_recebimento ? new Date(body.data_recebimento).toISOString() : agora,
         ponto_coleta: pontoColeta,
-        pontos_bonus: impacto.bonusDe(tipo),
+        pontos_bonus: impacto.bonusDe(tipo, quantidade),
         status_validacao: "RECEBIDO",
         status_destinacao: "PENDENTE",
         destino: null,
         data_destinacao: null,
         observacao: body.observacao ? String(body.observacao).trim() : "",
         responsavel_validacao: null,
+        pontuacao_processada: false,
+        pontuacao_processada_at: null,
         created_at: agora,
         updated_at: agora,
     };
@@ -182,6 +199,7 @@ router.post("/", (req, res) => {
         ...enriquecerAcao(base, acao),
         saldo: store.pontosDisponiveisCliente(base.pontos, cliente.id),
         limite: { utilizado: novoUso, limite },
+        regra: impacto.regraTextoDe(tipo),
         aviso:
             limite !== null && novoUso === limite
                 ? "Limite mensal configurado atingido: os pontos só são concedidos após aprovação."
@@ -222,56 +240,50 @@ router.post("/:id/aprovar", (req, res) => {
     const acao = findAcao(base, req.params.id);
     if (!acao) return res.status(404).json({ message: "Ação de impacto não encontrada." });
 
-    // Nunca conceder pontos duas vezes para a mesma ação
-    const existente = movimentoDeAcao(base, acao);
-    if (existente) {
-        return res.status(409).json({
-            message: "Pontos já concedidos para esta ação.",
-            movimento: existente,
-        });
-    }
-
-    if (acao.status_validacao === "APROVADO") {
-        return res.status(409).json({ message: "Ação já aprovada. Pontos não podem ser duplicados." });
-    }
     if (acao.status_validacao === "RECUSADO") {
         return res.status(409).json({ message: "Ação recusada não pode ser aprovada." });
     }
 
-    const agora = store.agoraIso();
-    const bonus = Number(acao.pontos_bonus) || impacto.bonusDe(acao.tipo_acao);
-    const expiracao = regras.calcularDataExpiracao(agora, regras.REGRAS.validadeMeses);
+    // PROTEÇÃO DE IDEMPOTÊNCIA: uma ação aprovada gera pontos UMA ÚNICA VEZ.
+    // A verificação cobre o marcador pontuacao_processada e o vínculo
+    // origem_id da movimentação. Mudar o status depois não duplica pontos.
+    const jaPontuada = store.acaoJaPontuada(base, acao);
+    if (jaPontuada) {
+        return res.status(409).json({
+            message: "Pontos já concedidos para esta ação. Nenhum ponto adicional será creditado.",
+            status_validacao: acao.status_validacao,
+            pontuacao_processada: true,
+            movimento: store.movimentoDeBonusDaAcao(base, acao.id) || null,
+        });
+    }
 
-    const movimento = {
-        id: store.proximoId(base.pontos),
-        cliente_id: acao.cliente_id,
-        tipo: "acumulo",
-        pontos: bonus,
-        data_movimentacao: agora,
-        data_expiracao: expiracao ? expiracao.toISOString() : null,
-        compras_id: 0,
-        resgates_id: 0,
-        origem: impacto.origemDe(acao.tipo_acao),
-        origem_id: acao.id,
-        create_at: agora,
-    };
+    const agora = store.agoraIso();
+    const bonus = impacto.bonusDe(acao.tipo_acao, acao.quantidade);
+    const resultado = store.concederBonusImpacto(base, acao, bonus, new Date(agora));
+
+    if (!resultado.concedido) {
+        return res.status(409).json({
+            message: "Pontos já concedidos para esta ação.",
+            movimento: resultado.movimento || null,
+        });
+    }
 
     acao.status_validacao = "APROVADO";
     acao.responsavel_validacao = req.body && req.body.responsavel_validacao
         ? String(req.body.responsavel_validacao)
         : (acao.responsavel_validacao || "Sistema");
-    acao.pontos_bonus = bonus;
+    acao.pontos_bonus = resultado.movimento.pontos;
     acao.updated_at = agora;
 
-    base.pontos.push(movimento);
     store.salvar("pontos", base.pontos);
     store.salvar("acoes_impacto", base.acoes_impacto);
 
     return res.status(200).json({
         ...enriquecerAcao(base, acao),
-        movimento,
-        novoSaldo: store.pontosDisponiveisCliente(base.pontos, acao.cliente_id),
-        mensagem: `${bonus} pontos de bônus concedidos (${impacto.rotuloOrigem(movimento.origem)}).`,
+        movimento: resultado.movimento,
+        regra: impacto.regraTextoDe(acao.tipo_acao),
+        novoSaldo: store.pontosDisponiveisCliente(base.pontos, acao.cliente_id, new Date(agora)),
+        mensagem: `${resultado.movimento.pontos} pontos de bônus concedidos (${impacto.rotuloOrigem(resultado.movimento.origem)}).`,
     });
 });
 

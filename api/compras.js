@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const store = require("../services/store");
 const regras = require("../services/regras");
+const indicadores = require("../services/indicadores");
 
 router.get("/", (req, res) => {
     const base = store.carregar();
@@ -10,10 +11,19 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
     const body = req.body || {};
-    const valor = Math.round((Number(body.valor) || 0) * 100) / 100;
+
+    // O valor total da venda é SEMPRE derivado: quantidade × valor unitário.
+    // O cliente pode enviar apenas "valor_unitario" (tela de registro) ou
+    // apenas "valor" (compatibilidade com o total já informado).
+    const quantidade = Math.max(1, Math.round(Number(body.quantidade) || 1));
+    const temUnitario = body.valor_unitario !== undefined && body.valor_unitario !== null;
+    const unitarioInformado = Math.round((Number(temUnitario ? body.valor_unitario : body.valor) || 0) * 100) / 100;
+    const valor = temUnitario
+        ? Math.round(unitarioInformado * quantidade * 100) / 100
+        : Math.round((Number(body.valor) || 0) * 100) / 100;
 
     if (valor <= 0) {
-        return res.status(422).json({ message: "Informe o valor da compra." });
+        return res.status(422).json({ message: "Informe o valor unitário do produto." });
     }
 
     const base = store.carregar();
@@ -32,13 +42,18 @@ router.post("/", (req, res) => {
         });
     }
 
-    const pontosAcumulados = base.pontos
-        .filter((m) => m.cliente_id === cliente.id && (m.tipo === "acumulo" || m.tipo === "bonus"))
-        .reduce((s, m) => s + (m.pontos || 0), 0);
-    const nivel = regras.calcularNivel(pontosAcumulados);
+    // Nível SEMPRE calculado sobre os pontos acumulados históricos
+    // (fonte única: regras.calcularNivel). O bônus incide apenas sobre os
+    // pontos base desta compra — nunca sobre pontos já bonificados e nunca
+    // sobre resgates ou bônus da campanha de impacto.
+    const ref = new Date();
+    const totais = indicadores.totaisDeMovimentos(
+        store.movimentacoesDoCliente(base.pontos, cliente.id),
+        ref
+    );
+    const nivel = regras.calcularNivel(totais.acumulados);
     const pts = regras.calcularPontos(valor, nivel);
 
-    const quantidade = Math.max(1, Math.round(Number(body.quantidade) || 1));
     const dataCompra = body.data_compra ? new Date(body.data_compra).toISOString() : store.agoraIso();
     const compraId = store.proximoId(base.compras);
 
@@ -52,6 +67,8 @@ router.post("/", (req, res) => {
         pontos_base: pts.base,
         cliente_pontos_bonus: pts.bonus,
         pontos_total: pts.total,
+        nivel_aplicado: nivel.nome,
+        bonus_percentual: pts.bonusPercentual,
         data_compra: dataCompra,
         create_at: store.agoraIso(),
     };
@@ -66,6 +83,7 @@ router.post("/", (req, res) => {
         data_expiracao: expiracao ? expiracao.toISOString() : null,
         compras_id: compraId,
         resgates_id: 0,
+        origem: "COMPRA",
         create_at: store.agoraIso(),
     };
 
@@ -74,12 +92,14 @@ router.post("/", (req, res) => {
     store.salvar("compras", base.compras);
     store.salvar("pontos", base.pontos);
 
-    const novoSaldo = store.pontosDisponiveisCliente(base.pontos, cliente.id);
+    const novoSaldo = store.pontosDisponiveisCliente(base.pontos, cliente.id, ref);
     return res.status(201).json({
         compra,
         movimento,
         nivel: nivel.nome,
+        nivelBase: "PONTOS_ACUMULADOS",
         bonusPercentual: nivel.bonus,
+        multiplicador: pts.multiplicador,
         novoSaldo,
         mensagem: `${pts.total} pontos gerados para ${cliente.nome}.`,
     });

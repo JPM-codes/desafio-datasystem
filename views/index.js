@@ -202,7 +202,7 @@ router.get("/compras", (req, res) => {
     const pontosGerados = base.compras.reduce((soma, c) => soma + c.pontos_total, 0);
 
     res.render("compras/index", {
-        titulo: "Compras",
+        titulo: "Vendas",
         rota: "/compras",
         compras: lista,
         clientes: store.enriquecerClientes(base, DATA_REF()),
@@ -218,9 +218,16 @@ router.get("/compras", (req, res) => {
 router.get("/compras/add", (req, res) => {
     const base = store.carregar();
     res.render("compras/registrar_compras", {
-        titulo: "Registrar Compra",
+        titulo: "Registrar Venda",
         rota: "/compras",
-        clientes: store.enriquecerClientes(base, DATA_REF()),
+        buscaClientes: store.enriquecerClientes(base, DATA_REF()).map((cliente) => ({
+            id: cliente.id,
+            nome: cliente.nome,
+            documento: cliente.documento || "",
+            tipo_documento: cliente.tipo_documento || "CPF",
+            pontos: cliente.pontosDisponiveis,
+            nivel: cliente.nivel.nome,
+        })),
     });
 });
 

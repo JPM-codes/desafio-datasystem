@@ -4054,35 +4054,5 @@
         "pontos_total": 1739,
         "data_compra": "2026-09-19T12:15:00.000Z",
         "create_at": "2026-09-19T12:15:00.000Z"
-    },
-    {
-        "id": 313,
-        "cliente_id": 31,
-        "produto": "Tênis Corrida",
-        "quantidade": 1,
-        "valor_unitario": 150,
-        "valor_total": 150,
-        "pontos_base": 150,
-        "cliente_pontos_bonus": 0,
-        "pontos_total": 150,
-        "nivel_aplicado": "Bronze",
-        "bonus_percentual": 0,
-        "data_compra": "2026-09-25T00:00:00.000Z",
-        "create_at": "2026-09-25T23:49:03.500Z"
-    },
-    {
-        "id": 314,
-        "cliente_id": 31,
-        "produto": "Venda livre",
-        "quantidade": 3,
-        "valor_unitario": 83.33,
-        "valor_total": 250,
-        "pontos_base": 250,
-        "cliente_pontos_bonus": 0,
-        "pontos_total": 250,
-        "nivel_aplicado": "Bronze",
-        "bonus_percentual": 0,
-        "data_compra": "2026-09-25T00:00:00.000Z",
-        "create_at": "2026-09-25T23:49:54.142Z"
     }
 ]
