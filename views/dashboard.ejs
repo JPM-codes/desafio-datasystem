@@ -226,23 +226,12 @@
                                     <span><span class="legend-dot legend-resgatados"></span> resgatados</span>
                                 </div>
                             </div>
-                            <% var maxGer = Math.max.apply(null, dash.evolucaoPontos.map(function (m) { return m.gerados; })) || 1; %>
-                                <% var maxRes = Math.max.apply(null, dash.evolucaoPontos.map(function (m) { return m.resgatados; })) || 1; %>
-                                    <% var hg = function (v) { return Math.max(6, Math.round(v / maxGer * 100)); }; %>
-                                        <% var hr = function (v) { return Math.max(4, Math.round(v / maxRes * 100)); }; %>
-                                            <div class="chart" style="height:250px">
-                                                <div class="chart-bars">
-                                                    <% dash.evolucaoPontos.forEach(function (mes) { %>
-                                                        <div class="col-tipo">
-                                                            <div class="bar-group">
-                                                                <div class="chart-bar series-gerados" style="height:<%= hg(mes.gerados) %>%"></div>
-                                                                <div class="chart-bar series-resgatados" style="height:<%= hr(mes.resgatados) %>%"></div>
-                                                            </div>
-                                                            <div class="small text-muted mt-2"><%= mes.label %></div>
-                                                        </div>
-                                                        <% }); %>
-                                                </div>
-                                            </div>
+                            <div class="chart" style="height:250px">
+                                <canvas id="chart-evolucao-pontos" role="img"
+                                    aria-label="Linha do tempo dos pontos gerados e resgatados por mês, últimos <%= dash.evolucaoPontos.length %> meses."></canvas>
+                                <p class="chart-fallback" hidden>O gráfico não carregou. <a
+                                        href="/api/dashboard" target="_blank">Ver os dados em JSON</a>.</p>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -253,7 +242,7 @@
                             <div class="stat-grid my-4">
                                 <div class="stat-mini">
                                     <div class="label">Conversão</div>
-                                    <div class="value">R$ <%= regrasCfg.conversao.valorReal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %> / <%= regrasCfg.conversao.pontos %> pts</div>
+                                    <div class="value"><%= regrasCfg.conversao.pontos %> pts / <%= regrasCfg.conversao.valorReal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %></div>
                                 </div>
                                 <div class="stat-mini">
                                     <div class="label">Validade</div>
@@ -276,23 +265,12 @@
                                     <span><span class="legend-dot legend-ativos"></span> clientes ativos</span>
                                 </div>
                             </div>
-                            <% var maxCompras = Math.max.apply(null, dash.evolucaoClientes.map(function (m) { return m.compras; })) || 1; %>
-                                <% var maxAtivos = Math.max.apply(null, dash.evolucaoClientes.map(function (m) { return m.ativos; })) || 1; %>
-                                    <% var hc = function (v) { return Math.max(6, Math.round(v / maxCompras * 100)); }; %>
-                                        <% var ha = function (v) { return Math.max(4, Math.round(v / maxAtivos * 100)); }; %>
-                                            <div class="chart" style="height:230px">
-                                                <div class="chart-bars">
-                                                    <% dash.evolucaoClientes.forEach(function (mes) { %>
-                                                        <div class="col-tipo">
-                                                            <div class="bar-group">
-                                                                <div class="chart-bar series-compras" style="height:<%= hc(mes.compras) %>%"></div>
-                                                                <div class="chart-bar series-ativos" style="height:<%= ha(mes.ativos) %>%"></div>
-                                                            </div>
-                                                            <div class="small text-muted mt-2"><%= mes.label %></div>
-                                                        </div>
-                                                        <% }); %>
-                                                </div>
-                                            </div>
+                            <div class="chart" style="height:230px">
+                                <canvas id="chart-evolucao-clientes" role="img"
+                                    aria-label="Linha do tempo das vendas e dos clientes ativos por mês, últimos <%= dash.evolucaoClientes.length %> meses."></canvas>
+                                <p class="chart-fallback" hidden>O gráfico não carregou. <a
+                                        href="/api/dashboard" target="_blank">Ver os dados em JSON</a>.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -392,5 +370,107 @@
                     </div>
                 </div>
             </section>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+            <script>
+                (function () {
+                    if (typeof Chart === 'undefined') {
+                        document.querySelectorAll('.chart-fallback').forEach(function (aviso) {
+                            aviso.hidden = false;
+                        });
+                        return;
+                    }
+
+                    var semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    var numero = new Intl.NumberFormat('pt-BR');
+
+                    Chart.defaults.font.family = "'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif";
+                    Chart.defaults.font.size = 11;
+                    Chart.defaults.color = '#64748b';
+
+                    function serie(rotulo, dados, cor, preenchimento) {
+                        return {
+                            label: rotulo,
+                            data: dados,
+                            borderColor: cor,
+                            backgroundColor: preenchimento,
+                            borderWidth: 2,
+                            tension: .35,
+                            fill: true,
+                            pointRadius: 3,
+                            pointHoverRadius: 5,
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: cor,
+                            pointBorderWidth: 2,
+                            pointHoverBorderWidth: 2
+                        };
+                    }
+
+                    function opcoes() {
+                        return {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            animation: semMovimento ? false : { duration: 500 },
+                            interaction: { mode: 'index', intersect: false },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#0c1728',
+                                    padding: 10,
+                                    cornerRadius: 8,
+                                    boxWidth: 8,
+                                    boxHeight: 8,
+                                    usePointStyle: true,
+                                    callbacks: {
+                                        label: function (ctx) {
+                                            return ' ' + ctx.dataset.label + ': ' + numero.format(ctx.parsed.y);
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false },
+                                    border: { color: '#e2e8f0' },
+                                    ticks: { padding: 6 }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    border: { display: false },
+                                    grid: { color: '#edf1f6' },
+                                    ticks: { padding: 8, maxTicksLimit: 5 }
+                                }
+                            }
+                        };
+                    }
+
+                    function desenhar(id, rotulos, series) {
+                        var alvo = document.getElementById(id);
+                        if (!alvo) return;
+                        new Chart(alvo, {
+                            type: 'line',
+                            data: { labels: rotulos, datasets: series },
+                            options: opcoes()
+                        });
+                    }
+
+                    var evolucaoPontos = <%- JSON.stringify(dash.evolucaoPontos) %>;
+                    var evolucaoClientes = <%- JSON.stringify(dash.evolucaoClientes) %>;
+
+                    desenhar('chart-evolucao-pontos',
+                        evolucaoPontos.map(function (m) { return m.label; }),
+                        [
+                            serie('Gerados', evolucaoPontos.map(function (m) { return m.gerados; }), '#2563eb', 'rgba(37, 99, 235, .10)'),
+                            serie('Resgatados', evolucaoPontos.map(function (m) { return m.resgatados; }), '#e11d48', 'rgba(225, 29, 72, .10)')
+                        ]);
+
+                    desenhar('chart-evolucao-clientes',
+                        evolucaoClientes.map(function (m) { return m.label; }),
+                        [
+                            serie('Vendas', evolucaoClientes.map(function (m) { return m.compras; }), '#2563eb', 'rgba(37, 99, 235, .10)'),
+                            serie('Clientes ativos', evolucaoClientes.map(function (m) { return m.ativos; }), '#059669', 'rgba(5, 150, 105, .10)')
+                        ]);
+                })();
+            </script>
 
             <%- include('includes/footer') %>

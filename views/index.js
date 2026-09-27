@@ -274,7 +274,22 @@ router.get("/resgates/add", (req, res) => {
     res.render("resgate/registrar_resgate", {
         titulo: "Registrar Resgate",
         rota: "/resgates",
-        clientes: store.enriquecerClientes(base, DATA_REF()),
+        buscaClientes: store.enriquecerClientes(base, DATA_REF()).map((cliente) => ({
+            id: cliente.id,
+            nome: cliente.nome,
+            documento: cliente.documento || "",
+            tipo_documento: cliente.tipo_documento || "CPF",
+            pontos: cliente.pontosDisponiveis,
+            nivel: cliente.nivel.nome,
+            status: cliente.status.nome,
+            statusClasse: cliente.status.classe,
+            email: cliente.email || "",
+            cidade: cliente.cidade || "",
+            totalCompras: cliente.totalCompras,
+            pontosAcumulados: cliente.pontosAcumulados,
+            pontosResgatados: cliente.pontosResgatados,
+            pontosExpirados: cliente.pontosExpirados,
+        })),
     });
 });
 
@@ -332,9 +347,10 @@ router.get("/historico", (req, res) => {
             expiracao: null,
         }));
 
+    // Sem limite artificial: os cards e os filtros do topo precisam operar sobre
+    // todas as movimentações, caso contrario resgates antigos somem da lista.
     const movimentacoes = [...acumulos, ...resgatesMov]
         .sort((a, b) => new Date(b.data) - new Date(a.data))
-        .slice(0, 100)
         .map((m) => ({
             ...m,
             data: regras.formatarData(m.data),
@@ -380,14 +396,41 @@ router.get("/inteligencia", (req, res) => {
 // ============================================================
 // Impacto (campanha de logística reversa + ação social)
 // ============================================================
+/**
+ * Os filtros de /impacto/acoes aceitam mais de um valor, separados por vírgula.
+ * Ex.: status_destinacao=DESTINADO,ENTREGUE (o card "Itens destinados" soma
+ * os dois status). Com um valor só o comportamento é o de sempre.
+ */
+function valoresDoFiltro(valor) {
+    return String(valor || "")
+        .split(",")
+        .map((v) => v.trim())
+        .filter(Boolean);
+}
+
+const ROTULOS_TIPO_ACAO = {
+    DOACAO_CALCADO: "Doação de calçado",
+    DEVOLUCAO_CAIXA: "Devolução de caixa",
+};
+
+/** Rótulo legível de um filtro combinado, ou null se houver um único valor. */
+function rotuloFiltroCombinado(valor, rotulos) {
+    const partes = valoresDoFiltro(valor);
+    if (partes.length < 2) return null;
+    return partes.map((p) => rotulos[p] || p).join(" + ");
+}
+
 function acoesParaView(base, q) {
     const nomes = baseNomes();
     let lista = [...(base.acoes_impacto || [])];
     const filtro = q || {};
 
-    if (filtro.tipo_acao) lista = lista.filter((a) => a.tipo_acao === filtro.tipo_acao);
-    if (filtro.status_validacao) lista = lista.filter((a) => a.status_validacao === filtro.status_validacao);
-    if (filtro.status_destinacao) lista = lista.filter((a) => a.status_destinacao === filtro.status_destinacao);
+    const tipos = valoresDoFiltro(filtro.tipo_acao);
+    if (tipos.length) lista = lista.filter((a) => tipos.includes(a.tipo_acao));
+    const validacoes = valoresDoFiltro(filtro.status_validacao);
+    if (validacoes.length) lista = lista.filter((a) => validacoes.includes(a.status_validacao));
+    const destinacoes = valoresDoFiltro(filtro.status_destinacao);
+    if (destinacoes.length) lista = lista.filter((a) => destinacoes.includes(a.status_destinacao));
     if (filtro.cliente_id) lista = lista.filter((a) => a.cliente_id === parseInt(filtro.cliente_id));
     if (filtro.ponto_coleta) {
         const termo = String(filtro.ponto_coleta).trim().toLowerCase();
@@ -414,7 +457,9 @@ function acoesParaView(base, q) {
                 ponto_coleta: a.ponto_coleta,
                 data_recebimento: a.data_recebimento,
                 data: regras.formatarData(a.data_recebimento),
-                data_destinacao: regras.formatarData(a.data_destinacao),
+                // Sem data de destinacao o valor precisa ser null (e nao "-", que e
+                // truthy): a view so exibe a segunda linha quando ha data real.
+                data_destinacao: a.data_destinacao ? regras.formatarData(a.data_destinacao) : null,
                 pontos_bonus: a.pontos_bonus,
                 status_validacao: a.status_validacao,
                 stv_rotulo: sv.rotulo,
@@ -455,11 +500,26 @@ router.get("/impacto", (req, res) => {
 router.get("/impacto/acoes", (req, res) => {
     const base = store.carregar();
     const lista = acoesParaView(base, req.query);
+    const porNome = (listaStatus) =>
+        listaStatus.reduce((mapa, s) => Object.assign(mapa, { [s.nome]: s.rotulo }), {});
     res.render("impacto/acoes", {
         titulo: "Acompanhamento de Impacto",
         rota: "/impacto",
         acoes: lista,
         filtrosAtivos: req.query,
+        // Um select de valor único não consegue marcar "DESTINADO,ENTREGUE".
+        // Esses rótulos viram uma opção sintética para o filtro não aparecer como "Todos".
+        filtroCombinado: {
+            tipo_acao: rotuloFiltroCombinado(req.query.tipo_acao, ROTULOS_TIPO_ACAO),
+            status_validacao: rotuloFiltroCombinado(
+                req.query.status_validacao,
+                porNome(impacto.VALIDACAO_STATUSES)
+            ),
+            status_destinacao: rotuloFiltroCombinado(
+                req.query.status_destinacao,
+                porNome(impacto.DESTINACAO_STATUSES)
+            ),
+        },
         pontosColeta: pontosDeColeta(base),
     });
 });

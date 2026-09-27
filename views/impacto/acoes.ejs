@@ -29,6 +29,9 @@
                             <label class="form-label small text-muted">Tipo</label>
                             <select name="tipo_acao" class="form-select">
                                 <option value="">Todos</option>
+                                <% if (filtroCombinado.tipo_acao) { %>
+                                    <option value="<%= filtrosAtivos.tipo_acao %>" selected><%= filtroCombinado.tipo_acao %></option>
+                                    <% } %>
                                 <option value="DOACAO_CALCADO" <%= filtrosAtivos.tipo_acao === 'DOACAO_CALCADO' ? 'selected' : '' %>>Doação de calçado</option>
                                 <option value="DEVOLUCAO_CAIXA" <%= filtrosAtivos.tipo_acao === 'DEVOLUCAO_CAIXA' ? 'selected' : '' %>>Devolução de caixa</option>
                             </select>
@@ -37,6 +40,9 @@
                             <label class="form-label small text-muted">Status da validação</label>
                             <select name="status_validacao" class="form-select">
                                 <option value="">Todos</option>
+                                <% if (filtroCombinado.status_validacao) { %>
+                                    <option value="<%= filtrosAtivos.status_validacao %>" selected><%= filtroCombinado.status_validacao %></option>
+                                    <% } %>
                                 <% impactoStatuses.forEach(function (st) { %>
                                     <option value="<%= st.nome %>" <%= filtrosAtivos.status_validacao === st.nome ? 'selected' : '' %>><%= st.rotulo %></option>
                                     <% }); %>
@@ -46,6 +52,9 @@
                             <label class="form-label small text-muted">Status da destinação</label>
                             <select name="status_destinacao" class="form-select">
                                 <option value="">Todos</option>
+                                <% if (filtroCombinado.status_destinacao) { %>
+                                    <option value="<%= filtrosAtivos.status_destinacao %>" selected><%= filtroCombinado.status_destinacao %></option>
+                                    <% } %>
                                 <% destinacaoStatuses.forEach(function (st) { %>
                                     <option value="<%= st.nome %>" <%= filtrosAtivos.status_destinacao === st.nome ? 'selected' : '' %>><%= st.rotulo %></option>
                                     <% }); %>
@@ -104,7 +113,7 @@
                                                 <td><span class="badge-soft"><i class="<%= a.icone %> me-1"></i><%= a.tipo_rotulo %></span></td>
                                                 <td class="text-end fw-bold"><%= a.quantidade %></td>
                                                 <td class="small"><%= a.ponto_coleta %></td>
-                                                <td class="small"><%= a.data %><%= a.data_destinacao ? '<br><span class="text-muted">dest. ' + a.data_destinacao + '</span>' : '' %></td>
+                                                <td class="small"><%= a.data %><% if (a.data_destinacao) { %><br><span class="text-muted">dest. <%= a.data_destinacao %></span><% } %></td>
                                                 <td><span class="st-badge <%= a.stv_classe %>"><%= a.stv_rotulo %></span></td>
                                                 <td>
                                                     <% if (a.destino_rotulo) { %>

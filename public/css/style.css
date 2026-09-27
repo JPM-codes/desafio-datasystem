@@ -348,6 +348,49 @@ body {
     box-shadow: var(--shadow-lg);
 }
 
+/* card inteiro clicável (dashboard de impacto).
+   A classe fica no <a> — é ele o elemento focável, então :focus-visible
+   precisa ser declarado aqui para poder estilizar o .kpi que é filho. */
+a.kpi-link {
+    cursor: pointer;
+    border-radius: var(--radius);
+}
+
+a.kpi-link:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+}
+
+a.kpi-link:focus-visible .kpi {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.kpi-seta {
+    color: var(--muted);
+    opacity: 0;
+    transition: opacity .18s ease, transform .18s ease;
+}
+
+a.kpi-link:hover .kpi-seta,
+a.kpi-link:focus-visible .kpi-seta {
+    opacity: 1;
+    transform: translateX(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kpi,
+    .kpi-seta {
+        transition: none;
+    }
+
+    .kpi:hover,
+    a.kpi-link:hover .kpi,
+    a.kpi-link:focus-visible .kpi {
+        transform: none;
+    }
+}
+
 .kpi-top {
     display: flex;
     justify-content: space-between;
@@ -562,11 +605,16 @@ body {
 /* ============================================================
    Gráfico com séries em grupo / legendas
    ============================================================ */
+/* .bar-group precisa de largura definida: ele é item de um flex column
+   (align-items:center), então sua largura é fit-content e percentuais
+   resolviam para 0, colapsando a largura das barras para 0px. */
 .bar-group {
     display: flex;
     align-items: flex-end;
+    justify-content: center;
     gap: 4px;
     height: 100%;
+    width: 100%;
 }
 
 .chart-bar.series-gerados,
@@ -800,6 +848,40 @@ body {
     color: var(--muted);
 }
 
+/* ============================================================
+   Resumo do cliente
+   ============================================================ */
+.resumo-dados {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 16px;
+    padding: 12px 14px;
+    background: var(--grad-soft);
+    border: 1px solid #dfe8f7;
+    border-radius: 12px;
+}
+
+.resumo-dados__item {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.resumo-dados__label {
+    font-size: .68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--muted);
+}
+
+.resumo-dados__valor {
+    font-size: .84rem;
+    font-weight: 600;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+}
+
 .btn {
     border-radius: var(--radius-sm);
     font-weight: 650;
@@ -903,6 +985,23 @@ body {
 
 .chart {
     height: 270px;
+    position: relative;
+}
+
+/* exibido só se o Chart.js não carregar (CDN bloqueada/offline) */
+.chart-fallback {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    gap: 4px;
+    text-align: center;
+    color: var(--muted);
+    font-size: .82rem;
+}
+
+.chart-fallback[hidden] {
+    display: none;
 }
 
 .chart-bars {
@@ -916,7 +1015,10 @@ body {
 }
 
 .chart-bars .col-tipo {
-    flex: 1;
+    flex: 1 1 0;
+    /* sem min-width:0 o item flex não encolhe abaixo do min-content
+       (3 séries x 46px) e o gráfico vaza na horizontal. */
+    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -925,7 +1027,9 @@ body {
 }
 
 .chart-bar {
-    width: min(46px, 70%);
+    flex: 0 1 46px;
+    width: 46px;
+    min-width: 8px;
     border-radius: 8px 8px 4px 4px;
     background: linear-gradient(180deg, #60a5fa, #2563eb);
     transition: filter .15s ease, transform .15s ease;
@@ -996,6 +1100,24 @@ body {
 .text-muted { color: var(--muted) !important; }
 .cursor-pointer { cursor: pointer; }
 .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.stat-mini {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 12px 14px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+.stat-mini .label {
+    font-size: .68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--muted);
+}
+.stat-mini .value { font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+.stat-mini__acao { align-self: flex-start; font-size: .72rem; padding: 0; text-decoration: none; }
 .shadow-lg { box-shadow: var(--shadow-lg) !important; }
 
 /* ============================================================
@@ -1191,13 +1313,12 @@ body {
 .rank-pos.top-2 { color: #64748b; }
 .rank-pos.top-3 { color: #d97706; }
 
-/* evolução (barras agrupadas) */
-.col-tipo { flex: 1 1 0; display: flex; flex-direction: column; align-items: center; }
-.bar-group { display: flex; align-items: flex-end; gap: 4px; height: 100%; }
+/* evolução da campanha de impacto (barras agrupadas)
+   .col-tipo, .bar-group e .chart-bar são definidos nos blocos "Chart" e
+   "Gráfico com séries em grupo" — não redeclarar aqui. */
 .series-calcados { background: linear-gradient(180deg, #fbbf24, #d97706); }
 .series-caixas { background: linear-gradient(180deg, #94a3b8, #64748b); }
 .series-participantes { background: linear-gradient(180deg, #60a5fa, var(--blue)); }
-.legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; }
 .legend-calcados { background: #fbbf24; }
 .legend-caixas { background: #94a3b8; }
 .legend-participantes { background: #60a5fa; }

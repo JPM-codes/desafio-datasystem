@@ -503,10 +503,14 @@ function main() {
             });
 
             const { resgates: resgClientes, movimentos: movResgates } = gerarResgates(cliente.id, comprasCliente, perfil);
-            resgClientes.forEach((r) => {
-                resgates.push({ ...r, id: idResgate++ });
+            // O id global do resgate precisa valer tambem no movimento: o historico
+            // exibe "Resgate #<id>", que e o mesmo id exibido na tela /resgates.
+            const idsResgates = resgClientes.map((r) => {
+                const id = idResgate++;
+                resgates.push({ ...r, id });
+                return id;
             });
-            movResgates.forEach((m) => {
+            movResgates.forEach((m, i) => {
                 const expRef = pontos[pontos.length - 1];
                 pontos.push({
                     id: idPonto++,
@@ -516,7 +520,7 @@ function main() {
                     data_movimentacao: m.data_movimentacao,
                     data_expiracao: null,
                     compras_id: 0,
-                    resgates_id: m.resgates_id,
+                    resgates_id: idsResgates[i],
                     origem: "RESGATE",
                     create_at: m.create_at,
                 });

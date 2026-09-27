@@ -1024,5 +1024,44 @@
         "tags": [],
         "create_at": "2026-09-25T23:44:50.570Z",
         "update_at": "2026-09-25T23:44:50.570Z"
+    },
+    {
+        "id": 32,
+        "nome": "Ivy Freitas",
+        "tipo_documento": "CPF",
+        "documento": "727.940.030-20",
+        "email": "ivyfreitas@gmail.com",
+        "whatsapp": "(10) 99999-9999",
+        "data_nascimento": null,
+        "numero_calcado": 43,
+        "cidade": "Araras",
+        "bairro": "centro",
+        "consentimento_comunicacao": true,
+        "preferencias": {
+            "categorias": [
+                "Tênis",
+                "Social",
+                "Clássico"
+            ],
+            "estilos": [
+                "Casual",
+                "Esportivo",
+                "Social",
+                "Conforto",
+                "Básico",
+                "Clássico"
+            ],
+            "prioridades": [
+                "Conforto",
+                "Preço"
+            ],
+            "cores": [],
+            "faixa_preco": "Acima de R$ 250"
+        },
+        "tags": [
+            "Reativar"
+        ],
+        "create_at": "2026-09-27T00:24:59.412Z",
+        "update_at": "2026-09-27T00:25:51.224Z"
     }
 ]

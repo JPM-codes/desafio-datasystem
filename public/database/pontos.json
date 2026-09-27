@@ -4607,5 +4607,29 @@
         "resgates_id": 0,
         "origem": "COMPRA",
         "create_at": "2026-09-25T23:49:54.142Z"
+    },
+    {
+        "id": 383,
+        "cliente_id": 32,
+        "tipo": "acumulo",
+        "pontos": 300,
+        "data_movimentacao": "2026-09-27T00:00:00.000Z",
+        "data_expiracao": "2027-09-27T00:00:00.000Z",
+        "compras_id": 315,
+        "resgates_id": 0,
+        "origem": "COMPRA",
+        "create_at": "2026-09-27T00:26:48.431Z"
+    },
+    {
+        "id": 384,
+        "cliente_id": 32,
+        "tipo": "resgate",
+        "pontos": -200,
+        "data_movimentacao": "2026-09-27T00:57:09.578Z",
+        "data_expiracao": null,
+        "compras_id": 0,
+        "resgates_id": 44,
+        "origem": "RESGATE",
+        "create_at": "2026-09-27T00:57:09.578Z"
     }
 ]

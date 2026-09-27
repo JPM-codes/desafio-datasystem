@@ -4084,5 +4084,20 @@
         "bonus_percentual": 0,
         "data_compra": "2026-09-25T00:00:00.000Z",
         "create_at": "2026-09-25T23:49:54.142Z"
+    },
+    {
+        "id": 315,
+        "cliente_id": 32,
+        "produto": "Venda livre",
+        "quantidade": 2,
+        "valor_unitario": 150,
+        "valor_total": 300,
+        "pontos_base": 300,
+        "cliente_pontos_bonus": 0,
+        "pontos_total": 300,
+        "nivel_aplicado": "Bronze",
+        "bonus_percentual": 0,
+        "data_compra": "2026-09-27T00:00:00.000Z",
+        "create_at": "2026-09-27T00:26:48.431Z"
     }
 ]

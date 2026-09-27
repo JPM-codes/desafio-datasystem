@@ -16,25 +16,27 @@
                         <form id="form-resgate" class="card section-card">
                             <h5 class="card-title mb-3"><i class="bi bi-gift text-primary"></i>Dados do resgate</h5>
 
-                            <div class="mb-3"><label class="form-label">Cliente *</label><select class="form-select" id="cliente-select" required>
-                                    <% if ((typeof clientes !== 'undefined') && clientes.length) { %>
-                                        <% clientes.forEach(function (cliente) { %>
-                                            <option value="<%= cliente.id %>" data-pontos="<%= cliente.pontos %>">
-                                                <%= cliente.nome %> — <%= cliente.pontos.toLocaleString('pt-BR') %> pontos —
-                                                    <%= cliente.nivel.nome %>
-                                            </option>
-                                            <% }); %>
-                                                <% } else { %>
-                                                    <option>Nenhum cliente cadastrado</option>
-                                                    <% } %>
-                            </select></div>
+                            <div class="mb-3">
+                                <label class="form-label" for="cliente-busca">Cliente *</label>
+                                <div class="position-relative">
+                                    <i class="bi bi-search position-absolute text-muted" style="left:14px;top:50%;transform:translateY(-50%)"></i>
+                                    <input type="search" id="cliente-busca" class="form-control form-control-lg ps-5"
+                                        placeholder="Pesquisar por nome, CPF ou ID..." autocomplete="off"
+                                        aria-describedby="cliente-busca-ajuda" aria-expanded="false" role="combobox">
+                                    <div id="cliente-lista" class="cliente-sugestoes" role="listbox" hidden></div>
+                                </div>
+                                <div class="form-text" id="cliente-busca-ajuda">Busque por nome, CPF/CNPJ ou ID. Para nomes, digite ao menos 2 letras; para ID ou CPF, 1 número já basta.</div>
+                                <input type="hidden" id="cliente-id" name="cliente_id">
+                                <div class="alert-card mt-2" id="cliente-escolhido" style="display:none"></div>
+                            </div>
 
-                            <div class="mb-3"><label class="form-label">Pontos para resgate *</label>
+                            <div class="mb-3">
+                                <label class="form-label" for="pontos-resgate">Pontos para resgate *</label>
                                 <div class="input-group input-group-lg">
                                     <input type="number" min="0" step="100" class="form-control" id="pontos-resgate" value="500" required>
                                     <span class="input-group-text">pontos</span>
                                 </div>
-                                <div class="form-text">Mínimo: <%= regrasCfg.conversao.pontos %> pontos (= <%= regrasCfg.conversao.valorReal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %>).</div>
+                                <div class="form-text" id="pontos-ajuda">Mínimo: <%= regrasCfg.conversao.pontos %> pontos (= <%= regrasCfg.conversao.valorReal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %>).</div>
                             </div>
 
                             <div class="alert-card mb-3" id="feedback" style="display:none"></div>
@@ -48,10 +50,37 @@
                             <h5 class="card-title mb-3"><i class="bi bi-wallet2 text-primary"></i>Resumo do cliente</h5>
 
                             <div class="d-flex align-items-center gap-3 mb-3">
-                                <span class="avatar avatar-lg bg-gradient"><i class="bi bi-person"></i></span>
-                                <div>
-                                    <div class="fw-bold" id="resumo-nome">Selecione um cliente</div>
+                                <span class="avatar avatar-lg bg-gradient" id="resumo-avatar"><i class="bi bi-person"></i></span>
+                                <div style="min-width:0">
+                                    <div class="fw-bold" id="resumo-nome">Pesquise e selecione um cliente</div>
                                     <div class="small text-muted" id="resumo-nivel">—</div>
+                                </div>
+                            </div>
+
+                            <div class="resumo-dados mb-3" id="resumo-dados" hidden>
+                                <div class="resumo-dados__item">
+                                    <span class="resumo-dados__label" id="resumo-doc-label">CPF</span>
+                                    <span class="resumo-dados__valor" id="resumo-documento">—</span>
+                                </div>
+                                <div class="resumo-dados__item">
+                                    <span class="resumo-dados__label">ID do cliente</span>
+                                    <span class="resumo-dados__valor" id="resumo-id">—</span>
+                                </div>
+                                <div class="resumo-dados__item">
+                                    <span class="resumo-dados__label">E-mail</span>
+                                    <span class="resumo-dados__valor" id="resumo-email">—</span>
+                                </div>
+                                <div class="resumo-dados__item">
+                                    <span class="resumo-dados__label">Cidade</span>
+                                    <span class="resumo-dados__valor" id="resumo-cidade">—</span>
+                                </div>
+                                <div class="resumo-dados__item">
+                                    <span class="resumo-dados__label">Compras</span>
+                                    <span class="resumo-dados__valor" id="resumo-compras">—</span>
+                                </div>
+                                <div class="resumo-dados__item">
+                                    <span class="resumo-dados__label">Pontos resgatados</span>
+                                    <span class="resumo-dados__valor" id="resumo-resgatados">—</span>
                                 </div>
                             </div>
 
@@ -59,6 +88,11 @@
                                 <div class="stat-mini">
                                     <div class="label">Saldo do cliente</div>
                                     <div class="value" id="resumo-saldo">0</div>
+                                </div>
+                                <div class="stat-mini">
+                                    <div class="label">Máximo para troca</div>
+                                    <div class="value text-primary" id="resumo-maximo">0</div>
+                                    <button type="button" class="btn btn-link btn-sm stat-mini__acao" id="usar-maximo" style="display:none">usar este valor</button>
                                 </div>
                                 <div class="stat-mini">
                                     <div class="label">Valor disponível</div>
@@ -77,68 +111,316 @@
             </section>
 
             <script>
-                const sel = document.getElementById('cliente-select');
-                const inputPontos = document.getElementById('pontos-resgate');
+                const conversao = <%- JSON.stringify(regrasCfg.conversao) %>;
+                const CLIENTES = <%- JSON.stringify(buscaClientes).replace(/</g, '\\u003c') %>;
+
+                const inpBusca = document.getElementById('cliente-busca');
+                const listaSugestoes = document.getElementById('cliente-lista');
+                const inpClienteId = document.getElementById('cliente-id');
+                const blocoEscolhido = document.getElementById('cliente-escolhido');
+                const inpPontos = document.getElementById('pontos-resgate');
+                const pontosAjuda = document.getElementById('pontos-ajuda');
+                const usarMaximo = document.getElementById('usar-maximo');
+
+                const elAvatar = document.getElementById('resumo-avatar');
                 const elNome = document.getElementById('resumo-nome');
                 const elNivel = document.getElementById('resumo-nivel');
+                const elDados = document.getElementById('resumo-dados');
+                const elDocLabel = document.getElementById('resumo-doc-label');
+                const elDocumento = document.getElementById('resumo-documento');
+                const elId = document.getElementById('resumo-id');
+                const elEmail = document.getElementById('resumo-email');
+                const elCidade = document.getElementById('resumo-cidade');
+                const elCompras = document.getElementById('resumo-compras');
+                const elResgatados = document.getElementById('resumo-resgatados');
                 const elSaldo = document.getElementById('resumo-saldo');
+                const elMaximo = document.getElementById('resumo-maximo');
                 const elValor = document.getElementById('resumo-valor');
                 const elDesconto = document.getElementById('resumo-desconto');
                 const alerta = document.getElementById('alerta-saldo');
                 const alertaTexto = document.getElementById('alerta-texto');
-                const conversao = <%= JSON.stringify(regrasCfg.conversao) %>;
+
+                const MINIMO = conversao.pontos;
+                let selecionado = null;
+                let resultados = [];
+                let posicaoAtiva = -1;
+
+                function semAcento(texto) {
+                    return String(texto || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+                }
+
+                function somenteDigitos(texto) {
+                    return String(texto || '').replace(/\D/g, '');
+                }
+
+                function classeNivel(nivel) {
+                    return nivel === 'Ouro' ? 'gold' : nivel === 'Prata' ? 'silver' : 'bronze';
+                }
 
                 function reais(valor) {
                     return 'R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 }
-                function descontoDe(pontos) {
+
+                function valorDe(pontos) {
                     return pontos / conversao.pontos * conversao.valorReal;
                 }
 
+                function saldo() {
+                    return selecionado ? Number(selecionado.pontos) || 0 : 0;
+                }
+
+                // Quantidade máxima que respeita a regra de conversão (múltiplo de 100 pts = R$ 5,00).
+                function maximoParaTroca() {
+                    return Math.floor(saldo() / MINIMO) * MINIMO;
+                }
+
+                function textoAjuda() {
+                    if (!selecionado) {
+                        return 'Mínimo: ' + MINIMO + ' pontos (= ' + reais(conversao.valorReal) + ').';
+                    }
+                    const maximo = maximoParaTroca();
+                    if (maximo <= 0) {
+                        return 'Este cliente não tem saldo suficiente para uma troca de ' + MINIMO + ' pontos.';
+                    }
+                    return 'Para este cliente: máximo de ' + maximo.toLocaleString('pt-BR') + ' pts (= ' +
+                        reais(valorDe(maximo)) + '). Mínimo de ' + MINIMO + ' pts (= ' + reais(conversao.valorReal) + ').';
+                }
+
+                function filtrarClientes(termo) {
+                    const alvo = semAcento(termo);
+                    const digitos = somenteDigitos(termo);
+                    if (!alvo) return [];
+
+                    return CLIENTES
+                        .map(function (cliente) {
+                            const nome = semAcento(cliente.nome);
+                            const doc = somenteDigitos(cliente.documento);
+                            const idTexto = String(cliente.id);
+
+                            let peso = null;
+                            if (nome === alvo) peso = 0;
+                            else if (nome.startsWith(alvo)) peso = 1;
+                            else if (nome.split(/\s+/).some(function (parte) { return parte.startsWith(alvo); })) peso = 2;
+                            else if (nome.includes(alvo)) peso = 3;
+                            else if (digitos && idTexto === digitos) peso = 0;
+                            else if (digitos && idTexto.startsWith(digitos)) peso = 1;
+                            else if (digitos && doc.includes(digitos)) peso = 4;
+                            return peso === null ? null : { cliente: cliente, peso: peso };
+                        })
+                        .filter(Boolean)
+                        .sort(function (a, b) { return a.peso - b.peso || a.cliente.nome.localeCompare(b.cliente.nome, 'pt-BR'); })
+                        .slice(0, 8)
+                        .map(function (item) { return item.cliente; });
+                }
+
+                function fecharSugestoes() {
+                    listaSugestoes.hidden = true;
+                    listaSugestoes.innerHTML = '';
+                    inpBusca.setAttribute('aria-expanded', 'false');
+                    posicaoAtiva = -1;
+                }
+
+                function renderSugestoes() {
+                    posicaoAtiva = -1;
+                    if (!resultados.length) {
+                        listaSugestoes.innerHTML = '<div class="cliente-sugestoes__vazio">Nenhum cliente encontrado</div>';
+                    } else {
+                        listaSugestoes.innerHTML = resultados.map(function (cliente, indice) {
+                            return '<button type="button" class="cliente-sugestao" role="option" data-indice="' + indice + '">' +
+                                '<span class="avatar avatar-sm">' + String(cliente.nome).trim().charAt(0).toUpperCase() + '</span>' +
+                                '<span class="cliente-sugestao__texto">' +
+                                '<span class="cliente-sugestao__nome">' + cliente.nome + '</span>' +
+                                '<span class="cliente-sugestao__meta">' + (cliente.tipo_documento || 'CPF') +
+                                (cliente.documento ? ' ' + cliente.documento : '') + ' · ID ' + cliente.id +
+                                ' · ' + Number(cliente.pontos).toLocaleString('pt-BR') + ' pts</span>' +
+                                '</span></button>';
+                        }).join('');
+                    }
+                    listaSugestoes.hidden = false;
+                    inpBusca.setAttribute('aria-expanded', 'true');
+                }
+
+                function marcarAtiva() {
+                    const botoes = listaSugestoes.querySelectorAll('.cliente-sugestao');
+                    botoes.forEach(function (botao, i) { botao.classList.toggle('is-ativo', i === posicaoAtiva); });
+                    if (posicaoAtiva >= 0 && botoes[posicaoAtiva]) {
+                        botoes[posicaoAtiva].scrollIntoView({ block: 'nearest' });
+                    }
+                }
+
+                function selecionarCliente(cliente) {
+                    selecionado = cliente;
+                    inpClienteId.value = cliente.id;
+                    inpBusca.value = cliente.nome;
+                    blocoEscolhido.style.display = 'block';
+                    blocoEscolhido.replaceChildren();
+                    const icone = document.createElement('i');
+                    icone.className = 'bi bi-person-check me-2';
+                    const forte = document.createElement('strong');
+                    forte.textContent = cliente.nome;
+                    const meta = document.createElement('span');
+                    meta.textContent = ' · ' + (cliente.tipo_documento || 'CPF') + ' ' + (cliente.documento || '—') + ' · ID ' + cliente.id;
+                    const botao = document.createElement('button');
+                    botao.type = 'button';
+                    botao.className = 'btn btn-sm btn-link p-0 ms-1';
+                    botao.id = 'trocar-cliente';
+                    botao.textContent = 'trocar';
+                    blocoEscolhido.append(icone, forte, meta, botao);
+                    botao.addEventListener('click', limparCliente);
+                    fecharSugestoes();
+                    ajustarPontosAoSaldo();
+                    atualizar();
+                }
+
+                function limparCliente() {
+                    selecionado = null;
+                    inpClienteId.value = '';
+                    inpBusca.value = '';
+                    blocoEscolhido.style.display = 'none';
+                    blocoEscolhido.innerHTML = '';
+                    atualizar();
+                    inpBusca.focus();
+                }
+
+                // Mantém a quantidade dentro do saldo quando o cliente muda.
+                function ajustarPontosAoSaldo() {
+                    const maximo = maximoParaTroca();
+                    const atual = Math.max(0, Math.floor(Number(inpPontos.value) || 0));
+                    if (maximo <= 0) {
+                        inpPontos.value = 0;
+                    } else if (atual > maximo) {
+                        inpPontos.value = maximo;
+                    }
+                }
+
                 function atualizar() {
-                    const opt = sel.options[sel.selectedIndex];
-                    if (!opt) return;
-                    const pontos = Number(opt.dataset.pontos || 0);
-                    const nivel = opt.textContent.split(' — ')[2] || 'Bronze';
-                    const nome = opt.textContent.split(' — ')[0];
+                    const resgate = Math.max(0, Math.floor(Number(inpPontos.value) || 0));
+                    pontosAjuda.textContent = textoAjuda();
 
-                    const resgate = Math.max(0, Number(inputPontos.value || 0));
+                    if (!selecionado) {
+                        elAvatar.innerHTML = '<i class="bi bi-person"></i>';
+                        elNome.textContent = 'Pesquise e selecione um cliente';
+                        elNivel.textContent = '—';
+                        elDados.hidden = true;
+                        elSaldo.textContent = '0';
+                        elMaximo.textContent = '0';
+                        elValor.textContent = reais(0);
+                        elDesconto.textContent = reais(0);
+                        usarMaximo.style.display = 'none';
+                        alerta.style.display = 'none';
+                        return;
+                    }
 
-                    elNome.textContent = nome;
-                    elNivel.innerHTML = 'Nível: <span class="badge-level ' + (nivel === 'Ouro' ? 'gold' : nivel === 'Prata' ? 'silver' : 'bronze') + '">' + nivel + '</span>';
-                    elSaldo.textContent = pontos.toLocaleString('pt-BR') + ' pts';
-                    elValor.textContent = reais(descontoDe(pontos));
-                    elDesconto.textContent = reais(descontoDe(resgate));
+                    const saldoAtual = saldo();
+                    const maximo = maximoParaTroca();
 
-                    if (resgate > pontos) {
-                        alertaTexto.textContent = 'O resgate solicitado excede o saldo do cliente.';
+                    elAvatar.textContent = String(selecionado.nome).trim().charAt(0).toUpperCase();
+                    elNome.textContent = selecionado.nome;
+                    elNivel.innerHTML = 'Nível: <span class="badge-level ' + classeNivel(selecionado.nivel) + '">' + selecionado.nivel + '</span>' +
+                        ' <span class="badge-status ' + selecionado.statusClasse + '">' + String(selecionado.status).toLowerCase() + '</span>';
+
+                    elDados.hidden = false;
+                    elDocLabel.textContent = selecionado.tipo_documento || 'CPF';
+                    elDocumento.textContent = selecionado.documento || '—';
+                    elId.textContent = String(selecionado.id);
+                    elEmail.textContent = selecionado.email || '—';
+                    elCidade.textContent = selecionado.cidade || '—';
+                    elCompras.textContent = (Number(selecionado.totalCompras) || 0).toLocaleString('pt-BR') +
+                        ' · ' + (Number(selecionado.pontosAcumulados) || 0).toLocaleString('pt-BR') + ' pts acumulados';
+                    elResgatados.textContent = (Number(selecionado.pontosResgatados) || 0).toLocaleString('pt-BR') + ' pts';
+
+                    elSaldo.textContent = saldoAtual.toLocaleString('pt-BR') + ' pts';
+                    elMaximo.textContent = maximo.toLocaleString('pt-BR') + ' pts';
+                    elValor.textContent = reais(valorDe(saldoAtual));
+                    elDesconto.textContent = reais(valorDe(resgate));
+                    usarMaximo.style.display = maximo > 0 ? 'inline-block' : 'none';
+
+                    if (maximo <= 0) {
+                        alertaTexto.textContent = 'Saldo insuficiente para uma troca mínima de ' + MINIMO + ' pontos.';
                         alerta.style.display = 'block';
                     } else if (resgate <= 0) {
                         alertaTexto.textContent = 'Informe uma quantidade de pontos válida.';
+                        alerta.style.display = 'block';
+                    } else if (resgate > saldoAtual) {
+                        alertaTexto.textContent = 'O resgate solicitado excede o saldo do cliente (' +
+                            saldoAtual.toLocaleString('pt-BR') + ' pts).';
+                        alerta.style.display = 'block';
+                    } else if (resgate < MINIMO) {
+                        alertaTexto.textContent = 'A troca mínima é de ' + MINIMO + ' pontos (= ' + reais(conversao.valorReal) + ').';
+                        alerta.style.display = 'block';
+                    } else if (resgate % MINIMO !== 0) {
+                        alertaTexto.textContent = 'A quantidade será convertida pela regra de ' + MINIMO +
+                            ' pontos = ' + reais(conversao.valorReal) + '.';
                         alerta.style.display = 'block';
                     } else {
                         alerta.style.display = 'none';
                     }
                 }
 
-                sel.addEventListener('change', atualizar);
-                inputPontos.addEventListener('input', atualizar);
+                inpBusca.addEventListener('input', function () {
+                    if (selecionado) limparCliente();
+                    const termo = inpBusca.value.trim();
+                    const digitos = somenteDigitos(termo);
+                    // Termo só numérico já vale a busca: é ID ou prefixo de CPF.
+                    if (termo.length < 2 && !(digitos && digitos === termo)) {
+                        resultados = [];
+                        fecharSugestoes();
+                        return;
+                    }
+                    resultados = filtrarClientes(termo);
+                    renderSugestoes();
+                });
+
+                inpBusca.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') { fecharSugestoes(); return; }
+                    if (listaSugestoes.hidden || !resultados.length) return;
+
+                    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const passo = e.key === 'ArrowDown' ? 1 : -1;
+                        const total = resultados.length;
+                        posicaoAtiva = (posicaoAtiva + passo + total) % total;
+                        marcarAtiva();
+                    } else if (e.key === 'Enter' && posicaoAtiva >= 0) {
+                        e.preventDefault();
+                        selecionarCliente(resultados[posicaoAtiva]);
+                    }
+                });
+
+                listaSugestoes.addEventListener('mousedown', function (e) {
+                    const botao = e.target.closest('.cliente-sugestao');
+                    if (!botao) return;
+                    e.preventDefault();
+                    selecionarCliente(resultados[Number(botao.dataset.indice)]);
+                });
+
+                inpBusca.addEventListener('blur', function () { setTimeout(fecharSugestoes, 120); });
+                inpPontos.addEventListener('input', atualizar);
+                usarMaximo.addEventListener('click', function () {
+                    inpPontos.value = maximoParaTroca();
+                    atualizar();
+                });
                 atualizar();
 
                 const alertaFb = (msg, ok) => {
                     const f = document.getElementById('feedback');
                     f.style.display = 'block';
                     f.className = 'alert-card mb-3 ' + (ok ? '' : 'alert-danger');
-                    f.innerHTML = (ok ? '<i class="bi bi-check-circle me-2"></i>' : '<i class="bi bi-x-circle me-2"></i>') + msg;
+                    f.replaceChildren();
+                    const icone = document.createElement('i');
+                    icone.className = 'bi me-2 ' + (ok ? 'bi-check-circle' : 'bi-x-circle');
+                    f.append(icone, document.createTextNode(msg));
                 };
 
                 document.getElementById('form-resgate').addEventListener('submit', async function (e) {
                     e.preventDefault();
-                    const payload = {
-                        cliente_id: Number(sel.value),
-                        pontos: Number(inputPontos.value) || 0,
-                    };
-                    if (payload.pontos > Number(sel.options[sel.selectedIndex].dataset.pontos)) {
+                    if (!selecionado) {
+                        alertaFb('Pesquise e selecione um cliente pelo nome, CPF ou ID.', false);
+                        inpBusca.focus();
+                        return;
+                    }
+                    const pontos = Math.max(0, Math.floor(Number(inpPontos.value) || 0));
+                    if (pontos > saldo()) {
                         alertaFb('Resgate excede o saldo do cliente.', false);
                         return;
                     }
@@ -146,14 +428,14 @@
                         const resp = await fetch('/api/resgates', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload),
+                            body: JSON.stringify({ cliente_id: Number(selecionado.id), pontos: pontos }),
                         });
                         const json = await resp.json();
                         if (!resp.ok) {
                             alertaFb(json.message || 'Não foi possível realizar o resgate.', false);
                             return;
                         }
-                        alertaFb('Resgate de ' + payload.pontos.toLocaleString('pt-BR') + ' pts realizado! (' + reais(descontoDe(payload.pontos)) + ' de desconto)', true);
+                        alertaFb('Resgate de ' + pontos.toLocaleString('pt-BR') + ' pts realizado! (' + reais(valorDe(pontos)) + ' de desconto)', true);
                         setTimeout(() => location.href = '/resgates', 700);
                     } catch (err) {
                         alertaFb('Falha ao realizar o resgate.', false);
