@@ -1,5 +1,4 @@
-"# desafio-datasystem" 
-Claro. Abaixo está o conteúdo do `.md` consolidado com as regras que definimos até agora:
+
 
 # Sistema de Fidelidade — FATECalçados
 
@@ -43,14 +42,13 @@ Para a apresentação do projeto, serão utilizados dados fictícios.
 
 A demonstração contará com:
 
-* 20 clientes;
-* 200 compras;
+* 20+ clientes;
+* 200+ compras;
 * Dados fictícios de pontuação;
 * Diferentes níveis de fidelidade;
 * Resgates;
 * Movimentações de pontos;
 * Doações;
-* Produtos com descontos via QR Code.
 
 Os dados da demonstração serão armazenados em **JSON**, sem necessidade de banco de dados para a primeira versão apresentada.
 
@@ -363,10 +361,6 @@ Sistema FATECalçados
 │
 ├── Dashboard
 │
-├── QR Code
-│   ├── QR Produto
-│   └── QR Campanha
-│
 ├── Doações
 │
 └── API
@@ -452,31 +446,6 @@ estado
 campanha_id
 data_doacao
 observacao
-created_at
-```
-
-## Produtos / QR Codes
-
-```text
-produtos
-
-id
-nome
-preco
-created_at
-updated_at
-```
-
-```text
-qr_codes_produtos
-
-id
-produto_id
-tipo_desconto
-valor_desconto
-data_inicio
-data_validade
-ativo
 created_at
 ```
 
@@ -595,7 +564,6 @@ A primeira versão será desenvolvida utilizando:
 * **Campanhas promocionais;**
 * **Campanhas de pontos em dobro;**
 * **Cupons de desconto;**
-* **QR Codes com limite de utilização;**
 * **Histórico de utilização dos descontos;**
 * **Dashboard específico para campanhas de doação.**
 
